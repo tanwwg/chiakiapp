@@ -32,6 +32,14 @@ class ViewController: NSViewController {
     var metalView: MTKView?
     var renderer: YuvRenderer?
     
+    var inputState = InputState()
+    
+    var timer: Timer?
+    
+    @objc func timerCb() {
+        ui.session?.setControllerState(inputState.run())
+    }
+    
     func startMetal() {
         self.uiView?.removeFromSuperview()
 
@@ -43,55 +51,66 @@ class ViewController: NSViewController {
         renderer = YuvRenderer(mtkView: v)
         v.delegate = renderer
         
+        NSCursor.hide()
+        self.view.window?.toggleFullScreen(nil)
+        CGAssociateMouseAndMouseCursorPosition(0)
     }
     
-    func onKeyDown(evt: NSEvent)
-    {
-        var state = ChiakiControllerState()
-
-        if evt.keyCode == KeyCode.leftArrow {
-            state.buttons = CHIAKI_CONTROLLER_BUTTON_DPAD_LEFT.rawValue
-        }
-        if evt.keyCode == KeyCode.rightArrow {
-            state.buttons = CHIAKI_CONTROLLER_BUTTON_DPAD_RIGHT.rawValue
-        }
-        if evt.keyCode == KeyCode.upArrow {
-            state.buttons = CHIAKI_CONTROLLER_BUTTON_DPAD_UP.rawValue
-        }
-        if evt.keyCode == KeyCode.downArrow {
-            state.buttons = CHIAKI_CONTROLLER_BUTTON_DPAD_DOWN.rawValue
-        }
-        if evt.keyCode == KeyCode.return {
-            state.buttons = CHIAKI_CONTROLLER_BUTTON_CROSS.rawValue
-        }
-        if evt.keyCode == KeyCode.escape {
-            state.buttons = CHIAKI_CONTROLLER_BUTTON_MOON.rawValue
-        }
-        if evt.keyCode == KeyCode.p {
-            state.buttons = CHIAKI_CONTROLLER_BUTTON_PS.rawValue
-        }
-
-        ui.session?.setControllerState(state)
-    }
-
-    func onKeyUp(evt: NSEvent) {
-        var state = ChiakiControllerState()
-        ui.session?.setControllerState(state)
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.inputState.steps = [
+            ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.e), button: CHIAKI_CONTROLLER_BUTTON_CROSS),
+            ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.q), button: CHIAKI_CONTROLLER_BUTTON_MOON),
+            ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.f), button: CHIAKI_CONTROLLER_BUTTON_BOX),
+            ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.r), button: CHIAKI_CONTROLLER_BUTTON_PYRAMID),
+            ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.p), button: CHIAKI_CONTROLLER_BUTTON_PS),
+            ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.comma), button: CHIAKI_CONTROLLER_BUTTON_L1),
+            ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.period), button: CHIAKI_CONTROLLER_BUTTON_R1),
+            ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.shift), button: CHIAKI_CONTROLLER_BUTTON_L3),
+            ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.rightShift), button: CHIAKI_CONTROLLER_BUTTON_R3),
+            ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.upArrow), button: CHIAKI_CONTROLLER_BUTTON_DPAD_UP),
+            ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.downArrow), button: CHIAKI_CONTROLLER_BUTTON_DPAD_DOWN),
+            ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.leftArrow), button: CHIAKI_CONTROLLER_BUTTON_DPAD_LEFT),
+            ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.rightArrow), button: CHIAKI_CONTROLLER_BUTTON_DPAD_RIGHT),
+            KeyToStickInputStep(fixAcceleration: 1,
+                                minus: nil,
+                                plus: KeyboardInputCheck(key: KeyCode.rightBracket),
+                                output: FloatToStickStep(stick: .R2)),
+            KeyToStickInputStep(fixAcceleration: 1,
+                                minus: nil,
+                                plus: KeyboardInputCheck(key: KeyCode.leftBracket),
+                                output: FloatToStickStep(stick: .L2)),
+            KeyToStickInputStep(fixAcceleration: 0.01,
+                                minus: KeyboardInputCheck(key: KeyCode.w),
+                                plus: KeyboardInputCheck(key: KeyCode.s),
+                                output: FloatToStickStep(stick: .leftY)),
+            KeyToStickInputStep(fixAcceleration: 0.01,
+                                minus: KeyboardInputCheck(key: KeyCode.a),
+                                plus: KeyboardInputCheck(key: KeyCode.d),
+                                output: FloatToStickStep(stick: .leftX)),
+            FloatInputStep(inStep: MouseInput(dir: .x, sensitivity: 0.2), outStep: FloatToStickStep(stick: .rightX)),
+            FloatInputStep(inStep: MouseInput(dir: .y, sensitivity: 0.2), outStep: FloatToStickStep(stick: .rightY)),
+
+        ]
 
         NSEvent.addLocalMonitorForEvents(matching: .keyDown) { evt in
-            self.onKeyDown(evt: evt)
-            return nil
+            return self.inputState.keyboard.onKeyDown(evt: evt)
         }
         
         NSEvent.addLocalMonitorForEvents(matching: .keyUp) { evt in
-            self.onKeyUp(evt: evt)
-            return nil
+            return self.inputState.keyboard.onKeyUp(evt: evt)
         }
         
+        NSEvent.addLocalMonitorForEvents(matching: .mouseMoved) { evt in
+            return self.inputState.mouse.onMouseMoved(evt: evt)
+        }
+
+        
+        let tim = Timer(timeInterval: 1.0 / 120, target: self, selector: #selector(timerCb), userInfo: nil, repeats: true)
+        RunLoop.current.add(tim, forMode: .common)
+        self.timer = tim
+
         self.sessionSub = ui.$session.sink { session in
             if let sess = session {
                 print("Session started")

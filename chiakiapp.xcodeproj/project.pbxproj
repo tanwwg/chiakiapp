@@ -64,6 +64,7 @@
 		AE5A2FED27F4170200AFDC4D /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5A2FEC27F4170200AFDC4D /* Metal.framework */; };
 		AE5A2FF027F4177300AFDC4D /* shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2FEF27F4177300AFDC4D /* shaders.metal */; };
 		AE5A2FF227F45CAA00AFDC4D /* KeyCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2FF127F45CAA00AFDC4D /* KeyCodes.swift */; };
+		AE5A301027F534F300AFDC4D /* InputManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5A300F27F534F300AFDC4D /* InputManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -131,6 +132,7 @@
 		AE5A2FEE27F4173600AFDC4D /* MetalHeaders.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MetalHeaders.h; sourceTree = "<group>"; };
 		AE5A2FEF27F4177300AFDC4D /* shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = shaders.metal; sourceTree = "<group>"; };
 		AE5A2FF127F45CAA00AFDC4D /* KeyCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyCodes.swift; sourceTree = "<group>"; };
+		AE5A300F27F534F300AFDC4D /* InputManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -175,6 +177,7 @@
 		AE5A2F0E27F2D6F500AFDC4D /* chiakiapp */ = {
 			isa = PBXGroup;
 			children = (
+				AE5A300E27F534E800AFDC4D /* inputmanager */,
 				AE5A2FDC27F2FDA900AFDC4D /* libs */,
 				AE5A2F0F27F2D6F500AFDC4D /* AppDelegate.swift */,
 				AE5A2F1127F2D6F500AFDC4D /* ViewController.swift */,
@@ -266,6 +269,14 @@
 			path = libs;
 			sourceTree = "<group>";
 		};
+		AE5A300E27F534E800AFDC4D /* inputmanager */ = {
+			isa = PBXGroup;
+			children = (
+				AE5A300F27F534F300AFDC4D /* InputManager.swift */,
+			);
+			path = inputmanager;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -352,6 +363,7 @@
 				AE5A2FAC27F2ED1200AFDC4D /* discoveryservice.c in Sources */,
 				AE5A2FB927F2ED1200AFDC4D /* feedback.c in Sources */,
 				AE5A2FE927F416E500AFDC4D /* YuvRenderer.swift in Sources */,
+				AE5A301027F534F300AFDC4D /* InputManager.swift in Sources */,
 				AE5A2FCC27F2ED1200AFDC4D /* regist.c in Sources */,
 				AE5A2FBC27F2ED1200AFDC4D /* discovery.c in Sources */,
 				AE5A2F1227F2D6F500AFDC4D /* ViewController.swift in Sources */,

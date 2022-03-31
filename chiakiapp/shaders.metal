@@ -36,13 +36,14 @@ vertexShader(uint vertexID [[ vertex_id ]],
     return out;
 }
 
+constexpr sampler mySampler (mag_filter::linear,
+                                  min_filter::linear);
+
 fragment float4 grayShader(RasterizerData in [[stage_in]],
                          texture2d<uint> colorTexture [[ texture(0) ]],
                          constant FragmentParms &parms [[buffer(1)]])
 {
-    constexpr sampler textureSampler (mag_filter::linear,
-                                      min_filter::linear);
-    const uint4 c = colorTexture.sample(textureSampler, in.textureCoordinate);
+    const uint4 c = colorTexture.sample(mySampler, in.textureCoordinate);
     
     return float4(c.r / 256.0,
                   c.r / 256.0,
