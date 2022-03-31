@@ -46,6 +46,23 @@ class ViewController: NSViewController {
         ui.session?.setControllerState(inputState.run())
     }
     
+    func toggleFullScreen() {
+        self.view.window?.toggleFullScreen(nil)
+    }
+    
+    var isCursorHidden = false
+    func toggleCursor() {
+        if isCursorHidden {
+            NSCursor.unhide()
+            CGAssociateMouseAndMouseCursorPosition(1)
+            isCursorHidden = false
+        } else {
+            NSCursor.hide()
+            CGAssociateMouseAndMouseCursorPosition(0)
+            isCursorHidden = true
+        }
+    }
+    
     func startMetal() {
         self.uiView?.removeFromSuperview()
 
@@ -56,12 +73,12 @@ class ViewController: NSViewController {
         v.device = MTLCreateSystemDefaultDevice()
         renderer = YuvRenderer(mtkView: v)
         v.delegate = renderer
-        
-        NSCursor.hide()
+
         if !(self.view.window?.contentView?.isInFullScreenMode ?? false) {
 //            self.view.window?.toggleFullScreen(nil)
         }
-        CGAssociateMouseAndMouseCursorPosition(0)
+
+        self.toggleCursor()
     }
     
     override func viewDidLoad() {
@@ -81,6 +98,8 @@ class ViewController: NSViewController {
             ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.downArrow), button: CHIAKI_CONTROLLER_BUTTON_DPAD_DOWN),
             ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.leftArrow), button: CHIAKI_CONTROLLER_BUTTON_DPAD_LEFT),
             ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.rightArrow), button: CHIAKI_CONTROLLER_BUTTON_DPAD_RIGHT),
+            ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.escape), button: CHIAKI_CONTROLLER_BUTTON_OPTIONS),
+            ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.t), button: CHIAKI_CONTROLLER_BUTTON_TOUCHPAD),
             KeyToStickInputStep(fixAcceleration: 1,
                                 minus: nil,
                                 plus: KeyboardInputCheck(key: KeyCode.rightBracket),
@@ -103,6 +122,17 @@ class ViewController: NSViewController {
         ]
 
         NSEvent.addLocalMonitorForEvents(matching: .keyDown) { evt in
+            let nsevt: NSEvent = evt
+            if nsevt.keyCode == KeyCode.q && nsevt.modifierFlags.contains(.command) {
+                NSApplication.shared.terminate(self)
+            }
+            if nsevt.keyCode == KeyCode.f && nsevt.modifierFlags.contains(.command) {
+                self.toggleFullScreen()
+            }
+            if nsevt.keyCode == KeyCode.c && nsevt.modifierFlags.contains(.command) {
+                self.toggleCursor()
+            }
+
             return self.inputState.keyboard.onKeyDown(evt: evt)
         }
         

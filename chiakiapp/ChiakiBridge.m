@@ -176,7 +176,7 @@ static void FrameCb(ChiakiFfmpegDecoder *decoder, void *user) {
 }
 
 -(void)start {
-    chiaki_log_init(&chiakiLog, 3, LogCb, NULL);
+    chiaki_log_init(&chiakiLog, 3, NoLogCb, NULL);
     
     ChiakiErrorCode err;
     
