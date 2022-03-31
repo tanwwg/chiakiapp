@@ -88,7 +88,6 @@ struct HostView: View {
             packetCount += 1
             print(data)
         }
-        session.start()
         
         ui.session = session
         

@@ -12,6 +12,7 @@
 #import "chiaki/session.h"
 #import "chiaki/log.h"
 #import "chiaki/ffmpegdecoder.h"
+#import "chiaki/opusdecoder.h"
 
 #import "ChiakiBridge.h"
 
@@ -125,6 +126,7 @@ static void RegisterCb(ChiakiRegistEvent *event, void *user) {
     ChiakiSession session;
     ChiakiLog chiakiLog;
     ChiakiFfmpegDecoder decoder;
+    ChiakiOpusDecoder opusDecoder;
 }
 
 static bool VideoCb(uint8_t *buf, size_t buf_size, void *user) {
@@ -139,6 +141,19 @@ static bool VideoCb(uint8_t *buf, size_t buf_size, void *user) {
     
     return true;
 }
+
+static void AudioSettingsCb(uint32_t channels, uint32_t rate, void *user)
+{
+    ChiakiSessionBridge *bridge = (__bridge ChiakiSessionBridge *)(user);
+    bridge.audioSettingsCallback(channels, rate);
+}
+
+static void AudioFrameCb(int16_t *buf, size_t samples_count, void *user)
+{
+    ChiakiSessionBridge *bridge = (__bridge ChiakiSessionBridge *)(user);
+    bridge.audioFrameCallback(buf, samples_count);
+}
+
 
 static void FrameCb(ChiakiFfmpegDecoder *decoder, void *user) {
     AVFrame *frame = chiaki_ffmpeg_decoder_pull_frame(decoder);
@@ -190,6 +205,13 @@ static void FrameCb(ChiakiFfmpegDecoder *decoder, void *user) {
     
     chiaki_session_set_video_sample_cb(&session, VideoCb, (__bridge void*)self);
     chiaki_session_start(&session);
+    
+    chiaki_opus_decoder_init(&opusDecoder, &chiakiLog);
+    chiaki_opus_decoder_set_cb(&opusDecoder, AudioSettingsCb, AudioFrameCb, (__bridge void*)self);
+    ChiakiAudioSink audio_sink;
+    chiaki_opus_decoder_get_sink(&opusDecoder, &audio_sink);
+    chiaki_session_set_audio_sink(&session, &audio_sink);
+
 }
 
 -(void)setControllerState:(ChiakiControllerState)state {

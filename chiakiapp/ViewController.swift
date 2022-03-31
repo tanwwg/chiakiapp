@@ -20,13 +20,19 @@ class ViewController: NSViewController {
 //        print("\(frame.pointee.width)x\(frame.pointee.height) linesize=\(frame.pointee.linesize.0),\(frame.pointee.linesize.1),\(frame.pointee.linesize.2)")
         
         autoreleasepool {
-            let data = Data(bytesNoCopy: frame.pointee.data.0!, count: 1920*1080, deallocator: .none)
+            let data = [
+                Data(bytesNoCopy: frame.pointee.data.0!, count: 1920*1080, deallocator: .none),
+                Data(bytesNoCopy: frame.pointee.data.1!, count: 1920*1080/4, deallocator: .none),
+                Data(bytesNoCopy: frame.pointee.data.2!, count: 1920*1080/4, deallocator: .none)]
+                
     //        let data = Data(bytes: frame.pointee.data.0!, count: 1920*1080)
-            self.renderer?.loadYuv420Texture(data: [data], width: 1920, height: 1080)
+            self.renderer?.loadYuv420Texture(data: data, width: 1920, height: 1080)
 
         }
 //        try! data.write(to: URL(fileURLWithPath: "/Users/tjtan/downloads/test.raw"))
     }
+    
+    var audioPlayer = AudioPlayer()
     
     var uiView: NSView?
     var metalView: MTKView?
@@ -52,7 +58,9 @@ class ViewController: NSViewController {
         v.delegate = renderer
         
         NSCursor.hide()
-        self.view.window?.toggleFullScreen(nil)
+        if !(self.view.window?.contentView?.isInFullScreenMode ?? false) {
+//            self.view.window?.toggleFullScreen(nil)
+        }
         CGAssociateMouseAndMouseCursorPosition(0)
     }
     
@@ -115,6 +123,15 @@ class ViewController: NSViewController {
             if let sess = session {
                 print("Session started")
                 sess.videoCallback = self.frameCb
+                sess.audioSettingsCallback = { (ch, sr) in
+                    assert(ch == 2)
+                    self.audioPlayer.startup(sampleRate: Double(sr))
+                }
+                sess.audioFrameCallback = { (buf, count) in
+                    self.audioPlayer.play16bit2ch(data: Data(bytesNoCopy: buf, count: count * 4, deallocator: .none))
+                }
+                
+                sess.start()
                 
                 self.startMetal()
             }

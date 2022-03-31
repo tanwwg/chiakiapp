@@ -192,16 +192,16 @@ class KeyboardManager {
         return keyDowns.contains(key)
     }
     
-    func onKeyDown(evt: NSEvent) -> NSEvent {
+    func onKeyDown(evt: NSEvent) -> NSEvent? {
         keyDowns.insert(evt.keyCode)
         
-        return evt
+        return nil
     }
     
-    func onKeyUp(evt: NSEvent) -> NSEvent {
+    func onKeyUp(evt: NSEvent) -> NSEvent? {
         keyDowns.remove(evt.keyCode)
         
-        return evt
+        return nil
     }
 
 }

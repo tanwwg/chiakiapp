@@ -3,10 +3,22 @@ import simd
 import Metal
 import MetalKit
 
+class YuvTexture {
+    init(y: MTLTexture, u: MTLTexture, v: MTLTexture) {
+        self.y = y
+        self.u = u
+        self.v = v
+    }
+    
+    var y: MTLTexture
+    var u: MTLTexture
+    var v: MTLTexture
+}
+
 class BufferManager {
     let _device: MTLDevice
     let _texQueue = DispatchQueue(label: "buffer", qos: .userInteractive)
-    var _writeTextures: [MTLTexture] = []
+    var _writeTextures: [YuvTexture] = []
     var _width: Int = 0
     var _height: Int = 0
     
@@ -14,21 +26,29 @@ class BufferManager {
         self._device = device
     }
 
-    func makeTexture(width: Int, height: Int) -> MTLTexture {
+    func makeTexture(width: Int, height: Int) -> YuvTexture {
         let texDesc = MTLTextureDescriptor()
         texDesc.storageMode = .managed
-//        texDesc.pixelFormat = MTLPixelFormat.bgrg422
-        texDesc.pixelFormat = MTLPixelFormat.r8Uint
+        texDesc.pixelFormat = MTLPixelFormat.r8Unorm
         texDesc.width = width
         texDesc.height = height
-        return _device.makeTexture(descriptor: texDesc)!
+
+        let texDesc2 = MTLTextureDescriptor()
+        texDesc2.storageMode = .managed
+        texDesc2.pixelFormat = MTLPixelFormat.r8Unorm
+        texDesc2.width = width / 2
+        texDesc2.height = height / 2
+
+        return YuvTexture(y: _device.makeTexture(descriptor: texDesc)!,
+                          u: _device.makeTexture(descriptor: texDesc2)!,
+                          v: _device.makeTexture(descriptor: texDesc2)!)
     }
     
     /**
      Not main-thread safe, as it'll block on dispatch queue
      */
-    func getBuffer(width: Int, height: Int) -> MTLTexture? {
-        var ret: MTLTexture?
+    func getBuffer(width: Int, height: Int) -> YuvTexture? {
+        var ret: YuvTexture?
         _texQueue.sync {
             if width != _width || height != _height {
                 // rebuild textures
@@ -46,7 +66,7 @@ class BufferManager {
         return ret
     }
 
-    func returnBuffer(_ tex: MTLTexture) {
+    func returnBuffer(_ tex: YuvTexture) {
         _texQueue.async {
             self._writeTextures.append(tex)
         }
@@ -120,41 +140,19 @@ class YuvRenderer: NSObject, MTKViewDelegate {
         }
     }
         
-    /**
-     Thread-safe call to load data into the next write texture
-     */
-    func loadTexture(data: Data, rowBytes: Int, width: Int, height: Int) {
-        if let tex = _textures.getBuffer(width: width, height: height) {
-            data.withUnsafeBytes { ptr in
-                tex.replace(region: MTLRegion(origin: MTLOrigin(x: 0, y: 0, z: 0), size: MTLSize(width: width, height: height, depth: 1)), mipmapLevel: 0, withBytes: ptr.baseAddress!, bytesPerRow: rowBytes)
-            }
-            DispatchQueue.main.async {
-                self.showTexture(tex)
-            }
-        }
-    }
-    
     func loadYuv420Texture(data: [Data], width: Int, height: Int) {
         guard let tex = _textures.getBuffer(width: width, height: height) else { return }
         
         data[0].withUnsafeBytes { ptr in
-            tex.replace(region: MTLRegion(origin: MTLOrigin(x: 0, y: 0, z: 0), size: MTLSize(width: width, height: height, depth: 1)), mipmapLevel: 0, withBytes: ptr.baseAddress!, bytesPerRow: width)
+            tex.y.replace(region: MTLRegion(origin: MTLOrigin(x: 0, y: 0, z: 0), size: MTLSize(width: width, height: height, depth: 1)), mipmapLevel: 0, withBytes: ptr.baseAddress!, bytesPerRow: width)
         }
-        
-//        var temp = Data(count: width * height)
-//        temp.withUnsafeMutableBytes { bytes in
-//            data[0].withUnsafeBytes { p in
-//                for x in 0...width-1 {
-//                    for y in 0...height-1 {
-//                        bytes[y*width+x] = p[y*width+x]
-//                    }
-//                }
-//            }
-//        }
-//
-//        temp.withUnsafeBytes { ptr in
-//            tex.replace(region: MTLRegion(origin: MTLOrigin(x: 0, y: 0, z: 0), size: MTLSize(width: width, height: height, depth: 1)), mipmapLevel: 0, withBytes: ptr.baseAddress!, bytesPerRow: width)
-//        }
+        data[1].withUnsafeBytes { ptr in
+            tex.u.replace(region: MTLRegion(origin: MTLOrigin(x: 0, y: 0, z: 0), size: MTLSize(width: width/2, height: height/2, depth: 1)), mipmapLevel: 0, withBytes: ptr.baseAddress!, bytesPerRow: width)
+        }
+        data[2].withUnsafeBytes { ptr in
+            tex.v.replace(region: MTLRegion(origin: MTLOrigin(x: 0, y: 0, z: 0), size: MTLSize(width: width/2, height: height/2, depth: 1)), mipmapLevel: 0, withBytes: ptr.baseAddress!, bytesPerRow: width)
+        }
+
         DispatchQueue.main.async {
             self.showTexture(tex)
         }
@@ -203,14 +201,14 @@ class YuvRenderer: NSObject, MTKViewDelegate {
         setupViewport(w: Float(size.width), h: Float(size.height))
     }
     
-    var _showTexture: [MTLTexture] = []
+    var _showTexture: [YuvTexture] = []
     
     func resetStats() {
         noframe = 0
         lateframe = 0
     }
 
-    func showTexture(_ tex: MTLTexture) {
+    func showTexture(_ tex: YuvTexture) {
         if _showTexture.count < 3 {
             _showTexture.append(tex)
         } else {
@@ -246,7 +244,9 @@ class YuvRenderer: NSObject, MTKViewDelegate {
         renderEnc.setRenderPipelineState(_pipelineState)
         renderEnc.setVertexBuffer(_vertexBuffer, offset: 0, index: 0)
         renderEnc.setVertexBytes(&_viewportSize, length: MemoryLayout<vector_float2>.stride, index: 1)
-        renderEnc.setFragmentTexture(tex, index: 0)
+        renderEnc.setFragmentTexture(tex.y, index: 0)
+        renderEnc.setFragmentTexture(tex.u, index: 1)
+        renderEnc.setFragmentTexture(tex.v, index: 2)
         renderEnc.setFragmentBuffer(_renderParams, offset: 0, index: 1)
         renderEnc.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
         renderEnc.endEncoding()

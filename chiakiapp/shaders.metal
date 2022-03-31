@@ -40,49 +40,19 @@ constexpr sampler mySampler (mag_filter::linear,
                                   min_filter::linear);
 
 fragment float4 grayShader(RasterizerData in [[stage_in]],
-                         texture2d<uint> colorTexture [[ texture(0) ]],
-                         constant FragmentParms &parms [[buffer(1)]])
+                           texture2d<half> yTex [[ texture(0) ]],
+                           texture2d<half> uTex [[ texture(1) ]],
+                           texture2d<half> vTex [[ texture(2) ]],
+                           constant FragmentParms &parms [[buffer(1)]])
 {
-    const uint4 c = colorTexture.sample(mySampler, in.textureCoordinate);
-    
-    return float4(c.r / 256.0,
-                  c.r / 256.0,
-                  c.r / 256.0,
+    const float2 coord2 = float2(in.textureCoordinate.x, in.textureCoordinate.y / 2.0);
+    const half4 y = yTex.sample(mySampler, in.textureCoordinate);
+    const half4 u = uTex.sample(mySampler, coord2) - 0.5;
+    const half4 v = vTex.sample(mySampler, coord2) - 0.5;
+
+    return float4(1.164 * y.r               + 1.596 * v.r,
+                  1.164 * y.r - 0.392 * u.r - 0.813 * v.r,
+                  1.164 * y.r + 2.017 * u.r              ,
                   1.0);
 }
 
-// Fragment function
-fragment float4
-yuvShader(RasterizerData in [[stage_in]],
-               texture2d<half> colorTexture [[ texture(0) ]],
-               constant FragmentParms &parms [[buffer(1)]])
-{
-    constexpr sampler textureSampler (mag_filter::linear,
-                                      min_filter::linear);
-    const half4 c = colorTexture.sample(textureSampler, in.textureCoordinate);
-    
-//    half y = (c.g * 1.164 - 16.0/256.0);
-    half y = c.g;
-    half u = c.b - 0.5;
-    half v = c.r - 0.5;
-    
-    half ee = 1 + parms.brightness * 2;
-    y = pow(y, 1/ee);
-    
-    return float4(y + 0.00000 * u + 1.13983 * v,
-                  y - 0.39465 * u - 0.58060 * v,
-                  y + 2.03211 * u,
-                  1.0);
-}
-
-fragment float4
-rgbShader(RasterizerData in [[stage_in]],
-               texture2d<half> colorTexture [[ texture(0) ]],
-               constant FragmentParms &parms [[buffer(1)]])
-{
-    constexpr sampler textureSampler (mag_filter::linear,
-                                      min_filter::linear);
-    const half4 c = colorTexture.sample(textureSampler, in.textureCoordinate);
-    
-    return float4(c.r, c.g, c.b, 1.0);
-}

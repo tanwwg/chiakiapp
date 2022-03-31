@@ -38,6 +38,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (copy) void (^callback)(NSData *data);
 @property (copy) void (^videoCallback)(AVFrame *frame);
+@property (copy) void (^audioSettingsCallback)(uint32_t channels, uint32_t rate);
+@property (copy) void (^audioFrameCallback)(int16_t *buf, size_t samples_count);
 
 @property (copy) NSString *host;
 @property (copy) NSData *morning;
