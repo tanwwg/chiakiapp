@@ -176,10 +176,6 @@ static void FrameCb(ChiakiFfmpegDecoder *decoder, void *user) {
     av_frame_free(&frame);
 }
 
--(ChiakiPerfCounters)perfCounters {
-    return chiakiPerfCounters;
-}
-
 -(void)start {
     chiaki_log_init(&chiakiLog, 3, NoLogCb, NULL);
     
@@ -221,6 +217,15 @@ static void FrameCb(ChiakiFfmpegDecoder *decoder, void *user) {
 
 -(void)setControllerState:(ChiakiControllerState)state {
     chiaki_session_set_controller_state(&session, &state);
+}
+
+-(void)stop {
+    chiaki_session_stop(&session);
+    chiaki_session_join(&session);
+    chiaki_session_fini(&session);
+    chiaki_opus_decoder_fini(&opusDecoder);
+    chiaki_ffmpeg_decoder_fini(&decoder);
+
 }
 
 @end

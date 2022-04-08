@@ -32,7 +32,7 @@ class AudioPlayer: NSObject {
         self.startEngine()
     }
     
-    func startup(sampleRate: Double) {
+    func startup(channels: Int, sampleRate: Double) {
         let fmt = AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: sampleRate, channels: 2, interleaved: false)!
         
         _buffers = []

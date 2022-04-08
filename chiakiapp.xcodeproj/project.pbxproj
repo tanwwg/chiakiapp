@@ -14,48 +14,9 @@
 		AE5A2F1727F2D6F600AFDC4D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE5A2F1527F2D6F600AFDC4D /* Main.storyboard */; };
 		AE5A2F7427F2E4D100AFDC4D /* ChiakiBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2F7327F2E4D100AFDC4D /* ChiakiBridge.m */; };
 		AE5A2F7727F2EA8F00AFDC4D /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5A2F7627F2EA8F00AFDC4D /* libssl.a */; };
-		AE5A2F7927F2EAED00AFDC4D /* libjerasure.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5A2F7827F2EAED00AFDC4D /* libjerasure.a */; };
-		AE5A2F7B27F2EB2600AFDC4D /* libgf_complete.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5A2F7A27F2EB2600AFDC4D /* libgf_complete.a */; };
 		AE5A2F7D27F2EB5500AFDC4D /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5A2F7C27F2EB5500AFDC4D /* libssl.a */; };
 		AE5A2F7F27F2EB5B00AFDC4D /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5A2F7E27F2EB5B00AFDC4D /* libcrypto.a */; };
-		AE5A2FA927F2ED1200AFDC4D /* log.c in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2F8227F2ED1200AFDC4D /* log.c */; };
-		AE5A2FAA27F2ED1200AFDC4D /* thread.c in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2F8327F2ED1200AFDC4D /* thread.c */; };
-		AE5A2FAB27F2ED1200AFDC4D /* common.c in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2F8427F2ED1200AFDC4D /* common.c */; };
-		AE5A2FAC27F2ED1200AFDC4D /* discoveryservice.c in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2F8627F2ED1200AFDC4D /* discoveryservice.c */; };
-		AE5A2FAD27F2ED1200AFDC4D /* frameprocessor.c in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2F8727F2ED1200AFDC4D /* frameprocessor.c */; };
-		AE5A2FAE27F2ED1200AFDC4D /* session.c in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2F8827F2ED1200AFDC4D /* session.c */; };
-		AE5A2FAF27F2ED1200AFDC4D /* controller.c in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2F8927F2ED1200AFDC4D /* controller.c */; };
-		AE5A2FB027F2ED1200AFDC4D /* reorderqueue.c in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2F8A27F2ED1200AFDC4D /* reorderqueue.c */; };
-		AE5A2FB227F2ED1200AFDC4D /* takion.c in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2F8C27F2ED1200AFDC4D /* takion.c */; };
-		AE5A2FB327F2ED1200AFDC4D /* packetstats.c in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2F8D27F2ED1200AFDC4D /* packetstats.c */; };
-		AE5A2FB427F2ED1200AFDC4D /* ecdh.c in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2F8E27F2ED1200AFDC4D /* ecdh.c */; };
-		AE5A2FB527F2ED1200AFDC4D /* ctrl.c in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2F9027F2ED1200AFDC4D /* ctrl.c */; };
-		AE5A2FB627F2ED1200AFDC4D /* congestioncontrol.c in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2F9127F2ED1200AFDC4D /* congestioncontrol.c */; };
-		AE5A2FB727F2ED1200AFDC4D /* videoreceiver.c in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2F9227F2ED1200AFDC4D /* videoreceiver.c */; };
-		AE5A2FB827F2ED1200AFDC4D /* feedbacksender.c in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2F9327F2ED1200AFDC4D /* feedbacksender.c */; };
-		AE5A2FB927F2ED1200AFDC4D /* feedback.c in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2F9427F2ED1200AFDC4D /* feedback.c */; };
-		AE5A2FBA27F2ED1200AFDC4D /* random.c in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2F9527F2ED1200AFDC4D /* random.c */; };
-		AE5A2FBB27F2ED1200AFDC4D /* rpcrypt.c in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2F9627F2ED1200AFDC4D /* rpcrypt.c */; };
-		AE5A2FBC27F2ED1200AFDC4D /* discovery.c in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2F9727F2ED1200AFDC4D /* discovery.c */; };
-		AE5A2FBE27F2ED1200AFDC4D /* senkusha.c in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2F9927F2ED1200AFDC4D /* senkusha.c */; };
-		AE5A2FBF27F2ED1200AFDC4D /* fec.c in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2F9A27F2ED1200AFDC4D /* fec.c */; };
-		AE5A2FC027F2ED1200AFDC4D /* stoppipe.c in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2F9B27F2ED1200AFDC4D /* stoppipe.c */; };
-		AE5A2FC127F2ED1200AFDC4D /* time.c in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2F9C27F2ED1200AFDC4D /* time.c */; };
-		AE5A2FC227F2ED1200AFDC4D /* sock.c in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2F9D27F2ED1200AFDC4D /* sock.c */; };
-		AE5A2FC327F2ED1200AFDC4D /* takionsendbuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2F9E27F2ED1200AFDC4D /* takionsendbuffer.c */; };
-		AE5A2FC427F2ED1200AFDC4D /* base64.c in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2F9F27F2ED1200AFDC4D /* base64.c */; };
-		AE5A2FC527F2ED1200AFDC4D /* launchspec.c in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2FA027F2ED1200AFDC4D /* launchspec.c */; };
-		AE5A2FC727F2ED1200AFDC4D /* http.c in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2FA227F2ED1200AFDC4D /* http.c */; };
-		AE5A2FC827F2ED1200AFDC4D /* orientation.c in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2FA327F2ED1200AFDC4D /* orientation.c */; };
-		AE5A2FC927F2ED1200AFDC4D /* gkcrypt.c in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2FA427F2ED1200AFDC4D /* gkcrypt.c */; };
-		AE5A2FCA27F2ED1200AFDC4D /* audioreceiver.c in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2FA527F2ED1200AFDC4D /* audioreceiver.c */; };
-		AE5A2FCB27F2ED1200AFDC4D /* streamconnection.c in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2FA627F2ED1200AFDC4D /* streamconnection.c */; };
-		AE5A2FCC27F2ED1200AFDC4D /* regist.c in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2FA727F2ED1200AFDC4D /* regist.c */; };
-		AE5A2FCD27F2ED1200AFDC4D /* audio.c in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2FA827F2ED1200AFDC4D /* audio.c */; };
 		AE5A2FCF27F2F16C00AFDC4D /* libprotobuf-c.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5A2FCE27F2F16C00AFDC4D /* libprotobuf-c.a */; };
-		AE5A2FD127F2F37B00AFDC4D /* libprotobuf-nanopb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5A2FD027F2F37B00AFDC4D /* libprotobuf-nanopb.a */; };
-		AE5A2FD327F2F40600AFDC4D /* takion.pb.c in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2FD227F2F40600AFDC4D /* takion.pb.c */; };
-		AE5A2FD527F2FA7500AFDC4D /* ffmpegdecoder.c in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2FD427F2FA7500AFDC4D /* ffmpegdecoder.c */; };
 		AE5A2FE127F2FDE700AFDC4D /* libavcodec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5A2FE027F2FDE700AFDC4D /* libavcodec.a */; };
 		AE5A2FE327F2FDEE00AFDC4D /* libavutil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5A2FE227F2FDEE00AFDC4D /* libavutil.a */; };
 		AE5A2FE527F307D400AFDC4D /* ConsoleListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2FE427F307D400AFDC4D /* ConsoleListView.swift */; };
@@ -66,10 +27,14 @@
 		AE5A2FF027F4177300AFDC4D /* shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2FEF27F4177300AFDC4D /* shaders.metal */; };
 		AE5A2FF227F45CAA00AFDC4D /* KeyCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2FF127F45CAA00AFDC4D /* KeyCodes.swift */; };
 		AE5A301027F534F300AFDC4D /* InputManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5A300F27F534F300AFDC4D /* InputManager.swift */; };
-		AE5A301227F55A7600AFDC4D /* opusdecoder.c in Sources */ = {isa = PBXBuildFile; fileRef = AE5A301127F55A7600AFDC4D /* opusdecoder.c */; };
 		AE5A301427F55C7D00AFDC4D /* libopus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5A301327F55C7D00AFDC4D /* libopus.a */; };
 		AE5A301627F55D8D00AFDC4D /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5A301527F55D8D00AFDC4D /* AudioPlayer.swift */; };
 		AE624CA227F5C58300990FE5 /* AudioQueuePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE624CA127F5C58300990FE5 /* AudioQueuePlayer.swift */; };
+		AE76B1022800E00700BA3B36 /* libchiaki.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE76B1012800E00700BA3B36 /* libchiaki.a */; };
+		AE76B1052800E0CA00BA3B36 /* libjerasure.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE76B1032800E0CA00BA3B36 /* libjerasure.a */; };
+		AE76B1062800E0CA00BA3B36 /* libgf_complete.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE76B1042800E0CA00BA3B36 /* libgf_complete.a */; };
+		AE76B1082800E0F600BA3B36 /* libprotobuf-nanopb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE76B1072800E0F600BA3B36 /* libprotobuf-nanopb.a */; };
+		AE76B10A2800F19900BA3B36 /* StreamWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE76B1092800F19900BA3B36 /* StreamWindow.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -83,51 +48,10 @@
 		AE5A2F7227F2E4D000AFDC4D /* chiakiapp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "chiakiapp-Bridging-Header.h"; sourceTree = "<group>"; };
 		AE5A2F7327F2E4D100AFDC4D /* ChiakiBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChiakiBridge.m; sourceTree = "<group>"; };
 		AE5A2F7627F2EA8F00AFDC4D /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "../../../../opt/homebrew/Cellar/openssl@3/3.0.2/lib/libssl.a"; sourceTree = "<group>"; };
-		AE5A2F7827F2EAED00AFDC4D /* libjerasure.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjerasure.a; path = "../../chiaki/third-party/libjerasure.a"; sourceTree = "<group>"; };
-		AE5A2F7A27F2EB2600AFDC4D /* libgf_complete.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgf_complete.a; path = "../../chiaki/third-party/libgf_complete.a"; sourceTree = "<group>"; };
 		AE5A2F7C27F2EB5500AFDC4D /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "../../../../../opt/homebrew/Cellar/openssl@3/3.0.2/lib/libssl.a"; sourceTree = "<group>"; };
 		AE5A2F7E27F2EB5B00AFDC4D /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "../../../../../opt/homebrew/Cellar/openssl@3/3.0.2/lib/libcrypto.a"; sourceTree = "<group>"; };
 		AE5A2F8027F2EBCA00AFDC4D /* ChiakiBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChiakiBridge.h; sourceTree = "<group>"; };
-		AE5A2F8227F2ED1200AFDC4D /* log.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = log.c; sourceTree = "<group>"; };
-		AE5A2F8327F2ED1200AFDC4D /* thread.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = thread.c; sourceTree = "<group>"; };
-		AE5A2F8427F2ED1200AFDC4D /* common.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = common.c; sourceTree = "<group>"; };
-		AE5A2F8527F2ED1200AFDC4D /* utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utils.h; sourceTree = "<group>"; };
-		AE5A2F8627F2ED1200AFDC4D /* discoveryservice.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = discoveryservice.c; sourceTree = "<group>"; };
-		AE5A2F8727F2ED1200AFDC4D /* frameprocessor.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = frameprocessor.c; sourceTree = "<group>"; };
-		AE5A2F8827F2ED1200AFDC4D /* session.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = session.c; sourceTree = "<group>"; };
-		AE5A2F8927F2ED1200AFDC4D /* controller.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = controller.c; sourceTree = "<group>"; };
-		AE5A2F8A27F2ED1200AFDC4D /* reorderqueue.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = reorderqueue.c; sourceTree = "<group>"; };
-		AE5A2F8C27F2ED1200AFDC4D /* takion.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = takion.c; sourceTree = "<group>"; };
-		AE5A2F8D27F2ED1200AFDC4D /* packetstats.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = packetstats.c; sourceTree = "<group>"; };
-		AE5A2F8E27F2ED1200AFDC4D /* ecdh.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ecdh.c; sourceTree = "<group>"; };
-		AE5A2F8F27F2ED1200AFDC4D /* pb_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pb_utils.h; sourceTree = "<group>"; };
-		AE5A2F9027F2ED1200AFDC4D /* ctrl.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ctrl.c; sourceTree = "<group>"; };
-		AE5A2F9127F2ED1200AFDC4D /* congestioncontrol.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = congestioncontrol.c; sourceTree = "<group>"; };
-		AE5A2F9227F2ED1200AFDC4D /* videoreceiver.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = videoreceiver.c; sourceTree = "<group>"; };
-		AE5A2F9327F2ED1200AFDC4D /* feedbacksender.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = feedbacksender.c; sourceTree = "<group>"; };
-		AE5A2F9427F2ED1200AFDC4D /* feedback.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = feedback.c; sourceTree = "<group>"; };
-		AE5A2F9527F2ED1200AFDC4D /* random.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = random.c; sourceTree = "<group>"; };
-		AE5A2F9627F2ED1200AFDC4D /* rpcrypt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rpcrypt.c; sourceTree = "<group>"; };
-		AE5A2F9727F2ED1200AFDC4D /* discovery.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = discovery.c; sourceTree = "<group>"; };
-		AE5A2F9927F2ED1200AFDC4D /* senkusha.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = senkusha.c; sourceTree = "<group>"; };
-		AE5A2F9A27F2ED1200AFDC4D /* fec.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fec.c; sourceTree = "<group>"; };
-		AE5A2F9B27F2ED1200AFDC4D /* stoppipe.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = stoppipe.c; sourceTree = "<group>"; };
-		AE5A2F9C27F2ED1200AFDC4D /* time.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = time.c; sourceTree = "<group>"; };
-		AE5A2F9D27F2ED1200AFDC4D /* sock.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sock.c; sourceTree = "<group>"; };
-		AE5A2F9E27F2ED1200AFDC4D /* takionsendbuffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = takionsendbuffer.c; sourceTree = "<group>"; };
-		AE5A2F9F27F2ED1200AFDC4D /* base64.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = base64.c; sourceTree = "<group>"; };
-		AE5A2FA027F2ED1200AFDC4D /* launchspec.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = launchspec.c; sourceTree = "<group>"; };
-		AE5A2FA227F2ED1200AFDC4D /* http.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = http.c; sourceTree = "<group>"; };
-		AE5A2FA327F2ED1200AFDC4D /* orientation.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = orientation.c; sourceTree = "<group>"; };
-		AE5A2FA427F2ED1200AFDC4D /* gkcrypt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = gkcrypt.c; sourceTree = "<group>"; };
-		AE5A2FA527F2ED1200AFDC4D /* audioreceiver.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = audioreceiver.c; sourceTree = "<group>"; };
-		AE5A2FA627F2ED1200AFDC4D /* streamconnection.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = streamconnection.c; sourceTree = "<group>"; };
-		AE5A2FA727F2ED1200AFDC4D /* regist.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = regist.c; sourceTree = "<group>"; };
-		AE5A2FA827F2ED1200AFDC4D /* audio.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = audio.c; sourceTree = "<group>"; };
 		AE5A2FCE27F2F16C00AFDC4D /* libprotobuf-c.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libprotobuf-c.a"; path = "../../../../../opt/homebrew/Cellar/protobuf-c/1.4.0_1/lib/libprotobuf-c.a"; sourceTree = "<group>"; };
-		AE5A2FD027F2F37B00AFDC4D /* libprotobuf-nanopb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libprotobuf-nanopb.a"; path = "../../chiaki/third-party/nanopb/libprotobuf-nanopb.a"; sourceTree = "<group>"; };
-		AE5A2FD227F2F40600AFDC4D /* takion.pb.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = takion.pb.c; path = ../../chiaki/lib/protobuf/takion.pb.c; sourceTree = "<group>"; };
-		AE5A2FD427F2FA7500AFDC4D /* ffmpegdecoder.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ffmpegdecoder.c; sourceTree = "<group>"; };
 		AE5A2FE027F2FDE700AFDC4D /* libavcodec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavcodec.a; path = ../../../../../opt/homebrew/Cellar/ffmpeg/5.0/lib/libavcodec.a; sourceTree = "<group>"; };
 		AE5A2FE227F2FDEE00AFDC4D /* libavutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavutil.a; path = ../../../../../opt/homebrew/Cellar/ffmpeg/5.0/lib/libavutil.a; sourceTree = "<group>"; };
 		AE5A2FE427F307D400AFDC4D /* ConsoleListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsoleListView.swift; sourceTree = "<group>"; };
@@ -139,10 +63,14 @@
 		AE5A2FEF27F4177300AFDC4D /* shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = shaders.metal; sourceTree = "<group>"; };
 		AE5A2FF127F45CAA00AFDC4D /* KeyCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyCodes.swift; sourceTree = "<group>"; };
 		AE5A300F27F534F300AFDC4D /* InputManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputManager.swift; sourceTree = "<group>"; };
-		AE5A301127F55A7600AFDC4D /* opusdecoder.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = opusdecoder.c; sourceTree = "<group>"; };
 		AE5A301327F55C7D00AFDC4D /* libopus.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libopus.a; path = ../../../../../../opt/homebrew/lib/libopus.a; sourceTree = "<group>"; };
 		AE5A301527F55D8D00AFDC4D /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
 		AE624CA127F5C58300990FE5 /* AudioQueuePlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioQueuePlayer.swift; sourceTree = "<group>"; };
+		AE76B1012800E00700BA3B36 /* libchiaki.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libchiaki.a; path = ../../chiaki/build/lib/libchiaki.a; sourceTree = "<group>"; };
+		AE76B1032800E0CA00BA3B36 /* libjerasure.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjerasure.a; path = "../../chiaki/build/third-party/libjerasure.a"; sourceTree = "<group>"; };
+		AE76B1042800E0CA00BA3B36 /* libgf_complete.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgf_complete.a; path = "../../chiaki/build/third-party/libgf_complete.a"; sourceTree = "<group>"; };
+		AE76B1072800E0F600BA3B36 /* libprotobuf-nanopb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libprotobuf-nanopb.a"; path = "../../chiaki/build/third-party/nanopb/libprotobuf-nanopb.a"; sourceTree = "<group>"; };
+		AE76B1092800F19900BA3B36 /* StreamWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamWindow.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,18 +78,19 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE76B1022800E00700BA3B36 /* libchiaki.a in Frameworks */,
 				AE5A2FED27F4170200AFDC4D /* Metal.framework in Frameworks */,
 				AE5A2FEB27F416F900AFDC4D /* MetalKit.framework in Frameworks */,
+				AE76B1062800E0CA00BA3B36 /* libgf_complete.a in Frameworks */,
 				AE5A301427F55C7D00AFDC4D /* libopus.a in Frameworks */,
 				AE5A2FE327F2FDEE00AFDC4D /* libavutil.a in Frameworks */,
-				AE5A2FD127F2F37B00AFDC4D /* libprotobuf-nanopb.a in Frameworks */,
+				AE76B1052800E0CA00BA3B36 /* libjerasure.a in Frameworks */,
 				AE5A2FCF27F2F16C00AFDC4D /* libprotobuf-c.a in Frameworks */,
 				AE5A2F7D27F2EB5500AFDC4D /* libssl.a in Frameworks */,
 				AE5A2F7727F2EA8F00AFDC4D /* libssl.a in Frameworks */,
 				AE5A2F7F27F2EB5B00AFDC4D /* libcrypto.a in Frameworks */,
-				AE5A2F7927F2EAED00AFDC4D /* libjerasure.a in Frameworks */,
-				AE5A2F7B27F2EB2600AFDC4D /* libgf_complete.a in Frameworks */,
 				AE5A2FE127F2FDE700AFDC4D /* libavcodec.a in Frameworks */,
+				AE76B1082800E0F600BA3B36 /* libprotobuf-nanopb.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -194,12 +123,11 @@
 				AE5A2F0F27F2D6F500AFDC4D /* AppDelegate.swift */,
 				AE5A301527F55D8D00AFDC4D /* AudioPlayer.swift */,
 				AE5A2F1127F2D6F500AFDC4D /* ViewController.swift */,
+				AE76B1092800F19900BA3B36 /* StreamWindow.swift */,
 				AE5A2FE627F3E88E00AFDC4D /* AppModel.swift */,
 				AE5A2FE427F307D400AFDC4D /* ConsoleListView.swift */,
 				AE5A2F1327F2D6F600AFDC4D /* Assets.xcassets */,
 				AE5A2F1527F2D6F600AFDC4D /* Main.storyboard */,
-				AE5A2FD227F2F40600AFDC4D /* takion.pb.c */,
-				AE5A2F8127F2ED1200AFDC4D /* src */,
 				AE5A2F1827F2D6F600AFDC4D /* chiakiapp.entitlements */,
 				AE5A2F7227F2E4D000AFDC4D /* chiakiapp-Bridging-Header.h */,
 				AE5A2F7327F2E4D100AFDC4D /* ChiakiBridge.m */,
@@ -209,13 +137,14 @@
 				AE5A2FCE27F2F16C00AFDC4D /* libprotobuf-c.a */,
 				AE5A2F7E27F2EB5B00AFDC4D /* libcrypto.a */,
 				AE5A2F7C27F2EB5500AFDC4D /* libssl.a */,
-				AE5A2F7827F2EAED00AFDC4D /* libjerasure.a */,
-				AE5A2F7A27F2EB2600AFDC4D /* libgf_complete.a */,
-				AE5A2FD027F2F37B00AFDC4D /* libprotobuf-nanopb.a */,
 				AE5A2FE827F416E500AFDC4D /* YuvRenderer.swift */,
 				AE5A2FEE27F4173600AFDC4D /* MetalHeaders.h */,
 				AE5A2FEF27F4177300AFDC4D /* shaders.metal */,
 				AE5A2FF127F45CAA00AFDC4D /* KeyCodes.swift */,
+				AE76B1012800E00700BA3B36 /* libchiaki.a */,
+				AE76B1042800E0CA00BA3B36 /* libgf_complete.a */,
+				AE76B1032800E0CA00BA3B36 /* libjerasure.a */,
+				AE76B1072800E0F600BA3B36 /* libprotobuf-nanopb.a */,
 			);
 			path = chiakiapp;
 			sourceTree = "<group>";
@@ -228,52 +157,6 @@
 				AE5A2F7627F2EA8F00AFDC4D /* libssl.a */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		AE5A2F8127F2ED1200AFDC4D /* src */ = {
-			isa = PBXGroup;
-			children = (
-				AE5A2FD427F2FA7500AFDC4D /* ffmpegdecoder.c */,
-				AE5A2F8227F2ED1200AFDC4D /* log.c */,
-				AE5A2F8327F2ED1200AFDC4D /* thread.c */,
-				AE5A2F8427F2ED1200AFDC4D /* common.c */,
-				AE5A2F8527F2ED1200AFDC4D /* utils.h */,
-				AE5A2F8627F2ED1200AFDC4D /* discoveryservice.c */,
-				AE5A2F8727F2ED1200AFDC4D /* frameprocessor.c */,
-				AE5A2F8827F2ED1200AFDC4D /* session.c */,
-				AE5A2F8927F2ED1200AFDC4D /* controller.c */,
-				AE5A2F8A27F2ED1200AFDC4D /* reorderqueue.c */,
-				AE5A2F8C27F2ED1200AFDC4D /* takion.c */,
-				AE5A2F8D27F2ED1200AFDC4D /* packetstats.c */,
-				AE5A2F8E27F2ED1200AFDC4D /* ecdh.c */,
-				AE5A2F8F27F2ED1200AFDC4D /* pb_utils.h */,
-				AE5A2F9027F2ED1200AFDC4D /* ctrl.c */,
-				AE5A2F9127F2ED1200AFDC4D /* congestioncontrol.c */,
-				AE5A2F9227F2ED1200AFDC4D /* videoreceiver.c */,
-				AE5A2F9327F2ED1200AFDC4D /* feedbacksender.c */,
-				AE5A2F9427F2ED1200AFDC4D /* feedback.c */,
-				AE5A2F9527F2ED1200AFDC4D /* random.c */,
-				AE5A2F9627F2ED1200AFDC4D /* rpcrypt.c */,
-				AE5A2F9727F2ED1200AFDC4D /* discovery.c */,
-				AE5A2F9927F2ED1200AFDC4D /* senkusha.c */,
-				AE5A2F9A27F2ED1200AFDC4D /* fec.c */,
-				AE5A2F9B27F2ED1200AFDC4D /* stoppipe.c */,
-				AE5A2F9C27F2ED1200AFDC4D /* time.c */,
-				AE5A2F9D27F2ED1200AFDC4D /* sock.c */,
-				AE5A2F9E27F2ED1200AFDC4D /* takionsendbuffer.c */,
-				AE5A2F9F27F2ED1200AFDC4D /* base64.c */,
-				AE5A2FA027F2ED1200AFDC4D /* launchspec.c */,
-				AE5A2FA227F2ED1200AFDC4D /* http.c */,
-				AE5A2FA327F2ED1200AFDC4D /* orientation.c */,
-				AE5A2FA427F2ED1200AFDC4D /* gkcrypt.c */,
-				AE5A2FA527F2ED1200AFDC4D /* audioreceiver.c */,
-				AE5A2FA627F2ED1200AFDC4D /* streamconnection.c */,
-				AE5A2FA727F2ED1200AFDC4D /* regist.c */,
-				AE5A2FA827F2ED1200AFDC4D /* audio.c */,
-				AE5A301127F55A7600AFDC4D /* opusdecoder.c */,
-			);
-			name = src;
-			path = ../../chiaki/lib/src;
 			sourceTree = "<group>";
 		};
 		AE5A2FDC27F2FDA900AFDC4D /* libs */ = {
@@ -365,54 +248,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AE5A2FAB27F2ED1200AFDC4D /* common.c in Sources */,
-				AE5A2FB327F2ED1200AFDC4D /* packetstats.c in Sources */,
-				AE5A2FBB27F2ED1200AFDC4D /* rpcrypt.c in Sources */,
-				AE5A2FC527F2ED1200AFDC4D /* launchspec.c in Sources */,
-				AE5A2FAE27F2ED1200AFDC4D /* session.c in Sources */,
 				AE624CA227F5C58300990FE5 /* AudioQueuePlayer.swift in Sources */,
-				AE5A2FB027F2ED1200AFDC4D /* reorderqueue.c in Sources */,
-				AE5A2FA927F2ED1200AFDC4D /* log.c in Sources */,
-				AE5A2FB427F2ED1200AFDC4D /* ecdh.c in Sources */,
-				AE5A2FB227F2ED1200AFDC4D /* takion.c in Sources */,
-				AE5A2FBF27F2ED1200AFDC4D /* fec.c in Sources */,
 				AE5A2FF027F4177300AFDC4D /* shaders.metal in Sources */,
-				AE5A2FC327F2ED1200AFDC4D /* takionsendbuffer.c in Sources */,
-				AE5A2FAC27F2ED1200AFDC4D /* discoveryservice.c in Sources */,
-				AE5A2FB927F2ED1200AFDC4D /* feedback.c in Sources */,
 				AE5A2FE927F416E500AFDC4D /* YuvRenderer.swift in Sources */,
 				AE5A301027F534F300AFDC4D /* InputManager.swift in Sources */,
-				AE5A2FCC27F2ED1200AFDC4D /* regist.c in Sources */,
-				AE5A2FBC27F2ED1200AFDC4D /* discovery.c in Sources */,
 				AE5A2F1227F2D6F500AFDC4D /* ViewController.swift in Sources */,
-				AE5A301227F55A7600AFDC4D /* opusdecoder.c in Sources */,
 				AE5A301627F55D8D00AFDC4D /* AudioPlayer.swift in Sources */,
-				AE5A2FCA27F2ED1200AFDC4D /* audioreceiver.c in Sources */,
-				AE5A2FCD27F2ED1200AFDC4D /* audio.c in Sources */,
 				AE5A2FF227F45CAA00AFDC4D /* KeyCodes.swift in Sources */,
-				AE5A2FC127F2ED1200AFDC4D /* time.c in Sources */,
-				AE5A2FCB27F2ED1200AFDC4D /* streamconnection.c in Sources */,
-				AE5A2FBA27F2ED1200AFDC4D /* random.c in Sources */,
-				AE5A2FC727F2ED1200AFDC4D /* http.c in Sources */,
-				AE5A2FC827F2ED1200AFDC4D /* orientation.c in Sources */,
-				AE5A2FBE27F2ED1200AFDC4D /* senkusha.c in Sources */,
-				AE5A2FAD27F2ED1200AFDC4D /* frameprocessor.c in Sources */,
-				AE5A2FB827F2ED1200AFDC4D /* feedbacksender.c in Sources */,
 				AE5A2FE527F307D400AFDC4D /* ConsoleListView.swift in Sources */,
-				AE5A2FD327F2F40600AFDC4D /* takion.pb.c in Sources */,
-				AE5A2FAA27F2ED1200AFDC4D /* thread.c in Sources */,
-				AE5A2FC427F2ED1200AFDC4D /* base64.c in Sources */,
-				AE5A2FB527F2ED1200AFDC4D /* ctrl.c in Sources */,
-				AE5A2FAF27F2ED1200AFDC4D /* controller.c in Sources */,
 				AE5A2F1027F2D6F500AFDC4D /* AppDelegate.swift in Sources */,
-				AE5A2FC927F2ED1200AFDC4D /* gkcrypt.c in Sources */,
-				AE5A2FC027F2ED1200AFDC4D /* stoppipe.c in Sources */,
+				AE76B10A2800F19900BA3B36 /* StreamWindow.swift in Sources */,
 				AE5A2F7427F2E4D100AFDC4D /* ChiakiBridge.m in Sources */,
-				AE5A2FD527F2FA7500AFDC4D /* ffmpegdecoder.c in Sources */,
 				AE5A2FE727F3E88E00AFDC4D /* AppModel.swift in Sources */,
-				AE5A2FB727F2ED1200AFDC4D /* videoreceiver.c in Sources */,
-				AE5A2FC227F2ED1200AFDC4D /* sock.c in Sources */,
-				AE5A2FB627F2ED1200AFDC4D /* congestioncontrol.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -577,13 +424,14 @@
 					"@executable_path/../Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = (
-					/Users/tjtan/work/chiaki/lib,
-					"/Users/tjtan/work/chiaki/third-party",
 					"/opt/homebrew/Cellar/openssl@3/3.0.2/lib",
 					"/opt/homebrew/Cellar/protobuf-c/1.4.0_1/lib",
 					"/Users/tjtan/work/chiaki/third-party/nanopb",
 					/opt/homebrew/Cellar/ffmpeg/5.0/lib,
 					/opt/homebrew/lib,
+					/Users/tjtan/work/chiaki/build/lib,
+					"/Users/tjtan/work/chiaki/build/third-party",
+					"/Users/tjtan/work/chiaki/build/third-party/nanopb",
 				);
 				MARKETING_VERSION = 1.0;
 				ONLY_ACTIVE_ARCH = YES;
@@ -628,13 +476,14 @@
 					"@executable_path/../Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = (
-					/Users/tjtan/work/chiaki/lib,
-					"/Users/tjtan/work/chiaki/third-party",
 					"/opt/homebrew/Cellar/openssl@3/3.0.2/lib",
 					"/opt/homebrew/Cellar/protobuf-c/1.4.0_1/lib",
 					"/Users/tjtan/work/chiaki/third-party/nanopb",
 					/opt/homebrew/Cellar/ffmpeg/5.0/lib,
 					/opt/homebrew/lib,
+					/Users/tjtan/work/chiaki/build/lib,
+					"/Users/tjtan/work/chiaki/build/third-party",
+					"/Users/tjtan/work/chiaki/build/third-party/nanopb",
 				);
 				MARKETING_VERSION = 1.0;
 				ONLY_ACTIVE_ARCH = YES;

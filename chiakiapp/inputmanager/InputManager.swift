@@ -58,15 +58,35 @@ class FloatToStickStep: FloatStep {
     
     let stick: ControllerStick
     
+    func norm(_ a: UInt8) -> CGFloat {
+        return CGFloat(a) / CGFloat(UInt8.max)
+    }
+
+    func norm(_ a: Int16) -> CGFloat {
+        return CGFloat(a) / CGFloat(Int16.max)
+    }
+
+    func clamp(_ a: CGFloat, lower: CGFloat, upper: CGFloat) -> CGFloat {
+        return min(max(a, lower), upper)
+    }
+    
+    func unnormUInt8(_ a: CGFloat) -> UInt8 {
+        return UInt8(clamp(a, lower: 0, upper: 1.0) * CGFloat(UInt8.max))
+    }
+
+    func unnormInt16(_ a: CGFloat) -> Int16 {
+        return Int16(clamp(a, lower: -1.0, upper: 1.0) * CGFloat(Int16.max))
+    }
+
     func run(value: CGFloat, input: InputState) -> Void {
         
         switch (stick) {
-        case .R2: input.controllerState.r2_state = UInt8(CGFloat(UInt8.max) * value)
-        case .L2: input.controllerState.l2_state = UInt8(CGFloat(UInt8.max) * value)
-        case .leftX: input.controllerState.left_x = Int16(CGFloat(Int16.max) * value)
-        case .leftY: input.controllerState.left_y = Int16(CGFloat(Int16.max) * value)
-        case .rightX: input.controllerState.right_x = Int16(CGFloat(Int16.max) * value)
-        case .rightY: input.controllerState.right_y = Int16(CGFloat(Int16.max) * value)
+        case .R2: input.controllerState.r2_state = unnormUInt8(norm(input.controllerState.r2_state) + value)
+        case .L2: input.controllerState.l2_state = unnormUInt8(norm(input.controllerState.l2_state) + value)
+        case .leftX: input.controllerState.left_x = unnormInt16(norm(input.controllerState.left_x) + value)
+        case .leftY: input.controllerState.left_y = unnormInt16(norm(input.controllerState.left_y) + value)
+        case .rightX: input.controllerState.right_x = unnormInt16(norm(input.controllerState.right_x) + value)
+        case .rightY: input.controllerState.right_y = unnormInt16(norm(input.controllerState.right_y) + value)
         }
     }
 }
@@ -80,8 +100,7 @@ class KeyboardInputCheck: BinaryInputCheck {
         self.key = key
     }
     
-    let key: UInt16
-    
+    let key: UInt16    
     
     func IsToggled(input: InputState) -> Bool {
         return input.keyboard.isKeyDown(key: key)
@@ -195,13 +214,13 @@ class KeyboardManager {
     func onKeyDown(evt: NSEvent) -> NSEvent? {
         keyDowns.insert(evt.keyCode)
         
-        return nil
+        return evt
     }
     
     func onKeyUp(evt: NSEvent) -> NSEvent? {
         keyDowns.remove(evt.keyCode)
         
-        return nil
+        return evt
     }
 
 }

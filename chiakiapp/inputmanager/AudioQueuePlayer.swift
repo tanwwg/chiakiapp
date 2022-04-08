@@ -16,8 +16,20 @@ class AudioQueuePlayer {
     
     var bufferList: [AudioQueueBufferRef] = []
     
-    func startup(sampleRate: Double) {
-        // kLinearPCMFormatFlagIsSignedInteger
+    var preallocateSize = 100
+    
+    var isStarted = false
+    var jitterBuffer = 2
+    var enqueued = 0
+    
+    func checkStatus(_ status: OSStatus, msg: String) {
+        if status != 0 {
+            print("\(msg) err=\(status)")
+        }
+    }
+    
+    func startup(channels: Int, sampleRate: Double) {
+        print("startup channels:\(channels) rate:\(sampleRate)")
         
         var desc = AudioStreamBasicDescription(
             mSampleRate: sampleRate,
@@ -26,74 +38,86 @@ class AudioQueuePlayer {
             mBytesPerPacket: 4,
             mFramesPerPacket: 1,
             mBytesPerFrame: 4,
-            mChannelsPerFrame: 2,
+            mChannelsPerFrame: UInt32(channels),
             mBitsPerChannel: 16,
             mReserved: 0)
         
         let status = AudioQueueNewOutputWithDispatchQueue(&aqRef, &desc, 0, dispatchQueue) { (q, buf) in
             self.queueCallback(buffer: buf)
         }
-        if status != 0 {
-            print("audio queue init err=\(status)")
-        }
+        checkStatus(status, msg: "AudioQueueNewOutputWithDispatchQueue")
         
         self.sampleRate = sampleRate
         
-        if let aq = aqRef {
-            for _ in 1...3 {
-                if let buf = createBuffer() {
-                    self.bufferList.append(buf)
-                }
+        for _ in 1...preallocateSize {
+            if let buf = createBuffer() {
+                self.bufferList.append(buf)
             }
-            
-            AudioQueueStart(aq, nil)
         }
     }
     
     func createBuffer() -> AudioQueueBufferRef? {
         guard let aq = self.aqRef else { return nil }
         
-        let bufSize: UInt32 = UInt32(2 * self.sampleRate * 2);
+        let bufSize: UInt32 = UInt32(4 * self.sampleRate / 10);
         var buf: AudioQueueBufferRef? = nil
-        AudioQueueAllocateBuffer(aq, bufSize, &buf)
+        checkStatus(AudioQueueAllocateBuffer(aq, bufSize, &buf), msg: "AudioQueueAllocateBuffer")
         return buf
     }
     
     func takeBuffer() -> AudioQueueBufferRef? {
         dispatchQueue.sync {
-            if let lastbuf = bufferList.last {
-                bufferList.removeLast()
-                return lastbuf
+            if !bufferList.isEmpty {
+                return bufferList.removeLast()
             }
+            print("audioqueue createbuffer")
             return createBuffer()
+        }
+    }
+    
+    func incEnq() -> Int {
+        dispatchQueue.sync {
+            enqueued += 1
+            return enqueued
         }
     }
     
     func play(data: Data) {
         guard let aq = self.aqRef else { return }
-        let buf = takeBuffer()
+        guard let b = takeBuffer() else { return }
         
-        if let b = buf {
-            var aqbuf = b.pointee
-            
-            let len = data.withUnsafeBytes { (src:UnsafeRawBufferPointer) in
-                src.copyBytes(to: UnsafeMutableRawBufferPointer(start: aqbuf.mAudioData, count: Int(aqbuf.mAudioDataBytesCapacity)))
-            }
-            aqbuf.mAudioDataByteSize = UInt32(len)
-//            aqbuf.mPacketDescriptionCount = 1
-            var desc = AudioStreamPacketDescription(mStartOffset: 0, mVariableFramesInPacket: 0, mDataByteSize: UInt32(len))
-            let status = AudioQueueEnqueueBuffer(aq, b, 0, nil)
-            if status != 0 {
-                print("AudioQueueEnqueueBuffer err=\(status)")
-            }
-
+        let capacity = Int(b.pointee.mAudioDataBytesCapacity)
+        if data.count > capacity { print("overflow buffer!") }
+        let sz = min(data.count, capacity)
+        
+        data.withUnsafeBytes { src in
+            guard let p = src.baseAddress else { return }
+            b.pointee.mAudioData.copyMemory(from: p, byteCount: sz)
         }
         
+        b.pointee.mAudioDataByteSize = UInt32(sz)
+        AudioQueueEnqueueBuffer(aq, b, 0, nil)
+        
+        let numenq = incEnq()
+        
+        if !isStarted && numenq >= jitterBuffer {
+            isStarted = true
+            checkStatus(AudioQueueStart(aq, nil), msg: "AudioQueueStart")
+        }
+
+        //checkStatus(status, msg: "AudioQueueEnqueueBuffer data=\(data.count) len=\(b.pointee.mAudioDataByteSize) capacity=\(b.pointee.mAudioDataBytesCapacity)")
     }
     
     func queueCallback(buffer: AudioQueueBufferRef) -> Void {
-        dispatchQueue.async {
+        dispatchQueue.async { [self] in
             self.bufferList.append(buffer)
+            enqueued -= 1
+            if enqueued == 0 {
+                isStarted = false
+                if let aq = aqRef {
+                    AudioQueueStop(aq, true)
+                }
+            }
         }
     }
 }
