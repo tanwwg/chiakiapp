@@ -36,6 +36,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ChiakiSessionBridge : NSObject
 
+@property (readonly) ChiakiPerfCounters perfCounters;
+
 @property (copy) void (^callback)(NSData *data);
 @property (copy) void (^videoCallback)(AVFrame *frame);
 @property (copy) void (^audioSettingsCallback)(uint32_t channels, uint32_t rate);

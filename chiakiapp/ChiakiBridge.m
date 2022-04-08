@@ -6,6 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <AudioToolbox/AudioToolbox.h>
 
 #import "chiaki/discoveryservice.h"
 #import "chiaki/regist.h"
@@ -173,6 +174,10 @@ static void FrameCb(ChiakiFfmpegDecoder *decoder, void *user) {
     }
     
     av_frame_free(&frame);
+}
+
+-(ChiakiPerfCounters)perfCounters {
+    return chiakiPerfCounters;
 }
 
 -(void)start {

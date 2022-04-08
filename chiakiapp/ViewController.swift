@@ -33,6 +33,7 @@ class ViewController: NSViewController {
     }
     
     var audioPlayer = AudioPlayer()
+//    var audioPlayer = AudioQueuePlayer()
     
     var uiView: NSView?
     var metalView: MTKView?
@@ -44,6 +45,12 @@ class ViewController: NSViewController {
     
     @objc func timerCb() {
         ui.session?.setControllerState(inputState.run())
+        
+//        if let sess = ui.session {
+//            let perf = sess.perfCounters
+//            let avg = Double(perf.avDecryptTime) / Double(perf.avPackets)
+//            print("\(sess.perfCounters.avPackets) \(avg) \(perf.avDecryptMaxTIme)")
+//        }
     }
     
     func toggleFullScreen() {
@@ -83,6 +90,8 @@ class ViewController: NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.audioPlayer.startup(sampleRate: 48000)
         
         self.inputState.steps = [
             ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.e), button: CHIAKI_CONTROLLER_BUTTON_CROSS),
@@ -158,7 +167,7 @@ class ViewController: NSViewController {
                     self.audioPlayer.startup(sampleRate: Double(sr))
                 }
                 sess.audioFrameCallback = { (buf, count) in
-                    self.audioPlayer.play16bit2ch(data: Data(bytesNoCopy: buf, count: count * 4, deallocator: .none))
+                    self.audioPlayer.play(data: Data(bytesNoCopy: buf, count: count * 4, deallocator: .none))
                 }
                 
                 sess.start()

@@ -67,7 +67,7 @@ class AudioPlayer: NSObject {
         }
     }
 
-    func play16bit2ch(data: Data) {
+    func play(data: Data) {
         // called outside main thread
         if data.count == 0 { return }
         if _format == nil { return }

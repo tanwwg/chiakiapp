@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AE315CBA27FA753A0029003B /* include in Resources */ = {isa = PBXBuildFile; fileRef = AE315CB927FA753A0029003B /* include */; };
 		AE5A2F1027F2D6F500AFDC4D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2F0F27F2D6F500AFDC4D /* AppDelegate.swift */; };
 		AE5A2F1227F2D6F500AFDC4D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2F1127F2D6F500AFDC4D /* ViewController.swift */; };
 		AE5A2F1427F2D6F600AFDC4D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE5A2F1327F2D6F600AFDC4D /* Assets.xcassets */; };
@@ -68,9 +69,11 @@
 		AE5A301227F55A7600AFDC4D /* opusdecoder.c in Sources */ = {isa = PBXBuildFile; fileRef = AE5A301127F55A7600AFDC4D /* opusdecoder.c */; };
 		AE5A301427F55C7D00AFDC4D /* libopus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5A301327F55C7D00AFDC4D /* libopus.a */; };
 		AE5A301627F55D8D00AFDC4D /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5A301527F55D8D00AFDC4D /* AudioPlayer.swift */; };
+		AE624CA227F5C58300990FE5 /* AudioQueuePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE624CA127F5C58300990FE5 /* AudioQueuePlayer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AE315CB927FA753A0029003B /* include */ = {isa = PBXFileReference; lastKnownFileType = folder; name = include; path = ../../chiaki/lib/include; sourceTree = "<group>"; };
 		AE5A2F0C27F2D6F500AFDC4D /* chiakiapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = chiakiapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE5A2F0F27F2D6F500AFDC4D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AE5A2F1127F2D6F500AFDC4D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -139,6 +142,7 @@
 		AE5A301127F55A7600AFDC4D /* opusdecoder.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = opusdecoder.c; sourceTree = "<group>"; };
 		AE5A301327F55C7D00AFDC4D /* libopus.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libopus.a; path = ../../../../../../opt/homebrew/lib/libopus.a; sourceTree = "<group>"; };
 		AE5A301527F55D8D00AFDC4D /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
+		AE624CA127F5C58300990FE5 /* AudioQueuePlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioQueuePlayer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -184,6 +188,7 @@
 		AE5A2F0E27F2D6F500AFDC4D /* chiakiapp */ = {
 			isa = PBXGroup;
 			children = (
+				AE315CB927FA753A0029003B /* include */,
 				AE5A300E27F534E800AFDC4D /* inputmanager */,
 				AE5A2FDC27F2FDA900AFDC4D /* libs */,
 				AE5A2F0F27F2D6F500AFDC4D /* AppDelegate.swift */,
@@ -283,6 +288,7 @@
 			isa = PBXGroup;
 			children = (
 				AE5A300F27F534F300AFDC4D /* InputManager.swift */,
+				AE624CA127F5C58300990FE5 /* AudioQueuePlayer.swift */,
 			);
 			path = inputmanager;
 			sourceTree = "<group>";
@@ -346,6 +352,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE315CBA27FA753A0029003B /* include in Resources */,
 				AE5A2F1427F2D6F600AFDC4D /* Assets.xcassets in Resources */,
 				AE5A2F1727F2D6F600AFDC4D /* Main.storyboard in Resources */,
 			);
@@ -363,6 +370,7 @@
 				AE5A2FBB27F2ED1200AFDC4D /* rpcrypt.c in Sources */,
 				AE5A2FC527F2ED1200AFDC4D /* launchspec.c in Sources */,
 				AE5A2FAE27F2ED1200AFDC4D /* session.c in Sources */,
+				AE624CA227F5C58300990FE5 /* AudioQueuePlayer.swift in Sources */,
 				AE5A2FB027F2ED1200AFDC4D /* reorderqueue.c in Sources */,
 				AE5A2FA927F2ED1200AFDC4D /* log.c in Sources */,
 				AE5A2FB427F2ED1200AFDC4D /* ecdh.c in Sources */,
