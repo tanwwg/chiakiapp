@@ -57,9 +57,8 @@ static void LogCb(ChiakiLogLevel level, const char *msg, void *user) {
     
 }
 
--(void)wakeup:(NSString*)host key:(NSData*)key {
-    uint64_t credkey = *(uint64_t*)(key.bytes);
-    ChiakiErrorCode err = chiaki_discovery_wakeup(&chiakiLog, &discoveryService.discovery, host.UTF8String, credkey, true);
+-(void)wakeup:(NSString*)host key:(uint64_t)key {
+    ChiakiErrorCode err = chiaki_discovery_wakeup(&chiakiLog, &discoveryService.discovery, host.UTF8String, key, true);
     NSLog(@"chiaki_discovery_wakeup err=%d", err);
 }
 

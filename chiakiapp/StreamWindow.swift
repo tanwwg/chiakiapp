@@ -96,10 +96,6 @@ class StreamWindow: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("loaded")
-        
-//        self.audioPlayer.startup(sampleRate: 48000)
-
         self.inputState.steps = [
             ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.e), button: CHIAKI_CONTROLLER_BUTTON_CROSS),
             ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.q), button: CHIAKI_CONTROLLER_BUTTON_MOON),
@@ -161,6 +157,11 @@ class StreamWindow: NSViewController {
 
         NSEvent.addLocalMonitorForEvents(matching: .keyDown) { evt in
             let nsevt: NSEvent = evt
+            
+            if nsevt.modifierFlags.contains(.command) {
+                return evt
+            }
+            
             if self.watchKeys.contains(nsevt.keyCode) {
                 _ = self.inputState.keyboard.onKeyDown(evt: evt)
                 return nil

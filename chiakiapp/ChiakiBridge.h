@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ChiakiDiscoverBridge : NSObject
 
 -(void)discover;
--(void)wakeup:(NSString*)host key:(NSData*)key;
+-(void)wakeup:(NSString*)host key:(uint64_t)key;
 
 @property (copy) void (^callback)(size_t hosts_count, ChiakiDiscoveryHost* hosts);
 

@@ -74,9 +74,12 @@ class ChiakiDiscover: ObservableObject {
     }
     
     func wake(host: DiscoverHost) {
-        if let reg = host.registration {
-            discover.wakeup(host.addr, key: reg.rpRegistKey)
-        }
+        guard let reg = host.registration else { return }
+        let arr = [UInt8](reg.rpRegistKey)
+        guard let ix = arr.firstIndex(of: 0) else { return }
+        let sub = arr[0...ix-1]
+        guard let str = String(bytes: sub, encoding: .utf8), let num = UInt64(str, radix: 16) else { return }
+        discover.wakeup(host.addr, key: num)
     }
     
     init() {
