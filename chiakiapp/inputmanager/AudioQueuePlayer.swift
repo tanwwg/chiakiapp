@@ -19,7 +19,7 @@ class AudioQueuePlayer {
     var preallocateSize = 100
     
     var isStarted = false
-    var jitterBuffer = 2
+    let jitterBuffer = 2
     var enqueued = 0
     
     func checkStatus(_ status: OSStatus, msg: String) {

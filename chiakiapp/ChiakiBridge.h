@@ -37,6 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ChiakiSessionBridge : NSObject
 
 @property (copy) void (^callback)(NSData *data);
+@property (copy) void (^rawVideoCallback)(uint8_t *buf, size_t buf_size);
 @property (copy) void (^videoCallback)(AVFrame *frame);
 @property (copy) void (^audioSettingsCallback)(uint32_t channels, uint32_t rate);
 @property (copy) void (^audioFrameCallback)(int16_t *buf, size_t samples_count);

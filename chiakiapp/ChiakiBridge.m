@@ -129,13 +129,24 @@ static void RegisterCb(ChiakiRegistEvent *event, void *user) {
     ChiakiOpusDecoder opusDecoder;
 }
 
+//static int packetCount = 1;
+
 static bool VideoCb(uint8_t *buf, size_t buf_size, void *user) {
 //    NSData *data = [[NSData alloc] initWithBytesNoCopy:buf length:buf_size];
 //    NSLog(@"VideoCb %ld", buf_size);
     
+//    NSData *data = [[NSData alloc] initWithBytesNoCopy:buf length:buf_size freeWhenDone:NO];
+//    NSString *filename = [NSString stringWithFormat:@"/Users/tjtan/Downloads/vid/raw_%d", packetCount++];
+//    [data writeToFile:filename atomically:true];
+    
     ChiakiSessionBridge *bridge = (__bridge ChiakiSessionBridge *)(user);
     
-    chiaki_ffmpeg_decoder_video_sample_cb(buf, buf_size, &bridge->decoder);
+    if (bridge.rawVideoCallback != NULL) {
+        bridge.rawVideoCallback(buf, buf_size);
+    } else {
+        chiaki_ffmpeg_decoder_video_sample_cb(buf, buf_size, &bridge->decoder);
+    }
+    
     
 //    bridge.callback(data);
     
