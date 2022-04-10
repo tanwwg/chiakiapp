@@ -13,7 +13,7 @@ import MetalKit
 import GameController
 import AVFoundation
 
-class FastStreamWindow: NSViewController {
+class FastStreamWindow: NSViewController, NSMenuItemValidation {
     
     required init?(coder:   NSCoder) {
         super.init(coder: coder)
@@ -23,6 +23,14 @@ class FastStreamWindow: NSViewController {
         if status != 0 {
             print("\(msg) err=\(status)")
             return false
+        }
+        return true
+    }
+    
+    func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
+        if menuItem.identifier == NSUserInterfaceItemIdentifier(rawValue: "showCursor") {
+            menuItem.title = isCursorHidden ? "Show Cursor" : "Hide Cursor"
+            return true
         }
         return true
     }
@@ -127,13 +135,17 @@ class FastStreamWindow: NSViewController {
         CGAssociateMouseAndMouseCursorPosition(1)
         isCursorHidden = false
     }
-    func toggleCursor() {
+    func hideCursor() {
+        NSCursor.hide()
+        CGAssociateMouseAndMouseCursorPosition(0)
+        isCursorHidden = true
+    }
+    
+    @IBAction func toggleShowCursor(_ sender: Any?) {
         if isCursorHidden {
             showCursor()
         } else {
-            NSCursor.hide()
-            CGAssociateMouseAndMouseCursorPosition(0)
-            isCursorHidden = true
+            hideCursor()
         }
     }
     
@@ -158,6 +170,10 @@ class FastStreamWindow: NSViewController {
     
     override func viewWillDisappear() {
         stopSession()
+        self.showCursor()
+        
+        NotificationCenter.default.removeObserver(self, name: NSWindow.didEnterFullScreenNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSWindow.didExitFullScreenNotification, object: nil)
     }
     
     var watchKeys = Set<UInt16>()
@@ -166,6 +182,14 @@ class FastStreamWindow: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        NotificationCenter.default.addObserver(forName: NSWindow.didEnterFullScreenNotification, object: nil, queue: nil) { [weak self] _ in
+            self?.hideCursor()
+        }
+
+        NotificationCenter.default.addObserver(forName: NSWindow.didExitFullScreenNotification, object: nil, queue: nil) { [weak self] _ in
+            self?.showCursor()
+        }
+
         self.inputState.steps = [
             ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.e), button: CHIAKI_CONTROLLER_BUTTON_CROSS),
             ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.q), button: CHIAKI_CONTROLLER_BUTTON_MOON),
@@ -265,7 +289,7 @@ class FastStreamWindow: NSViewController {
         RunLoop.current.add(tim, forMode: .common)
         self.timer = tim
         
-        self.toggleCursor()
+//        self.toggleShowCursor(self)
         
         self.view.wantsLayer = true
         

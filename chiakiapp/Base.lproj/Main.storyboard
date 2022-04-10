@@ -603,7 +603,11 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="View" id="HyV-fh-RgO">
                                     <items>
-                                        <menuItem title="Show Cursor" keyEquivalent="C" id="snW-S8-Cw5"/>
+                                        <menuItem title="Show Cursor" keyEquivalent="U" identifier="showCursor" id="snW-S8-Cw5">
+                                            <connections>
+                                                <action selector="toggleShowCursor:" target="Ady-hI-5gd" id="17X-Q4-cEK"/>
+                                            </connections>
+                                        </menuItem>
                                         <menuItem isSeparatorItem="YES" id="j3g-om-cAh"/>
                                         <menuItem title="Show Toolbar" keyEquivalent="t" id="it5-VC-igO">
                                             <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
@@ -735,7 +739,7 @@
                             <autoresizingMask key="autoresizingMask"/>
                         </view>
                         <connections>
-                            <outlet property="delegate" destination="K4D-iY-q4W" id="ewH-nB-Wan"/>
+                            <outlet property="delegate" destination="K4D-iY-q4W" id="b6s-A5-hbi"/>
                         </connections>
                     </window>
                     <connections>
