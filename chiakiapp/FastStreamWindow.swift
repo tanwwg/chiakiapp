@@ -13,28 +13,95 @@ import MetalKit
 import GameController
 import AVFoundation
 
-class StreamWindow: NSViewController {
+class FastStreamWindow: NSViewController {
     
     required init?(coder:   NSCoder) {
         super.init(coder: coder)
     }
     
-    func frameCb(_ frame: UnsafeMutablePointer<AVFrame>) {
+    func check(_ status: OSStatus, msg: String) -> Bool {
+        if status != 0 {
+            print("\(msg) err=\(status)")
+            return false
+        }
+        return true
+    }
+    
+    func findNalStart(_ p: UnsafeRawBufferPointer, start: Int) -> Int? {
+        for i in start...p.count-4 {
+            if p[i] == 0 && p[i+1] == 0 && p[i+2] == 0 && p[i+3] == 1 {
+                return i
+            }
+        }
+        return nil
+    }
+    
+    func isFormatFrame(_ p: UnsafeRawBufferPointer) -> Bool {
+        guard p.count > 5 else { return false }
+        return p[0] == 0 && p[1] == 0 && p[2] == 0 && p[3] == 1 && p[4] == 103
+    }
+    
+    var videoFormatDesc: CMVideoFormatDescription?
+    
+    func createFormatDesc(_ frame: UnsafeRawBufferPointer) {
+        guard let start = findNalStart(frame, start: 0) else { return }
+        guard start == 0 else { return }
+        guard let next = findNalStart(frame, start: start+4) else { return }
         
-        let data = [
-            Data(bytesNoCopy: frame.pointee.data.0!, count: 1920*1080, deallocator: .none),
-            Data(bytesNoCopy: frame.pointee.data.1!, count: 1920*1080/4, deallocator: .none),
-            Data(bytesNoCopy: frame.pointee.data.2!, count: 1920*1080/4, deallocator: .none)]
-            
-        self.renderer?.loadYuv420Texture(data: data, width: 1920, height: 1080)
+        let bytes = frame.bindMemory(to: UInt8.self).baseAddress!
+        
+        var ptrs: [UnsafePointer<UInt8>] = []
+        ptrs.append(bytes + 4)
+        ptrs.append(bytes + next + 4)
+
+        var sizes: [Int] = []
+        sizes.append(next-start)
+        sizes.append(frame.count-next)
+
+        guard check(CMVideoFormatDescriptionCreateFromH264ParameterSets(allocator: nil, parameterSetCount: 2, parameterSetPointers: &ptrs, parameterSetSizes: &sizes, nalUnitHeaderLength: 4, formatDescriptionOut: &videoFormatDesc), msg: "CMVideoFormatDescriptionCreateFromH264ParameterSets") else { return }
     }
     
     
+    func frameCb(_ frame: UnsafeMutablePointer<UInt8>, size: Int) {
+        let srcp = UnsafeRawBufferPointer(start: frame, count: size)
+        if isFormatFrame(srcp) {
+            createFormatDesc(srcp)
+            return
+        }
+        
+        guard let formatDesc = self.videoFormatDesc else { return }
+        
+        let ptr = UnsafeMutableRawBufferPointer.allocate(byteCount: size, alignment: MemoryLayout<Data>.alignment)
+        ptr.copyBytes(from: UnsafeRawBufferPointer(start: frame, count: size))
+        
+        guard let pp = ptr.baseAddress else { return }
+        
+        ChiakiSessionBridge.nalReplace(pp, length: Int32(size))
+
+        var blockBuffer: CMBlockBuffer? = nil
+       
+        guard check(CMBlockBufferCreateWithMemoryBlock(allocator: kCFAllocatorDefault, memoryBlock: ptr.baseAddress, blockLength: size, blockAllocator: nil, customBlockSource:nil, offsetToData: 0, dataLength: size, flags: 0, blockBufferOut: &blockBuffer), msg: "CMBlockBufferCreateWithMemoryBlock") else {
+            ptr.deallocate()
+            return
+        }
+        
+        var sampleBuffer: CMSampleBuffer? = nil
+        var sampleSize = size
+        guard check(CMSampleBufferCreate(allocator: kCFAllocatorDefault, dataBuffer: blockBuffer, dataReady: true, makeDataReadyCallback: nil, refcon: nil, formatDescription: formatDesc, sampleCount: 1, sampleTimingEntryCount: 0, sampleTimingArray: nil, sampleSizeEntryCount: 1, sampleSizeArray: &sampleSize, sampleBufferOut: &sampleBuffer), msg: "CMSampleBufferCreate") else {
+            return
+        }
+        
+        if let buf = sampleBuffer {
+            ChiakiSessionBridge.setDisplayImmediately(buf)
+            self.display?.enqueue(buf)
+        }
+
+    }
+    
+    var display: AVSampleBufferDisplayLayer?
     @IBOutlet var statusText: NSTextField!
-    @IBOutlet var metalView: MTKView!
     
     var audioPlayer = AudioQueuePlayer()
-    var renderer: YuvRenderer?
     
     var inputState = InputState()
     
@@ -45,9 +112,9 @@ class StreamWindow: NSViewController {
     @objc func timerCb() {
         session?.setControllerState(inputState.run())
         
-        if !self.statusText.isHidden {
-            self.statusText.stringValue = "Audio enq:\(audioPlayer.enqueued) started:\(audioPlayer.isStarted)"
-        }
+//        if !self.statusText.isHidden {
+//            self.statusText.stringValue = "Audio enq:\(audioPlayer.enqueued) started:\(audioPlayer.isStarted)"
+//        }
     }
 
     func toggleFullScreen() {
@@ -55,11 +122,14 @@ class StreamWindow: NSViewController {
     }
     
     var isCursorHidden = false
+    func showCursor() {
+        NSCursor.unhide()
+        CGAssociateMouseAndMouseCursorPosition(1)
+        isCursorHidden = false
+    }
     func toggleCursor() {
         if isCursorHidden {
-            NSCursor.unhide()
-            CGAssociateMouseAndMouseCursorPosition(1)
-            isCursorHidden = false
+            showCursor()
         } else {
             NSCursor.hide()
             CGAssociateMouseAndMouseCursorPosition(0)
@@ -70,7 +140,7 @@ class StreamWindow: NSViewController {
     func setup(session: ChiakiSessionBridge) {
         print("Session started")
         self.session = session
-        session.videoCallback = self.frameCb
+        session.rawVideoCallback = self.frameCb(_:size:)
         session.audioSettingsCallback = { (ch, sr) in
             self.audioPlayer.startup(channels: Int(ch), sampleRate: Double(sr))
         }
@@ -91,6 +161,7 @@ class StreamWindow: NSViewController {
     }
     
     var watchKeys = Set<UInt16>()
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -194,14 +265,19 @@ class StreamWindow: NSViewController {
         RunLoop.current.add(tim, forMode: .common)
         self.timer = tim
         
-        self.metalView.device = MTLCreateSystemDefaultDevice()
-        renderer = YuvRenderer(mtkView: self.metalView)
-        self.metalView.delegate = renderer
-
-        if !(self.view.window?.contentView?.isInFullScreenMode ?? false) {
-//            self.view.window?.toggleFullScreen(nil)
+        self.toggleCursor()
+        
+        self.view.wantsLayer = true
+        
+        let disp = AVSampleBufferDisplayLayer()
+        disp.bounds = self.view.bounds
+        disp.autoresizingMask = [.layerWidthSizable, .layerHeightSizable]
+        disp.backgroundColor = CGColor.black
+        disp.position = CGPoint(x: self.view.bounds.midX, y: self.view.bounds.midY)
+        if let l = self.view.layer {
+            l.addSublayer(disp)
+            self.display = disp
         }
 
-//        self.toggleCursor()
     }
 }

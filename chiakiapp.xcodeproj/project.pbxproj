@@ -35,6 +35,7 @@
 		AE76B1062800E0CA00BA3B36 /* libgf_complete.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE76B1042800E0CA00BA3B36 /* libgf_complete.a */; };
 		AE76B1082800E0F600BA3B36 /* libprotobuf-nanopb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE76B1072800E0F600BA3B36 /* libprotobuf-nanopb.a */; };
 		AE76B10A2800F19900BA3B36 /* StreamWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE76B1092800F19900BA3B36 /* StreamWindow.swift */; };
+		AE76B12B2801BFF900BA3B36 /* FastStreamWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE76B12A2801BFF900BA3B36 /* FastStreamWindow.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -71,6 +72,7 @@
 		AE76B1042800E0CA00BA3B36 /* libgf_complete.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgf_complete.a; path = "../../chiaki/build/third-party/libgf_complete.a"; sourceTree = "<group>"; };
 		AE76B1072800E0F600BA3B36 /* libprotobuf-nanopb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libprotobuf-nanopb.a"; path = "../../chiaki/build/third-party/nanopb/libprotobuf-nanopb.a"; sourceTree = "<group>"; };
 		AE76B1092800F19900BA3B36 /* StreamWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamWindow.swift; sourceTree = "<group>"; };
+		AE76B12A2801BFF900BA3B36 /* FastStreamWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FastStreamWindow.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +147,7 @@
 				AE76B1042800E0CA00BA3B36 /* libgf_complete.a */,
 				AE76B1032800E0CA00BA3B36 /* libjerasure.a */,
 				AE76B1072800E0F600BA3B36 /* libprotobuf-nanopb.a */,
+				AE76B12A2801BFF900BA3B36 /* FastStreamWindow.swift */,
 			);
 			path = chiakiapp;
 			sourceTree = "<group>";
@@ -254,6 +257,7 @@
 				AE5A301027F534F300AFDC4D /* InputManager.swift in Sources */,
 				AE5A2F1227F2D6F500AFDC4D /* ViewController.swift in Sources */,
 				AE5A301627F55D8D00AFDC4D /* AudioPlayer.swift in Sources */,
+				AE76B12B2801BFF900BA3B36 /* FastStreamWindow.swift in Sources */,
 				AE5A2FF227F45CAA00AFDC4D /* KeyCodes.swift in Sources */,
 				AE5A2FE527F307D400AFDC4D /* ConsoleListView.swift in Sources */,
 				AE5A2F1027F2D6F500AFDC4D /* AppDelegate.swift in Sources */,

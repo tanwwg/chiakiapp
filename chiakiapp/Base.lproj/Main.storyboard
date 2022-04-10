@@ -603,10 +603,12 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="View" id="HyV-fh-RgO">
                                     <items>
-                                        <menuItem title="Show Toolbar" keyEquivalent="t" id="snW-S8-Cw5">
+                                        <menuItem title="Show Cursor" keyEquivalent="C" id="snW-S8-Cw5"/>
+                                        <menuItem isSeparatorItem="YES" id="j3g-om-cAh"/>
+                                        <menuItem title="Show Toolbar" keyEquivalent="t" id="it5-VC-igO">
                                             <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
                                             <connections>
-                                                <action selector="toggleToolbarShown:" target="Ady-hI-5gd" id="BXY-wc-z0C"/>
+                                                <action selector="toggleToolbarShown:" target="Ady-hI-5gd" id="MQ3-v5-GnN"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Customize Toolbar…" id="1UK-8n-QPP">
@@ -644,6 +646,11 @@
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="performZoom:" target="Ady-hI-5gd" id="DIl-cC-cCs"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Full Screen" keyEquivalent="F" id="0ic-bp-1Dz">
+                                            <connections>
+                                                <action selector="toggleFullScreen:" target="Ady-hI-5gd" id="EBC-fm-MII"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="eu3-7i-yIM"/>
@@ -713,6 +720,44 @@
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="56" y="699.5"/>
+        </scene>
+        <!--Window Controller-->
+        <scene sceneID="Fn8-mH-rNu">
+            <objects>
+                <windowController storyboardIdentifier="fastStream" id="K4D-iY-q4W" sceneMemberID="viewController">
+                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="Ir0-G4-j9h">
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+                        <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+                        <rect key="contentRect" x="255" y="323" width="480" height="270"/>
+                        <rect key="screenRect" x="0.0" y="0.0" width="1728" height="1079"/>
+                        <view key="contentView" id="wdR-Wn-HXz">
+                            <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </view>
+                        <connections>
+                            <outlet property="delegate" destination="K4D-iY-q4W" id="ewH-nB-Wan"/>
+                        </connections>
+                    </window>
+                    <connections>
+                        <segue destination="BqZ-Rf-jjN" kind="relationship" relationship="window.shadowedContentViewController" id="3B5-QW-hGL"/>
+                    </connections>
+                </windowController>
+                <customObject id="0Wn-W7-gHn" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1136" y="617"/>
+        </scene>
+        <!--Fast Stream Window-->
+        <scene sceneID="9aL-3b-DcC">
+            <objects>
+                <viewController id="BqZ-Rf-jjN" customClass="FastStreamWindow" customModule="chiakiapp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="chC-ao-nhZ">
+                        <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </view>
+                </viewController>
+                <customObject id="gNc-Di-GpP" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1125" y="1071"/>
         </scene>
         <!--Window Controller-->
         <scene sceneID="Iai-9r-OKB">

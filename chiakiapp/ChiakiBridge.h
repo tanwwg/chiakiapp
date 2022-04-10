@@ -9,6 +9,7 @@
 #define ChiakiBridge_h
 
 #import <Foundation/Foundation.h>
+#import <CoreMedia/CoreMedia.h>
 
 #import "chiaki/discoveryservice.h"
 #import "chiaki/regist.h"
@@ -49,6 +50,9 @@ NS_ASSUME_NONNULL_BEGIN
 -(void)start;
 -(void)stop;
 -(void)setControllerState:(ChiakiControllerState)state;
+
++(void)nalReplace:(void*)bytes length:(int)length;
++(void)setDisplayImmediately:(CMSampleBufferRef)buffer;
 
 @end
 

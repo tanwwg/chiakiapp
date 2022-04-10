@@ -15,6 +15,8 @@ class ViewController: NSViewController {
     
     let ui = AppUiModel()
     var sessionSub: AnyCancellable?
+    
+    
             
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,9 +28,10 @@ class ViewController: NSViewController {
         
         self.sessionSub = ui.$session.sink { bridge in
             if let sess = bridge {
+                
                 guard let sb = NSStoryboard.main,
-                      let wc = sb.instantiateController(withIdentifier: "metalWindow") as? NSWindowController,
-                      let vc = wc.contentViewController as? StreamWindow
+                      let wc = sb.instantiateController(withIdentifier: "fastStream") as? NSWindowController,
+                      let vc = wc.contentViewController as? FastStreamWindow
                     else { return }
                 wc.window?.title = sess.host
                 vc.setup(session: sess)

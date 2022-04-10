@@ -238,4 +238,33 @@ static void FrameCb(ChiakiFfmpegDecoder *decoder, void *user) {
 
 }
 
++(void)nalReplace:(void*)inbytes length:(int)length {
+    uint8_t *bytes = inbytes;
+    int lastNal = -1;
+    
+    for(int i = 0; i < length - 4; i++) {
+        
+        if (bytes[i] == 0 && bytes[i+1] == 0 && bytes[i+2] == 0 && bytes[i+3] == 1) {
+            
+            if (lastNal >= 0) {
+                uint32_t *p = (uint32_t *)&bytes[lastNal];
+                uint32_t len = i - lastNal - 4;
+                *p = OSSwapInt32( len );
+            }
+            lastNal = i;
+        }
+    }
+    if (lastNal >= 0) {
+        uint32_t *p = (uint32_t *)&bytes[lastNal];
+        uint32_t len = length - lastNal - 4;
+        *p = OSSwapInt32( len );
+    }
+}
+
++(void)setDisplayImmediately:(CMSampleBufferRef)buffer {
+    CFArrayRef attachments = CMSampleBufferGetSampleAttachmentsArray(buffer, YES);
+    CFMutableDictionaryRef dict = (CFMutableDictionaryRef)CFArrayGetValueAtIndex(attachments, 0);
+    CFDictionarySetValue(dict, kCMSampleAttachmentKey_DisplayImmediately, kCFBooleanTrue);
+}
+
 @end
