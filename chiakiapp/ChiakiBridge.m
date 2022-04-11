@@ -186,6 +186,13 @@ static void FrameCb(ChiakiFfmpegDecoder *decoder, void *user) {
     av_frame_free(&frame);
 }
 
+static void EventCb(ChiakiEvent *evt, void *user) {
+    ChiakiSessionBridge *bridge = (__bridge ChiakiSessionBridge *)(user);
+    if (evt->type == CHIAKI_EVENT_KEYBOARD_OPEN && bridge.onKeyboardOpen != NULL) {
+        bridge.onKeyboardOpen();
+    }
+}
+
 -(void)start {
     chiaki_log_init(&chiakiLog, 3, NoLogCb, NULL);
     
@@ -197,7 +204,7 @@ static void FrameCb(ChiakiFfmpegDecoder *decoder, void *user) {
     ChiakiConnectInfo info = {};
     info.ps5 = true;
     info.host = [self.host cStringUsingEncoding:NSUTF8StringEncoding];
-    info.enable_keyboard = false;
+    info.enable_keyboard = true;
     
     if (self.morning.length != 16) {
         NSLog(@"ERROR Morning is not 16 bytes");
@@ -223,6 +230,12 @@ static void FrameCb(ChiakiFfmpegDecoder *decoder, void *user) {
     chiaki_opus_decoder_get_sink(&opusDecoder, &audio_sink);
     chiaki_session_set_audio_sink(&session, &audio_sink);
 
+    chiaki_session_set_event_cb(&session, EventCb,(__bridge void*)self);
+}
+
+-(void)setKeyboardText:(NSString*)s {
+    chiaki_session_keyboard_set_text(&session, [s cStringUsingEncoding:NSUTF8StringEncoding]);
+    chiaki_session_keyboard_accept(&session);
 }
 
 -(void)setControllerState:(ChiakiControllerState)state {

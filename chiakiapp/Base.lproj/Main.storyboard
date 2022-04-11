@@ -608,6 +608,11 @@
                                                 <action selector="toggleShowCursor:" target="Ady-hI-5gd" id="17X-Q4-cEK"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem title="Show Keyboard" keyEquivalent="K" id="KOO-sk-mBT" userLabel="Show Keyboard">
+                                            <connections>
+                                                <action selector="toggleInputKeyboard:" target="Ady-hI-5gd" id="XeR-Tm-e3L"/>
+                                            </connections>
+                                        </menuItem>
                                         <menuItem isSeparatorItem="YES" id="j3g-om-cAh"/>
                                         <menuItem title="Show Toolbar" keyEquivalent="t" id="it5-VC-igO">
                                             <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
@@ -729,7 +734,7 @@
         <scene sceneID="Fn8-mH-rNu">
             <objects>
                 <windowController storyboardIdentifier="fastStream" id="K4D-iY-q4W" sceneMemberID="viewController">
-                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="Ir0-G4-j9h">
+                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="fastStreamWindow" animationBehavior="default" id="Ir0-G4-j9h">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="255" y="323" width="480" height="270"/>
@@ -755,13 +760,47 @@
             <objects>
                 <viewController id="BqZ-Rf-jjN" customClass="FastStreamWindow" customModule="chiakiapp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="chC-ao-nhZ">
-                        <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                        <rect key="frame" x="0.0" y="0.0" width="649" height="404"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <customView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9DA-0b-CwJ" userLabel="Keyboard View">
+                                <rect key="frame" x="25" y="162" width="600" height="80"/>
+                                <subviews>
+                                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bMF-Ix-1ym">
+                                        <rect key="frame" x="20" y="20" width="560" height="40"/>
+                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="N6C-vk-MjT">
+                                            <font key="font" usesAppearanceFont="YES"/>
+                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                        <connections>
+                                            <action selector="keyboardEnter:" target="BqZ-Rf-jjN" id="XXC-lF-IoU"/>
+                                        </connections>
+                                    </textField>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="bMF-Ix-1ym" firstAttribute="leading" secondItem="9DA-0b-CwJ" secondAttribute="leading" constant="20" symbolic="YES" id="2IY-lS-maY"/>
+                                    <constraint firstAttribute="width" constant="600" id="5NR-rh-ReG"/>
+                                    <constraint firstAttribute="height" constant="80" id="DYX-ow-hKY"/>
+                                    <constraint firstAttribute="bottom" secondItem="bMF-Ix-1ym" secondAttribute="bottom" constant="20" symbolic="YES" id="Jjs-TM-Je9"/>
+                                    <constraint firstItem="bMF-Ix-1ym" firstAttribute="top" secondItem="9DA-0b-CwJ" secondAttribute="top" constant="20" symbolic="YES" id="a1Q-4w-e4m"/>
+                                    <constraint firstAttribute="trailing" secondItem="bMF-Ix-1ym" secondAttribute="trailing" constant="20" symbolic="YES" id="wjz-G5-oZR"/>
+                                </constraints>
+                            </customView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="9DA-0b-CwJ" firstAttribute="centerX" secondItem="chC-ao-nhZ" secondAttribute="centerX" id="mJf-7l-4bo"/>
+                            <constraint firstItem="9DA-0b-CwJ" firstAttribute="centerY" secondItem="chC-ao-nhZ" secondAttribute="centerY" id="pZc-VU-4fe"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="keyboardInput" destination="bMF-Ix-1ym" id="1QC-oe-PxA"/>
+                        <outlet property="keyboardView" destination="9DA-0b-CwJ" id="dk0-ln-DCd"/>
+                    </connections>
                 </viewController>
                 <customObject id="gNc-Di-GpP" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1125" y="1071"/>
+            <point key="canvasLocation" x="-1107.5" y="1138"/>
         </scene>
         <!--Window Controller-->
         <scene sceneID="Iai-9r-OKB">

@@ -28,17 +28,25 @@ class ViewController: NSViewController {
         
         self.sessionSub = ui.$session.sink { bridge in
             if let sess = bridge {
-                
-                guard let sb = NSStoryboard.main,
-                      let wc = sb.instantiateController(withIdentifier: "fastStream") as? NSWindowController,
-                      let vc = wc.contentViewController as? FastStreamWindow
-                    else { return }
-                wc.window?.title = sess.host
-                vc.setup(session: sess)
-                wc.showWindow(self)
+                self.startSession(sess)
             }
         }
         
+    }
+    
+    func startSession(_ session: ChiakiSessionBridge) {
+        guard let sb = NSStoryboard.main,
+              let wc = sb.instantiateController(withIdentifier: "fastStream") as? NSWindowController,
+              let vc = wc.contentViewController as? FastStreamWindow
+            else { return }
+        wc.window?.title = session.host
+        vc.setup(session: session)
+        wc.showWindow(self)
+        
+        self.view.window?.setIsVisible(false)
+        vc.onDone = {
+            self.view.window?.setIsVisible(true)
+        }
     }
     
     

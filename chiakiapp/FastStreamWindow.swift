@@ -15,6 +15,8 @@ import AVFoundation
 
 class FastStreamWindow: NSViewController, NSMenuItemValidation {
     
+    var toDispose: [Any] = []
+    
     required init?(coder:   NSCoder) {
         super.init(coder: coder)
     }
@@ -29,7 +31,7 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
     
     func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
         if menuItem.identifier == NSUserInterfaceItemIdentifier(rawValue: "showCursor") {
-            menuItem.title = isCursorHidden ? "Show Cursor" : "Hide Cursor"
+            menuItem.title = cursorLogic.wantsShowCursor ? "Hide Cursor" : "Show Cursor"
             return true
         }
         return true
@@ -116,6 +118,7 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
     var timer: Timer?
     
     var session: ChiakiSessionBridge?
+    
 
     @objc func timerCb() {
         session?.setControllerState(inputState.run())
@@ -124,30 +127,43 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
 //            self.statusText.stringValue = "Audio enq:\(audioPlayer.enqueued) started:\(audioPlayer.isStarted)"
 //        }
     }
+    
+    @IBAction func toggleShowCursor(_ sender: Any?) {
+        cursorLogic.toggleShowCursor()
+    }
 
     func toggleFullScreen() {
         self.view.window?.toggleFullScreen(nil)
     }
     
-    var isCursorHidden = false
-    func showCursor() {
-        NSCursor.unhide()
-        CGAssociateMouseAndMouseCursorPosition(1)
-        isCursorHidden = false
-    }
-    func hideCursor() {
-        NSCursor.hide()
-        CGAssociateMouseAndMouseCursorPosition(0)
-        isCursorHidden = true
-    }
+    @IBOutlet var keyboardView: NSView!
+    @IBOutlet var keyboardInput: NSTextField!
     
-    @IBAction func toggleShowCursor(_ sender: Any?) {
-        if isCursorHidden {
-            showCursor()
-        } else {
-            hideCursor()
+    var isKeyboardInput = false
+    
+    func setKeyboardInput(_ inp: Bool) {
+        isKeyboardInput = inp
+        keyboardView.isHidden = !inp
+        if inp {
+            keyboardInput.becomeFirstResponder()
+            keyboardInput.stringValue = ""
         }
     }
+    
+    @IBAction func toggleInputKeyboard(_ sender: Any?) {
+        self.setKeyboardInput(!isKeyboardInput)
+    }
+    
+    @IBAction func keyboardEnter(_ sender: Any?) {
+        session?.setKeyboardText(keyboardInput.stringValue)
+        keyboardInput.stringValue = ""
+        keyboardView.isHidden = true
+        isKeyboardInput = false
+    }
+    
+    var cursorLogic = CursorLogic()
+    
+    var onDone: () -> Void = {}
     
     func setup(session: ChiakiSessionBridge) {
         print("Session started")
@@ -160,6 +176,7 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
             let data = Data(bytesNoCopy: buf, count: count * 4, deallocator: .none)
             self.audioPlayer.play(data: data)
         }
+        session.onKeyboardOpen = { self.setKeyboardInput(true) }
         
         session.start()
     }
@@ -170,25 +187,29 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
     
     override func viewWillDisappear() {
         stopSession()
-        self.showCursor()
         
-        NotificationCenter.default.removeObserver(self, name: NSWindow.didEnterFullScreenNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSWindow.didExitFullScreenNotification, object: nil)
+        cursorLogic.teardown()
+                
+        for o in toDispose {
+            NSEvent.removeMonitor(o)
+        }
+        toDispose = []
+        
+        self.onDone()
     }
     
     var watchKeys = Set<UInt16>()
 
+    func disposeOnClose(_ s: Any?) {
+        if let o = s {
+            toDispose.append(o)
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        NotificationCenter.default.addObserver(forName: NSWindow.didEnterFullScreenNotification, object: nil, queue: nil) { [weak self] _ in
-            self?.hideCursor()
-        }
 
-        NotificationCenter.default.addObserver(forName: NSWindow.didExitFullScreenNotification, object: nil, queue: nil) { [weak self] _ in
-            self?.showCursor()
-        }
+        cursorLogic.setup()
 
         self.inputState.steps = [
             ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.e), button: CHIAKI_CONTROLLER_BUTTON_CROSS),
@@ -235,34 +256,38 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
         ]
         
         
-        for step in self.inputState.steps {
-            if let bis = step as? ButtonInputStep {
-                if let kb = bis.check as? KeyboardInputCheck {
-                    watchKeys.insert(kb.key)
-                }
-            }
-            
-            if let ksi = step as? KeyToStickInputStep {
-                if let kb = ksi.minus as? KeyboardInputCheck { watchKeys.insert(kb.key) }
-                if let kb = ksi.plus as? KeyboardInputCheck { watchKeys.insert(kb.key) }
-            }
+//        for step in self.inputState.steps {
+//            if let bis = step as? ButtonInputStep {
+//                if let kb = bis.check as? KeyboardInputCheck {
+//                    watchKeys.insert(kb.key)
+//                }
+//            }
+//
+//            if let ksi = step as? KeyToStickInputStep {
+//                if let kb = ksi.minus as? KeyboardInputCheck { watchKeys.insert(kb.key) }
+//                if let kb = ksi.plus as? KeyboardInputCheck { watchKeys.insert(kb.key) }
+//            }
+//
+//        }
 
-        }
-
-        NSEvent.addLocalMonitorForEvents(matching: .keyDown) { evt in
+        disposeOnClose(NSEvent.addLocalMonitorForEvents(matching: .keyDown) { evt in
             let nsevt: NSEvent = evt
             
             if nsevt.modifierFlags.contains(.command) {
                 return evt
             }
             
-            if self.watchKeys.contains(nsevt.keyCode) {
+            if self.isKeyboardInput {
+                return evt
+            }
+            
+//            if self.watchKeys.contains(nsevt.keyCode) {
                 _ = self.inputState.keyboard.onKeyDown(evt: evt)
                 return nil
-            } else {
-                return nsevt
-            }
-//            if nsevt.keyCode == KeyCode.w && nsevt.modifierFlags.contains(.command) {
+//            } else {
+//                return nsevt
+//            }
+////            if nsevt.keyCode == KeyCode.w && nsevt.modifierFlags.contains(.command) {
 //                self.stopSession()
 //                self.view.window?.close()
 //            }
@@ -273,24 +298,21 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
 //                self.toggleCursor()
 //            }
 
-            
-        }
+        })
         
-        NSEvent.addLocalMonitorForEvents(matching: .keyUp) { evt in
+        disposeOnClose(NSEvent.addLocalMonitorForEvents(matching: .keyUp) { evt in
             return self.inputState.keyboard.onKeyUp(evt: evt)
-        }
+        })
         
-        NSEvent.addLocalMonitorForEvents(matching: .mouseMoved) { evt in
+        disposeOnClose(NSEvent.addLocalMonitorForEvents(matching: .mouseMoved) { evt in
             return self.inputState.mouse.onMouseMoved(evt: evt)
-        }
+        })
 
         
         let tim = Timer(timeInterval: 1.0 / 120, target: self, selector: #selector(timerCb), userInfo: nil, repeats: true)
         RunLoop.current.add(tim, forMode: .common)
         self.timer = tim
-        
-//        self.toggleShowCursor(self)
-        
+                
         self.view.wantsLayer = true
         
         let disp = AVSampleBufferDisplayLayer()

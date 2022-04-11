@@ -36,6 +36,7 @@
 		AE76B1082800E0F600BA3B36 /* libprotobuf-nanopb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE76B1072800E0F600BA3B36 /* libprotobuf-nanopb.a */; };
 		AE76B10A2800F19900BA3B36 /* StreamWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE76B1092800F19900BA3B36 /* StreamWindow.swift */; };
 		AE76B12B2801BFF900BA3B36 /* FastStreamWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE76B12A2801BFF900BA3B36 /* FastStreamWindow.swift */; };
+		AE76B12D2803BD9A00BA3B36 /* CursorLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE76B12C2803BD9A00BA3B36 /* CursorLogic.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -73,6 +74,7 @@
 		AE76B1072800E0F600BA3B36 /* libprotobuf-nanopb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libprotobuf-nanopb.a"; path = "../../chiaki/build/third-party/nanopb/libprotobuf-nanopb.a"; sourceTree = "<group>"; };
 		AE76B1092800F19900BA3B36 /* StreamWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamWindow.swift; sourceTree = "<group>"; };
 		AE76B12A2801BFF900BA3B36 /* FastStreamWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FastStreamWindow.swift; sourceTree = "<group>"; };
+		AE76B12C2803BD9A00BA3B36 /* CursorLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CursorLogic.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +127,7 @@
 				AE5A2F0F27F2D6F500AFDC4D /* AppDelegate.swift */,
 				AE5A301527F55D8D00AFDC4D /* AudioPlayer.swift */,
 				AE5A2F1127F2D6F500AFDC4D /* ViewController.swift */,
+				AE76B12A2801BFF900BA3B36 /* FastStreamWindow.swift */,
 				AE76B1092800F19900BA3B36 /* StreamWindow.swift */,
 				AE5A2FE627F3E88E00AFDC4D /* AppModel.swift */,
 				AE5A2FE427F307D400AFDC4D /* ConsoleListView.swift */,
@@ -147,7 +150,7 @@
 				AE76B1042800E0CA00BA3B36 /* libgf_complete.a */,
 				AE76B1032800E0CA00BA3B36 /* libjerasure.a */,
 				AE76B1072800E0F600BA3B36 /* libprotobuf-nanopb.a */,
-				AE76B12A2801BFF900BA3B36 /* FastStreamWindow.swift */,
+				AE76B12C2803BD9A00BA3B36 /* CursorLogic.swift */,
 			);
 			path = chiakiapp;
 			sourceTree = "<group>";
@@ -255,6 +258,7 @@
 				AE5A2FF027F4177300AFDC4D /* shaders.metal in Sources */,
 				AE5A2FE927F416E500AFDC4D /* YuvRenderer.swift in Sources */,
 				AE5A301027F534F300AFDC4D /* InputManager.swift in Sources */,
+				AE76B12D2803BD9A00BA3B36 /* CursorLogic.swift in Sources */,
 				AE5A2F1227F2D6F500AFDC4D /* ViewController.swift in Sources */,
 				AE5A301627F55D8D00AFDC4D /* AudioPlayer.swift in Sources */,
 				AE76B12B2801BFF900BA3B36 /* FastStreamWindow.swift in Sources */,
