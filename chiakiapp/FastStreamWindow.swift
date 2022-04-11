@@ -114,14 +114,26 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
     var audioPlayer = AudioQueuePlayer()
     
     var inputState = InputState()
-    
-    var timer: Timer?
-    
+        
     var session: ChiakiSessionBridge?
     
+    var timer: Timer?
+    var lastTimerRun: UInt64?
 
     @objc func timerCb() {
-        session?.setControllerState(inputState.run())
+        let now = clock_gettime_nsec_np(CLOCK_UPTIME_RAW);
+        guard let last = lastTimerRun else {
+            lastTimerRun = now
+            return
+        }
+        
+        let delta = Double(now - last) / Double(1_000_000_000)
+        
+        print(delta)
+        
+        session?.setControllerState(inputState.run(delta))
+        
+        lastTimerRun = now
         
 //        if !self.statusText.isHidden {
 //            self.statusText.stringValue = "Audio enq:\(audioPlayer.enqueued) started:\(audioPlayer.isStarted)"
@@ -143,6 +155,7 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
     
     func setKeyboardInput(_ inp: Bool) {
         isKeyboardInput = inp
+        print("isKeyboardInput=\(isKeyboardInput)")
         keyboardView.isHidden = !inp
         if inp {
             keyboardInput.becomeFirstResponder()
@@ -227,29 +240,29 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
             ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.rightArrow), button: CHIAKI_CONTROLLER_BUTTON_DPAD_RIGHT),
             ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.escape), button: CHIAKI_CONTROLLER_BUTTON_OPTIONS),
             ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.t), button: CHIAKI_CONTROLLER_BUTTON_TOUCHPAD),
-            KeyToStickInputStep(fixAcceleration: 1,
+            KeyToStickInputStep(fixAcceleration: 10,
                                 minus: nil,
                                 plus: KeyboardInputCheck(key: KeyCode.rightBracket),
                                 output: FloatToStickStep(stick: .R2)),
-            KeyToStickInputStep(fixAcceleration: 1,
+            KeyToStickInputStep(fixAcceleration: 10,
                                 minus: nil,
                                 plus: KeyboardInputCheck(key: KeyCode.leftBracket),
                                 output: FloatToStickStep(stick: .L2)),
-            KeyToStickInputStep(fixAcceleration: 0.01,
+            KeyToStickInputStep(fixAcceleration: 1.25,
                                 minus: KeyboardInputCheck(key: KeyCode.w),
                                 plus: KeyboardInputCheck(key: KeyCode.s),
                                 output: FloatToStickStep(stick: .leftY)),
-            KeyToStickInputStep(fixAcceleration: 0.01,
+            KeyToStickInputStep(fixAcceleration: 1.25,
                                 minus: KeyboardInputCheck(key: KeyCode.a),
                                 plus: KeyboardInputCheck(key: KeyCode.d),
                                 output: FloatToStickStep(stick: .leftX)),
-            FloatInputStep(inStep: MouseInput(dir: .x, sensitivity: 0.2), outStep: FloatToStickStep(stick: .rightX)),
-            FloatInputStep(inStep: MouseInput(dir: .y, sensitivity: 0.2), outStep: FloatToStickStep(stick: .rightY)),
-            KeyToStickInputStep(fixAcceleration: 0.01,
+            FloatInputStep(inStep: MouseInput(dir: .x, sensitivity: 25), outStep: FloatToStickStep(stick: .rightX)),
+            FloatInputStep(inStep: MouseInput(dir: .y, sensitivity: 25), outStep: FloatToStickStep(stick: .rightY)),
+            KeyToStickInputStep(fixAcceleration: 1.25,
                                 minus: KeyboardInputCheck(key: KeyCode.j),
                                 plus: KeyboardInputCheck(key: KeyCode.l),
                                 output: FloatToStickStep(stick: .rightX)),
-            KeyToStickInputStep(fixAcceleration: 0.01,
+            KeyToStickInputStep(fixAcceleration: 1.25,
                                 minus: KeyboardInputCheck(key: KeyCode.i),
                                 plus: KeyboardInputCheck(key: KeyCode.k),
                                 output: FloatToStickStep(stick: .rightY)),

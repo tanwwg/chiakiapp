@@ -15,8 +15,11 @@ class InputState {
     var controllerState = ChiakiControllerState()
     var steps: [InputStep] = []
     
-    func run() -> ChiakiControllerState {
-        controllerState = ChiakiControllerState()        
+    var deltaTime: CGFloat = 0.0
+    
+    func run(_ inDeltaTime: CGFloat) -> ChiakiControllerState {
+        controllerState = ChiakiControllerState()
+        self.deltaTime = inDeltaTime
         for step in steps {
             step.run(input: self)
         }
@@ -128,7 +131,7 @@ class MouseInput: GetFloatStep {
     }
     
     func run(input: InputState) -> CGFloat {
-        return max(-1.0, min(1.0, sensitivity * getInput(input: input)))
+        return max(-1.0, min(1.0, sensitivity * getInput(input: input) * input.deltaTime))
     }
 }
 
@@ -169,15 +172,15 @@ class KeyToStickInputStep: InputStep {
     func run(input: InputState) {
         let isminus = minus?.IsToggled(input: input) ?? false
         let isplus = plus.IsToggled(input: input)
-        let v = run(isMinus: isminus, isPlus: isplus)
+        let v = run(isMinus: isminus, isPlus: isplus, dt: input.deltaTime)
         output.run(value: v, input: input)
     }
 
-    func run(isMinus: Bool, isPlus: Bool) -> CGFloat {
+    func run(isMinus: Bool, isPlus: Bool, dt: CGFloat) -> CGFloat {
         if isMinus && !isPlus {
-            curAcceleration -= fixAcceleration
+            curAcceleration -= fixAcceleration * dt
         } else if isPlus && !isMinus {
-            curAcceleration += fixAcceleration
+            curAcceleration += fixAcceleration * dt
         } else {
             curAcceleration = 0
             curVelocity = 0

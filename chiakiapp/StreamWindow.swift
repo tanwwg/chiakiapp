@@ -43,7 +43,7 @@ class StreamWindow: NSViewController {
     var session: ChiakiSessionBridge?
 
     @objc func timerCb() {
-        session?.setControllerState(inputState.run())
+//        session?.setControllerState(inputState.run())
         
         if !self.statusText.isHidden {
             self.statusText.stringValue = "Audio enq:\(audioPlayer.enqueued) started:\(audioPlayer.isStarted)"
