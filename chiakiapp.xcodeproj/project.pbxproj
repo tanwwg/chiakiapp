@@ -28,7 +28,6 @@
 		AE5A2FF227F45CAA00AFDC4D /* KeyCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2FF127F45CAA00AFDC4D /* KeyCodes.swift */; };
 		AE5A301027F534F300AFDC4D /* InputManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5A300F27F534F300AFDC4D /* InputManager.swift */; };
 		AE5A301427F55C7D00AFDC4D /* libopus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5A301327F55C7D00AFDC4D /* libopus.a */; };
-		AE5A301627F55D8D00AFDC4D /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5A301527F55D8D00AFDC4D /* AudioPlayer.swift */; };
 		AE624CA227F5C58300990FE5 /* AudioQueuePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE624CA127F5C58300990FE5 /* AudioQueuePlayer.swift */; };
 		AE76B1022800E00700BA3B36 /* libchiaki.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE76B1012800E00700BA3B36 /* libchiaki.a */; };
 		AE76B1052800E0CA00BA3B36 /* libjerasure.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE76B1032800E0CA00BA3B36 /* libjerasure.a */; };
@@ -66,7 +65,6 @@
 		AE5A2FF127F45CAA00AFDC4D /* KeyCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyCodes.swift; sourceTree = "<group>"; };
 		AE5A300F27F534F300AFDC4D /* InputManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputManager.swift; sourceTree = "<group>"; };
 		AE5A301327F55C7D00AFDC4D /* libopus.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libopus.a; path = ../../../../../../opt/homebrew/lib/libopus.a; sourceTree = "<group>"; };
-		AE5A301527F55D8D00AFDC4D /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
 		AE624CA127F5C58300990FE5 /* AudioQueuePlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioQueuePlayer.swift; sourceTree = "<group>"; };
 		AE76B1012800E00700BA3B36 /* libchiaki.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libchiaki.a; path = ../../chiaki/build/lib/libchiaki.a; sourceTree = "<group>"; };
 		AE76B1032800E0CA00BA3B36 /* libjerasure.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjerasure.a; path = "../../chiaki/build/third-party/libjerasure.a"; sourceTree = "<group>"; };
@@ -125,7 +123,7 @@
 				AE5A300E27F534E800AFDC4D /* inputmanager */,
 				AE5A2FDC27F2FDA900AFDC4D /* libs */,
 				AE5A2F0F27F2D6F500AFDC4D /* AppDelegate.swift */,
-				AE5A301527F55D8D00AFDC4D /* AudioPlayer.swift */,
+				AE624CA127F5C58300990FE5 /* AudioQueuePlayer.swift */,
 				AE5A2F1127F2D6F500AFDC4D /* ViewController.swift */,
 				AE76B12A2801BFF900BA3B36 /* FastStreamWindow.swift */,
 				AE76B1092800F19900BA3B36 /* StreamWindow.swift */,
@@ -177,7 +175,6 @@
 			isa = PBXGroup;
 			children = (
 				AE5A300F27F534F300AFDC4D /* InputManager.swift */,
-				AE624CA127F5C58300990FE5 /* AudioQueuePlayer.swift */,
 			);
 			path = inputmanager;
 			sourceTree = "<group>";
@@ -260,7 +257,6 @@
 				AE5A301027F534F300AFDC4D /* InputManager.swift in Sources */,
 				AE76B12D2803BD9A00BA3B36 /* CursorLogic.swift in Sources */,
 				AE5A2F1227F2D6F500AFDC4D /* ViewController.swift in Sources */,
-				AE5A301627F55D8D00AFDC4D /* AudioPlayer.swift in Sources */,
 				AE76B12B2801BFF900BA3B36 /* FastStreamWindow.swift in Sources */,
 				AE5A2FF227F45CAA00AFDC4D /* KeyCodes.swift in Sources */,
 				AE5A2FE527F307D400AFDC4D /* ConsoleListView.swift in Sources */,

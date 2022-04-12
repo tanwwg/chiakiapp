@@ -269,20 +269,6 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
         ]
         
         
-//        for step in self.inputState.steps {
-//            if let bis = step as? ButtonInputStep {
-//                if let kb = bis.check as? KeyboardInputCheck {
-//                    watchKeys.insert(kb.key)
-//                }
-//            }
-//
-//            if let ksi = step as? KeyToStickInputStep {
-//                if let kb = ksi.minus as? KeyboardInputCheck { watchKeys.insert(kb.key) }
-//                if let kb = ksi.plus as? KeyboardInputCheck { watchKeys.insert(kb.key) }
-//            }
-//
-//        }
-
         disposeOnClose(NSEvent.addLocalMonitorForEvents(matching: .keyDown) { evt in
             let nsevt: NSEvent = evt
             
@@ -294,23 +280,8 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
                 return evt
             }
             
-//            if self.watchKeys.contains(nsevt.keyCode) {
-                _ = self.inputState.keyboard.onKeyDown(evt: evt)
-                return nil
-//            } else {
-//                return nsevt
-//            }
-////            if nsevt.keyCode == KeyCode.w && nsevt.modifierFlags.contains(.command) {
-//                self.stopSession()
-//                self.view.window?.close()
-//            }
-//            if nsevt.keyCode == KeyCode.f && nsevt.modifierFlags.contains(.command) {
-//                self.toggleFullScreen()
-//            }
-//            if nsevt.keyCode == KeyCode.c && nsevt.modifierFlags.contains(.command) {
-//                self.toggleCursor()
-//            }
-
+            _ = self.inputState.keyboard.onKeyDown(evt: evt)
+            return nil
         })
         
         disposeOnClose(NSEvent.addLocalMonitorForEvents(matching: .keyUp) { evt in
