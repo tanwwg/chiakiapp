@@ -35,6 +35,9 @@
 		AE76B1082800E0F600BA3B36 /* libprotobuf-nanopb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE76B1072800E0F600BA3B36 /* libprotobuf-nanopb.a */; };
 		AE76B12B2801BFF900BA3B36 /* FastStreamWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE76B12A2801BFF900BA3B36 /* FastStreamWindow.swift */; };
 		AE76B12D2803BD9A00BA3B36 /* CursorLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE76B12C2803BD9A00BA3B36 /* CursorLogic.swift */; };
+		AE808252280674E700D57CD9 /* default-map.json in Resources */ = {isa = PBXBuildFile; fileRef = AE808251280674E700D57CD9 /* default-map.json */; };
+		AE808254280675EE00D57CD9 /* KeyMapFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE808253280675EE00D57CD9 /* KeyMapFile.swift */; };
+		AE8082562806846900D57CD9 /* KeyCodeMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE8082552806846900D57CD9 /* KeyCodeMap.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -71,6 +74,9 @@
 		AE76B1072800E0F600BA3B36 /* libprotobuf-nanopb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libprotobuf-nanopb.a"; path = "../../chiaki/build/third-party/nanopb/libprotobuf-nanopb.a"; sourceTree = "<group>"; };
 		AE76B12A2801BFF900BA3B36 /* FastStreamWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FastStreamWindow.swift; sourceTree = "<group>"; };
 		AE76B12C2803BD9A00BA3B36 /* CursorLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CursorLogic.swift; sourceTree = "<group>"; };
+		AE808251280674E700D57CD9 /* default-map.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "default-map.json"; sourceTree = "<group>"; };
+		AE808253280675EE00D57CD9 /* KeyMapFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyMapFile.swift; sourceTree = "<group>"; };
+		AE8082552806846900D57CD9 /* KeyCodeMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyCodeMap.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,6 +152,7 @@
 				AE76B1032800E0CA00BA3B36 /* libjerasure.a */,
 				AE76B1072800E0F600BA3B36 /* libprotobuf-nanopb.a */,
 				AE76B12C2803BD9A00BA3B36 /* CursorLogic.swift */,
+				AE808251280674E700D57CD9 /* default-map.json */,
 			);
 			path = chiakiapp;
 			sourceTree = "<group>";
@@ -172,6 +179,8 @@
 			isa = PBXGroup;
 			children = (
 				AE5A300F27F534F300AFDC4D /* InputManager.swift */,
+				AE808253280675EE00D57CD9 /* KeyMapFile.swift */,
+				AE8082552806846900D57CD9 /* KeyCodeMap.swift */,
 			);
 			path = inputmanager;
 			sourceTree = "<group>";
@@ -235,6 +244,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE808252280674E700D57CD9 /* default-map.json in Resources */,
 				AE315CBA27FA753A0029003B /* include in Resources */,
 				AE5A2F1427F2D6F600AFDC4D /* Assets.xcassets in Resources */,
 				AE5A2F1727F2D6F600AFDC4D /* Main.storyboard in Resources */,
@@ -250,6 +260,8 @@
 			files = (
 				AE624CA227F5C58300990FE5 /* AudioQueuePlayer.swift in Sources */,
 				AE5A2FF027F4177300AFDC4D /* shaders.metal in Sources */,
+				AE808254280675EE00D57CD9 /* KeyMapFile.swift in Sources */,
+				AE8082562806846900D57CD9 /* KeyCodeMap.swift in Sources */,
 				AE5A2FE927F416E500AFDC4D /* YuvRenderer.swift in Sources */,
 				AE5A301027F534F300AFDC4D /* InputManager.swift in Sources */,
 				AE76B12D2803BD9A00BA3B36 /* CursorLogic.swift in Sources */,

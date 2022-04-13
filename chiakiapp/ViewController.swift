@@ -10,13 +10,26 @@ import SwiftUI
 import Combine
 import MetalKit
 import GameController
+import UniformTypeIdentifiers
 
 class ViewController: NSViewController {
     
-    let ui = AppUiModel()
+    let ui = AppUiModel.global
     var sessionSub: AnyCancellable?
     
-    
+    @IBAction func openDocument(_ s: Any?) {
+        let op = NSOpenPanel()
+        op.allowedContentTypes = [UTType.json]
+        if op.runModal() == .OK, let url = op.urls.first {
+            if let keymap = loadKeymapFile(file: url) {
+                ui.keymap = keymap
+            } else {
+                let alert = NSAlert()
+                alert.messageText = "Error loading keymap"
+                alert.runModal()
+            }
+        }
+    }
             
     override func viewDidLoad() {
         super.viewDidLoad()

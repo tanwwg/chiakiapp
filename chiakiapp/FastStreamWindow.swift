@@ -129,8 +129,6 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
         
         let delta = Double(now - last) / Double(1_000_000_000)
         
-        print(delta)
-        
         session?.setControllerState(inputState.run(delta))
         
         lastTimerRun = now
@@ -218,56 +216,36 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
             toDispose.append(o)
         }
     }
-
+    
+    @IBAction func openDocument(_ s: Any?) {
+        let op = NSOpenPanel()
+        op.allowedContentTypes = [UTType.json]
+        if op.runModal() == .OK, let url = op.urls.first {
+            if let keymap = loadKeymapFile(file: url) {
+                AppUiModel.global.keymap = keymap
+                self.inputState.steps = keymap
+            } else {
+                let alert = NSAlert()
+                alert.messageText = "Error loading keymap"
+                alert.runModal()
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         cursorLogic.setup()
-
-        self.inputState.steps = [
-            ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.e), button: CHIAKI_CONTROLLER_BUTTON_CROSS),
-            ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.q), button: CHIAKI_CONTROLLER_BUTTON_MOON),
-            ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.f), button: CHIAKI_CONTROLLER_BUTTON_BOX),
-            ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.r), button: CHIAKI_CONTROLLER_BUTTON_PYRAMID),
-            ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.p), button: CHIAKI_CONTROLLER_BUTTON_PS),
-            ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.comma), button: CHIAKI_CONTROLLER_BUTTON_L1),
-            ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.period), button: CHIAKI_CONTROLLER_BUTTON_R1),
-            ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.shift), button: CHIAKI_CONTROLLER_BUTTON_L3),
-            ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.rightShift), button: CHIAKI_CONTROLLER_BUTTON_R3),
-            ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.upArrow), button: CHIAKI_CONTROLLER_BUTTON_DPAD_UP),
-            ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.downArrow), button: CHIAKI_CONTROLLER_BUTTON_DPAD_DOWN),
-            ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.leftArrow), button: CHIAKI_CONTROLLER_BUTTON_DPAD_LEFT),
-            ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.rightArrow), button: CHIAKI_CONTROLLER_BUTTON_DPAD_RIGHT),
-            ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.escape), button: CHIAKI_CONTROLLER_BUTTON_OPTIONS),
-            ButtonInputStep(check: KeyboardInputCheck(key: KeyCode.t), button: CHIAKI_CONTROLLER_BUTTON_TOUCHPAD),
-            KeyToStickInputStep(fixAcceleration: 10,
-                                minus: nil,
-                                plus: KeyboardInputCheck(key: KeyCode.rightBracket),
-                                output: FloatToStickStep(stick: .R2)),
-            KeyToStickInputStep(fixAcceleration: 10,
-                                minus: nil,
-                                plus: KeyboardInputCheck(key: KeyCode.leftBracket),
-                                output: FloatToStickStep(stick: .L2)),
-            KeyToStickInputStep(fixAcceleration: 1.25,
-                                minus: KeyboardInputCheck(key: KeyCode.w),
-                                plus: KeyboardInputCheck(key: KeyCode.s),
-                                output: FloatToStickStep(stick: .leftY)),
-            KeyToStickInputStep(fixAcceleration: 1.25,
-                                minus: KeyboardInputCheck(key: KeyCode.a),
-                                plus: KeyboardInputCheck(key: KeyCode.d),
-                                output: FloatToStickStep(stick: .leftX)),
-            FloatInputStep(inStep: MouseInput(dir: .x, sensitivity: 25), outStep: FloatToStickStep(stick: .rightX)),
-            FloatInputStep(inStep: MouseInput(dir: .y, sensitivity: 25), outStep: FloatToStickStep(stick: .rightY)),
-            KeyToStickInputStep(fixAcceleration: 1.25,
-                                minus: KeyboardInputCheck(key: KeyCode.j),
-                                plus: KeyboardInputCheck(key: KeyCode.l),
-                                output: FloatToStickStep(stick: .rightX)),
-            KeyToStickInputStep(fixAcceleration: 1.25,
-                                minus: KeyboardInputCheck(key: KeyCode.i),
-                                plus: KeyboardInputCheck(key: KeyCode.k),
-                                output: FloatToStickStep(stick: .rightY)),
-        ]
         
+        self.inputState.steps = AppUiModel.global.keymap
+        
+        disposeOnClose(NSEvent.addLocalMonitorForEvents(matching: .flagsChanged) { evt in
+            let evt: NSEvent = evt
+            
+            self.inputState.keyboard.onFlagsChanged(evt: evt)
+            
+            return evt
+        })
         
         disposeOnClose(NSEvent.addLocalMonitorForEvents(matching: .keyDown) { evt in
             let nsevt: NSEvent = evt

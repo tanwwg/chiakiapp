@@ -1,0 +1,156 @@
+[
+    {
+       "button": {
+           "input": { "key": { "code": "leftArrow" } },
+           "output": "dpad_left"
+       }
+    },
+    {
+       "button": {
+           "input": { "key": { "code": "rightArrow" } },
+           "output": "dpad_right"
+       }
+    },
+    {
+       "button": {
+           "input": { "key": { "code": "upArrow" } },
+           "output": "dpad_up"
+       }
+    },
+    {
+       "button": {
+           "input": { "key": { "code": "downArrow" } },
+           "output": "dpad_down"
+       }
+    },
+    
+    {
+       "button": {
+           "input": { "key": { "code": "e" } },
+           "output": "cross"
+       }
+    },
+    {
+       "button": {
+           "input": { "key": { "code": "q" } },
+           "output": "circle"
+       }
+    },
+    {
+       "button": {
+           "input": { "key": { "code": "r" } },
+           "output": "triangle"
+       }
+    },
+    {
+       "button": {
+           "input": { "key": { "code": "f" } },
+           "output": "square"
+       }
+    },
+    
+    {
+       "button": {
+           "input": { "key": { "code": "h" } },
+           "output": "ps"
+       }
+    },
+    {
+       "button": {
+           "input": { "key": { "code": "t" } },
+           "output": "touchpad"
+       }
+    },
+    {
+       "button": {
+           "input": { "key": { "code": "comma" } },
+           "output": "l1"
+       }
+    },
+    {
+       "button": {
+           "input": { "key": { "code": "period" } },
+           "output": "r1"
+       }
+    },
+    {
+       "button": {
+           "input": { "key": { "code": "z" } },
+           "output": "l3"
+       }
+    },
+    {
+       "button": {
+           "input": { "key": { "code": "x" } },
+           "output": "r3"
+       }
+    },
+    {
+       "button": {
+           "input": { "key": { "code": "escape" } },
+           "output": "option"
+       }
+    },
+
+    {
+        "keyToStick": {
+            "minus": { "key": { "code": "w" } },
+            "plus": { "key": { "code": "s" } },
+            "sensitivity": 1.2,
+            "output": "lefty"
+
+        }
+    },
+    {
+        "keyToStick": {
+            "minus": { "key": { "code": "a" } },
+            "plus": { "key": { "code": "d" } },
+            "sensitivity": 1.2,
+            "output": "leftx"
+
+        }
+    },
+    {
+        "keyToStick": {
+            "plus": { "key": { "code": "leftBracket" } },
+            "sensitivity": 1.2,
+            "output": "l2"
+
+        }
+    },
+    {
+        "keyToStick": {
+            "plus": { "key": { "code": "rightBracket" } },
+            "sensitivity": 1.2,
+            "output": "r2"
+
+        }
+    },
+
+    {
+        "stick": {
+            "input": {
+                "mouse": {
+                    "sensitivity": 25,
+                    "dir": "x"
+                }
+            },
+            "output": "rightx"
+        }
+    },
+    {
+        "stick": {
+            "input": {
+                "mouse": {
+                    "sensitivity": 25,
+                    "dir": "y"
+                }
+            },
+            "output": "righty"
+        }
+    }
+
+
+
+    
+]

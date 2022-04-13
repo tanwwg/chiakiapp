@@ -8,6 +8,9 @@
 import Foundation
 import AppKit
 
+
+
+
 class InputState {
     var keyboard = KeyboardManager()
     var mouse = MouseManager()
@@ -219,6 +222,17 @@ class KeyboardManager {
         
         return evt
     }
+    
+    func onFlagsChanged(evt: NSEvent) -> NSEvent? {
+        if evt.modifierFlags.contains(.shift) {
+            keyDowns.insert(KeyCode.shift)
+        } else {
+            keyDowns.remove(KeyCode.shift)
+        }
+        
+        return evt
+    }
+    
     
     func onKeyUp(evt: NSEvent) -> NSEvent? {
         keyDowns.remove(evt.keyCode)

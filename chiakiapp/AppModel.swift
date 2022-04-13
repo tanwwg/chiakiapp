@@ -181,7 +181,32 @@ class AppUiModel: ObservableObject {
     
     var discover = ChiakiDiscover()
     
-    init() {
-
+    @Published var keymap: [InputStep] = []
+    @Published var keymapFile: String = ""
+    
+    func loadKeymap() -> String? {
+        guard let km = UserDefaults.standard.string(forKey: "keymap") else {
+            if let res = Bundle.main.url(forResource: "default-map", withExtension: "json"),
+               let jd = try? Data(contentsOf: res),
+               let s = String(data: jd, encoding: .utf8) {
+                UserDefaults.standard.set(s, forKey: "keymap")
+                UserDefaults.standard.synchronize()
+                return s
+            } else {
+                return nil
+            }
+        }
+        return km
     }
+    
+    init() {
+        guard let km = loadKeymap() else { return }
+        
+        if let data = km.data(using: .utf8),
+           let inp = loadKeymapFile(data: data) {
+            self.keymap = inp
+        }
+    }
+    
+    static var global = AppUiModel()
 }

@@ -94,18 +94,22 @@ struct HostView: View {
     }
     
     var body: some View {
-        if host.registration != nil {
-            Text("registered")
-            Button(action: { wake() }) {
-                Text("Wake")
+        VStack {
+            Text("Keymap: \(ui.keymap.count) items")
+            if host.registration != nil {
+                Text("registered")
+                Button(action: { wake() }) {
+                    Text("Wake")
+                }
+                
+                Button(action: { startSession() }) {
+                    Text("Stream")
+                }
+                Spacer()
+                
+            } else {
+                RegisterView(host: host)
             }
-            
-            Button(action: { startSession() }) {
-                Text("Stream")
-            }
-            
-        } else {
-            RegisterView(host: host)
         }
     }
 }
