@@ -20,13 +20,14 @@ class CursorLogic {
         wantsShowCursor = UserDefaults.standard.bool(forKey: "wantsShowCursor")
     }
     
-    func setup() {
-        observers.append(NotificationCenter.default.addObserver(forName: NSWindow.didBecomeKeyNotification, object: nil, queue: nil) { [weak self] (n: Notification) in
+    func setup(window: NSWindow) {
+        print("CursorLogic setupe")
+        observers.append(NotificationCenter.default.addObserver(forName: NSWindow.didBecomeKeyNotification, object: window, queue: nil) { [weak self] (n: Notification) in
             print("didBecomeKeyNotification")
             self?.synchronizeCursor()
         })
 
-        observers.append(NotificationCenter.default.addObserver(forName: NSWindow.didResignKeyNotification, object: nil, queue: nil) { [weak self] _ in
+        observers.append(NotificationCenter.default.addObserver(forName: NSWindow.didResignKeyNotification, object: window, queue: nil) { [weak self] _ in
             self?.showCursor()
         })
     }

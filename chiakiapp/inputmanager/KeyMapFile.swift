@@ -11,7 +11,6 @@ enum KMMouseDir: String, Codable {
     case x, y
 }
 
-
 enum KMButtonInput: Codable {
     case key(code: String)
     case mouse(button: MouseButton)
@@ -27,7 +26,7 @@ enum KMStickOutput: String, Codable {
 
 
 enum KMStickInput: Codable {
-    case mouse(sensitivity: CGFloat, dir: KMMouseDir)
+    case mouse(sensitivity: CGFloat, dir: KMMouseDir, min: CGFloat?)
 }
 
 enum KMStep: Codable {
@@ -137,8 +136,12 @@ func toFloatStep(output: KMStickOutput) -> FloatStep {
 func toFloatInputStep(input: KMStickInput) -> GetFloatStep {
     switch (input) {
         
-    case .mouse(sensitivity: let sensitivity, dir: let dir):
-        return MouseInput(dir: dir == .x ? MouseDir.x : MouseDir.y, sensitivity: sensitivity)
+    case .mouse(sensitivity: let sensitivity, dir: let dir, let min):
+        let m = MouseInput(dir: dir == .x ? MouseDir.x : MouseDir.y, sensitivity: sensitivity)
+        if let minn = min {
+            m.minOut = minn
+        }
+        return m
     }
 }
 
@@ -160,18 +163,17 @@ func generateInputStep(step: KMStep) throws -> InputStep {
     }
 }
 
-func generateInputSteps(steps: [KMStep]) -> [InputStep] {
-    return steps.compactMap { try? generateInputStep(step:$0) }
+func generateInputSteps(steps: [KMStep]) throws -> [InputStep] {
+    return try steps.map { try generateInputStep(step:$0) }
 }
 
-func loadKeymapFile(file: URL) -> [InputStep]? {
-    guard let jd = try? Data(contentsOf: file) else { return nil }
-    return loadKeymapFile(data: jd)
+func loadKeymapFile(file: URL) throws -> [InputStep] {
+    let jd = try Data(contentsOf: file)
+    return try loadKeymapFile(data: jd)
 }
 
-func loadKeymapFile(data: Data) -> [InputStep]? {
-    guard let inp = try? JSONDecoder().decode([KMStep].self, from: data) else { return nil }
-     
-    let steps = generateInputSteps(steps: inp)
+func loadKeymapFile(data: Data) throws -> [InputStep] {
+    let inp = try JSONDecoder().decode([KMStep].self, from: data)     
+    let steps = try generateInputSteps(steps: inp)
     return steps
 }

@@ -202,14 +202,14 @@ class AppUiModel: ObservableObject {
     func loadStartupKeymap() {
         guard let km = UserDefaults.standard.string(forKey: "keymap"),
               let data = km.data(using: .utf8),
-              let inp = loadKeymapFile(data: data) else { return }
+              let inp = try? loadKeymapFile(data: data) else { return }
         self.keymap = inp
         self.keymapFile = UserDefaults.standard.string(forKey: "keymapFile") ?? ""
     }
     
-    func loadKeymap(url: URL) -> [InputStep]? {
-        guard let data = try? Data(contentsOf: url),
-            let inp = loadKeymapFile(data: data) else { return nil }
+    func loadKeymap(url: URL) throws -> [InputStep] {
+        let data = try Data(contentsOf: url)
+        let inp = try loadKeymapFile(data: data)
         
         UserDefaults.standard.set(String(data: data, encoding: .utf8), forKey: "keymap")
         UserDefaults.standard.set(url.lastPathComponent, forKey: "keymapFile")

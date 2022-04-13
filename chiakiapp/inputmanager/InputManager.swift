@@ -188,6 +188,8 @@ class MouseInput: GetFloatStep {
     let dir: MouseDir
     let sensitivity: CGFloat
     
+    var minOut: CGFloat = 0.0
+    
     func getInput(input: InputState) -> CGFloat {
         switch (dir) {
         case .x: return input.mouse.mouseDeltaX
@@ -196,7 +198,10 @@ class MouseInput: GetFloatStep {
     }
     
     func run(input: InputState) -> CGFloat {
-        let f = max(-1.0, min(1.0, sensitivity * getInput(input: input) * input.deltaTime))
+        var v = sensitivity * getInput(input: input) * input.deltaTime
+        if v > 0 { v = max(minOut, v) }
+        if v < 0 { v = min(-minOut, v) }        
+        let f = max(-1.0, min(1.0, v))
         return f
     }
 }
