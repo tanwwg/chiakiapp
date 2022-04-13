@@ -60,8 +60,8 @@ struct DescribeKeymapView: View {
     var body: some View {
         VStack {
             Text("\(keymap.count) items")
-            List(keymap, id:\.self) { km in
-                Text(km)
+            List(0..<keymap.count) { i in
+                Text(keymap[i])
             }
         }
     }
