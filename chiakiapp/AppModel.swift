@@ -184,28 +184,46 @@ class AppUiModel: ObservableObject {
     @Published var keymap: [InputStep] = []
     @Published var keymapFile: String = ""
     
-    func loadKeymap() -> String? {
-        guard let km = UserDefaults.standard.string(forKey: "keymap") else {
-            if let res = Bundle.main.url(forResource: "default-map", withExtension: "json"),
-               let jd = try? Data(contentsOf: res),
-               let s = String(data: jd, encoding: .utf8) {
-                UserDefaults.standard.set(s, forKey: "keymap")
-                UserDefaults.standard.synchronize()
-                return s
-            } else {
-                return nil
-            }
+    func loadDefaultKeymap() -> String {
+        guard let res = Bundle.main.url(forResource: "default-map", withExtension: "json"),
+              let jd = try? Data(contentsOf: res),
+              let s = String(data: jd, encoding: .utf8) else { return "" }
+        return s
+    }
+    
+    func saveDefaultKeymap() {
+        if UserDefaults.standard.string(forKey: "keymap") == nil {
+            UserDefaults.standard.set(loadDefaultKeymap(), forKey: "keymap")
+            UserDefaults.standard.set("default-map", forKey: "keymapFile")
+            UserDefaults.standard.synchronize()
         }
-        return km
+    }
+    
+    func loadStartupKeymap() {
+        guard let km = UserDefaults.standard.string(forKey: "keymap"),
+              let data = km.data(using: .utf8),
+              let inp = loadKeymapFile(data: data) else { return }
+        self.keymap = inp
+        self.keymapFile = UserDefaults.standard.string(forKey: "keymapFile") ?? ""
+    }
+    
+    func loadKeymap(url: URL) -> [InputStep]? {
+        guard let data = try? Data(contentsOf: url),
+            let inp = loadKeymapFile(data: data) else { return nil }
+        
+        UserDefaults.standard.set(String(data: data, encoding: .utf8), forKey: "keymap")
+        UserDefaults.standard.set(url.lastPathComponent, forKey: "keymapFile")
+        UserDefaults.standard.synchronize()
+        
+        self.keymap = inp
+        self.keymapFile = url.lastPathComponent
+        
+        return inp
     }
     
     init() {
-        guard let km = loadKeymap() else { return }
-        
-        if let data = km.data(using: .utf8),
-           let inp = loadKeymapFile(data: data) {
-            self.keymap = inp
-        }
+        saveDefaultKeymap()
+        loadStartupKeymap()
     }
     
     static var global = AppUiModel()

@@ -221,14 +221,14 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
         let op = NSOpenPanel()
         op.allowedContentTypes = [UTType.json]
         if op.runModal() == .OK, let url = op.urls.first {
-            if let keymap = loadKeymapFile(file: url) {
-                AppUiModel.global.keymap = keymap
-                self.inputState.steps = keymap
-            } else {
+            guard let km = AppUiModel.global.loadKeymap(url: url) else {
                 let alert = NSAlert()
                 alert.messageText = "Error loading keymap"
                 alert.runModal()
+                return
             }
+            
+            self.inputState.steps = km
         }
     }
     

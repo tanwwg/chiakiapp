@@ -49,7 +49,7 @@ func generateBinaryInputCheck(input: KMButtonInput) throws -> BinaryInputCheck {
         
     case .key(code: let key):
         if let u16 = KeyCodeMap.standard.map[key] {
-            return KeyboardInputCheck(key: u16)
+            return KeyboardInputCheck(desc: key, key: u16)
         } else {
             print("Unable to map keycode \(key)")
             throw KMError.InvalidKeyCode

@@ -43,6 +43,7 @@ class MouseManager {
 
 protocol BinaryInputCheck {
     func IsToggled(input: InputState) -> Bool
+    func describe() -> String
 }
 
 protocol FloatStep {
@@ -87,29 +88,41 @@ class FloatToStickStep: FloatStep {
     func run(value: CGFloat, input: InputState) -> Void {
         
         switch (stick) {
-        case .R2: input.controllerState.r2_state = unnormUInt8(norm(input.controllerState.r2_state) + value)
-        case .L2: input.controllerState.l2_state = unnormUInt8(norm(input.controllerState.l2_state) + value)
-        case .leftX: input.controllerState.left_x = unnormInt16(norm(input.controllerState.left_x) + value)
-        case .leftY: input.controllerState.left_y = unnormInt16(norm(input.controllerState.left_y) + value)
-        case .rightX: input.controllerState.right_x = unnormInt16(norm(input.controllerState.right_x) + value)
-        case .rightY: input.controllerState.right_y = unnormInt16(norm(input.controllerState.right_y) + value)
+        case .R2: input.controllerState.r2_state = unnormUInt8(value)
+        case .L2: input.controllerState.l2_state = unnormUInt8(value)
+        case .leftX: input.controllerState.left_x = unnormInt16(value)
+        case .leftY: input.controllerState.left_y = unnormInt16(value)
+        case .rightX: input.controllerState.right_x = unnormInt16(value)
+        case .rightY: input.controllerState.right_y = unnormInt16(value)
         }
     }
 }
 
-protocol InputStep {
-    func run(input: InputState);
+class InputStep {
+    func run(input: InputState) {
+        preconditionFailure("This method must be overridden")
+    }
+    
+    func describe() -> String {
+        preconditionFailure("This method must be overridden")
+    }
 }
 
 class KeyboardInputCheck: BinaryInputCheck {
-    init(key: UInt16) {
+    init(desc: String, key: UInt16) {
+        self.desc = desc
         self.key = key
     }
     
-    let key: UInt16    
+    let key: UInt16
+    let desc: String
     
     func IsToggled(input: InputState) -> Bool {
         return input.keyboard.isKeyDown(key: key)
+    }
+    
+    func describe() -> String {
+        return desc
     }
 }
 
@@ -147,8 +160,12 @@ class FloatInputStep: InputStep {
     let inStep: GetFloatStep
     let outStep: FloatStep
    
-    func run(input: InputState) {
+    override func run(input: InputState) {
         outStep.run(value: inStep.run(input: input), input: input)
+    }
+    
+    override func describe() -> String {
+        return "\(inStep) -> \(outStep)"
     }
 }
 
@@ -172,7 +189,7 @@ class KeyToStickInputStep: InputStep {
     var curVelocity: CGFloat = 0
     var curPos: CGFloat = 0
     
-    func run(input: InputState) {
+    override func run(input: InputState) {
         let isminus = minus?.IsToggled(input: input) ?? false
         let isplus = plus.IsToggled(input: input)
         let v = run(isMinus: isminus, isPlus: isplus, dt: input.deltaTime)
@@ -196,16 +213,29 @@ class KeyToStickInputStep: InputStep {
         curPos = min(1.0, max(-1.0, curPos))
         return curPos
     }
+    
+    override func describe() -> String {
+        return "\(minus?.describe() ?? "") \(plus.describe()) -> \(output)"
+    }
 }
 
-struct ButtonInputStep: InputStep {
+class ButtonInputStep: InputStep {
+    internal init(check: BinaryInputCheck, button: chiaki_controller_button_t) {
+        self.check = check
+        self.button = button
+    }
+    
     let check: BinaryInputCheck
     let button: chiaki_controller_button_t
     
-    func run(input: InputState) {
+    override func run(input: InputState) {
         if check.IsToggled(input: input) {
             input.controllerState.buttons |= button.rawValue
         }
+    }
+    
+    override func describe() -> String {
+        return "Button \(check.describe()) -> \(button)"
     }
 }
 

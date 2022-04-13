@@ -23,10 +23,19 @@ struct ConsoleListView: View {
     
     var body: some View {
         NavigationView {
-            List(discover.hosts) { host in
-                NavigationLink(destination: HostView(host: host)) {
-                    Text(host.name)
-                        .fontWeight(host.registration == nil ? .regular : .bold)
+            List {
+                Section(header: Text("Key Maps")) {
+                    NavigationLink(destination: DescribeKeymapView(steps: ui.keymap)) {
+                        Text("\(ui.keymapFile)")
+                    }
+                }
+                Section(header: Text("Consoles")) {
+                    ForEach(discover.hosts) { host in
+                        NavigationLink(destination: HostView(host: host)) {
+                            Text(host.name)
+                                .fontWeight(host.registration == nil ? .regular : .bold)
+                        }
+                    }
                 }
             }
         }
@@ -38,6 +47,23 @@ struct ConsoleListView: View {
         })
         .environmentObject(ui)
 
+    }
+}
+
+struct DescribeKeymapView: View {
+    let keymap: [String]
+    
+    init(steps: [InputStep]) {
+        self.keymap = steps.map { s in s.describe() }
+    }
+    
+    var body: some View {
+        VStack {
+            Text("\(keymap.count) items")
+            List(keymap, id:\.self) { km in
+                Text(km)
+            }
+        }
     }
 }
 
@@ -95,7 +121,6 @@ struct HostView: View {
     
     var body: some View {
         VStack {
-            Text("Keymap: \(ui.keymap.count) items")
             if host.registration != nil {
                 Text("registered")
                 Button(action: { wake() }) {
@@ -105,8 +130,6 @@ struct HostView: View {
                 Button(action: { startSession() }) {
                     Text("Stream")
                 }
-                Spacer()
-                
             } else {
                 RegisterView(host: host)
             }

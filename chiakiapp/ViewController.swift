@@ -21,12 +21,11 @@ class ViewController: NSViewController {
         let op = NSOpenPanel()
         op.allowedContentTypes = [UTType.json]
         if op.runModal() == .OK, let url = op.urls.first {
-            if let keymap = loadKeymapFile(file: url) {
-                ui.keymap = keymap
-            } else {
+            guard ui.loadKeymap(url: url) != nil else {
                 let alert = NSAlert()
                 alert.messageText = "Error loading keymap"
                 alert.runModal()
+                return
             }
         }
     }
