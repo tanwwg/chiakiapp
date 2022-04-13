@@ -26,19 +26,48 @@ class InputState {
         for step in steps {
             step.run(input: self)
         }
+
+        // after reading mouse deltas, clear them
+        // otherwise, if theres no more mouse move, it'll continue to return the last entry
+        self.mouse.clear()
+
         return controllerState
     }
 }
 
 class MouseManager {
     
-    var mouseDelta = NSPoint()
+    var mouseDeltaX: CGFloat = 0.0
+    var mouseDeltaY: CGFloat = 0.0
+
+    var isLeftDown = false
+    var isRightDown = false
     
     func onMouseMoved(evt: NSEvent) -> NSEvent {
-        mouseDelta = NSPoint(x: evt.deltaX, y: evt.deltaY)
+        mouseDeltaX = evt.deltaX
+        mouseDeltaY = evt.deltaY
+
         return evt
     }
+    
+    func clear() {
+        mouseDeltaX = 0
+        mouseDeltaY = 0
+    }
 
+    func onMouseEvent(button: MouseButton, isDown: Bool) {
+        switch(button) {
+        case .left: isLeftDown = isDown
+        case .right: isRightDown = isDown
+        }
+    }
+    
+    func isDown(button: MouseButton) -> Bool {
+        switch(button) {
+        case .left: return isLeftDown
+        case .right: return isRightDown
+        }
+    }
 }
 
 protocol BinaryInputCheck {
@@ -108,6 +137,26 @@ class InputStep {
     }
 }
 
+enum MouseButton: String, Codable {
+    case left, right
+}
+
+class MouseInputCheck: BinaryInputCheck {
+    internal init(button: MouseButton) {
+        self.button = button
+    }
+    
+    let button: MouseButton
+    
+    func IsToggled(input: InputState) -> Bool {
+        return input.mouse.isDown(button: self.button)
+    }
+    
+    func describe() -> String {
+        return "\(button)"
+    }
+}
+
 class KeyboardInputCheck: BinaryInputCheck {
     init(desc: String, key: UInt16) {
         self.desc = desc
@@ -141,13 +190,14 @@ class MouseInput: GetFloatStep {
     
     func getInput(input: InputState) -> CGFloat {
         switch (dir) {
-        case .x: return input.mouse.mouseDelta.x
-        case .y: return input.mouse.mouseDelta.y
+        case .x: return input.mouse.mouseDeltaX
+        case .y: return input.mouse.mouseDeltaY
         }
     }
     
     func run(input: InputState) -> CGFloat {
-        return max(-1.0, min(1.0, sensitivity * getInput(input: input) * input.deltaTime))
+        let f = max(-1.0, min(1.0, sensitivity * getInput(input: input) * input.deltaTime))
+        return f
     }
 }
 

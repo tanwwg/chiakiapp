@@ -7,10 +7,6 @@
 
 import Foundation
 
-enum KMMouseButton: Codable {
-    case left, right
-}
-
 enum KMMouseDir: String, Codable {
     case x, y
 }
@@ -18,7 +14,7 @@ enum KMMouseDir: String, Codable {
 
 enum KMButtonInput: Codable {
     case key(code: String)
-    case mouse(button: KMMouseButton)
+    case mouse(button: MouseButton)
 }
 
 enum KMButtonOutput: String, Codable {
@@ -56,7 +52,7 @@ func generateBinaryInputCheck(input: KMButtonInput) throws -> BinaryInputCheck {
         }
         
     case .mouse(button: let button):
-        throw KMError.InvalidKeyCode
+        return MouseInputCheck(button: button)
     }
 }
 

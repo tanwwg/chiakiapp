@@ -239,11 +239,26 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
         
         self.inputState.steps = AppUiModel.global.keymap
         
+        disposeOnClose(NSEvent.addLocalMonitorForEvents(matching: .leftMouseDown) { evt in
+            self.inputState.mouse.onMouseEvent(button: .left, isDown: true)
+            return evt
+        })
+        disposeOnClose(NSEvent.addLocalMonitorForEvents(matching: .leftMouseUp) { evt in
+            self.inputState.mouse.onMouseEvent(button: .left, isDown: false)
+            return evt
+        })
+        disposeOnClose(NSEvent.addLocalMonitorForEvents(matching: .rightMouseDown) { evt in
+            self.inputState.mouse.onMouseEvent(button: .right, isDown: true)
+            return evt
+        })
+        disposeOnClose(NSEvent.addLocalMonitorForEvents(matching: .rightMouseUp) { evt in
+            self.inputState.mouse.onMouseEvent(button: .right, isDown: false)
+            return evt
+        })
+
         disposeOnClose(NSEvent.addLocalMonitorForEvents(matching: .flagsChanged) { evt in
             let evt: NSEvent = evt
-            
-            self.inputState.keyboard.onFlagsChanged(evt: evt)
-            
+            _ = self.inputState.keyboard.onFlagsChanged(evt: evt)
             return evt
         })
         
@@ -267,6 +282,12 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
         })
         
         disposeOnClose(NSEvent.addLocalMonitorForEvents(matching: .mouseMoved) { evt in
+            return self.inputState.mouse.onMouseMoved(evt: evt)
+        })
+        disposeOnClose(NSEvent.addLocalMonitorForEvents(matching: .leftMouseDragged) { evt in
+            return self.inputState.mouse.onMouseMoved(evt: evt)
+        })
+        disposeOnClose(NSEvent.addLocalMonitorForEvents(matching: .rightMouseDragged) { evt in
             return self.inputState.mouse.onMouseMoved(evt: evt)
         })
 
