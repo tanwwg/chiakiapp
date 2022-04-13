@@ -12,33 +12,43 @@ class CursorLogic {
     
     var wantsShowCursor = false
     var isCursorHidden = false
+    var window: NSWindow? = nil
+    
+    var observers: [Any] = []
     
     init() {
         wantsShowCursor = UserDefaults.standard.bool(forKey: "wantsShowCursor")
     }
     
     func setup() {
-        NotificationCenter.default.addObserver(forName: NSWindow.didBecomeKeyNotification, object: nil, queue: nil) { [weak self] _ in
+        observers.append(NotificationCenter.default.addObserver(forName: NSWindow.didBecomeKeyNotification, object: nil, queue: nil) { [weak self] (n: Notification) in
+            print("didBecomeKeyNotification")
             self?.synchronizeCursor()
-        }
+        })
 
-        NotificationCenter.default.addObserver(forName: NSWindow.didResignKeyNotification, object: nil, queue: nil) { [weak self] _ in
+        observers.append(NotificationCenter.default.addObserver(forName: NSWindow.didResignKeyNotification, object: nil, queue: nil) { [weak self] _ in
             self?.showCursor()
-        }
+        })
     }
     
     func teardown() {
-        NotificationCenter.default.removeObserver(self, name: NSWindow.didBecomeKeyNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSWindow.didResignKeyNotification, object: nil)
-
+        for o in observers {
+            NotificationCenter.default.removeObserver(o)
+        }
+        observers = []
+        
+        print("teardown")
+        self.showCursor()
     }
     
     func showCursor() {
+        print("Showing cursor")
         NSCursor.unhide()
         CGAssociateMouseAndMouseCursorPosition(1)
         isCursorHidden = false
     }
     func hideCursor() {
+        print("Hiding cursor")
         NSCursor.hide()
         CGAssociateMouseAndMouseCursorPosition(0)
         isCursorHidden = true

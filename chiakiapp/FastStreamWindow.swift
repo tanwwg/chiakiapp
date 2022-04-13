@@ -220,7 +220,12 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
     @IBAction func openDocument(_ s: Any?) {
         let op = NSOpenPanel()
         op.allowedContentTypes = [UTType.json]
-        if op.runModal() == .OK, let url = op.urls.first {
+
+        cursorLogic.showCursor()
+        let run = op.runModal()
+        cursorLogic.synchronizeCursor()
+        
+        if run == .OK, let url = op.urls.first {
             guard let km = AppUiModel.global.loadKeymap(url: url) else {
                 let alert = NSAlert()
                 alert.messageText = "Error loading keymap"
@@ -235,6 +240,7 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        cursorLogic.window = self.view.window
         cursorLogic.setup()
         
         self.inputState.steps = AppUiModel.global.keymap
