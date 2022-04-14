@@ -24,9 +24,12 @@ struct ConsoleListView: View {
     var body: some View {
         NavigationView {
             List {
-                Section(header: Text("Key Maps")) {
+                Section(header: Text("Setup")) {
                     NavigationLink(destination: DescribeKeymapView(steps: ui.keymap)) {
                         Text("\(ui.keymapFile)")
+                    }
+                    NavigationLink(destination: PreferencesView()) {
+                        Text("Preferences")
                     }
                 }
                 Section(header: Text("Consoles")) {
@@ -38,6 +41,7 @@ struct ConsoleListView: View {
                     }
                 }
             }
+            .listStyle(SidebarListStyle())
         }
         .sheet(item: $ui.register, onDismiss: {
             
@@ -47,6 +51,29 @@ struct ConsoleListView: View {
         })
         .environmentObject(ui)
 
+    }
+}
+
+struct PreferencesView: View {
+    
+    @AppStorage(AppUiModel.startStreamCommandStorageKey) var startStreamCommand = ""
+    
+    func test() {
+        do {
+            try shell(startStreamCommand)
+        } catch {
+            NSAlert(error: error).runModal()
+        }
+    }
+    
+    var body: some View {
+        Form {
+            TextField("Start stream command", text: $startStreamCommand)
+//            Button(action: test) {
+//                Text("Test")
+//            }
+        }
+        .padding()
     }
 }
 

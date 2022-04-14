@@ -184,6 +184,13 @@ class AppUiModel: ObservableObject {
     @Published var keymap: [InputStep] = []
     @Published var keymapFile: String = ""
     
+    static let startStreamCommandStorageKey = "startStreamCommand"
+    var startStreamCommand: String? {
+        get {
+            UserDefaults.standard.string(forKey: AppUiModel.startStreamCommandStorageKey)
+        }
+    }
+    
     func loadDefaultKeymap() -> String {
         guard let res = Bundle.main.url(forResource: "default-map", withExtension: "json"),
               let jd = try? Data(contentsOf: res),

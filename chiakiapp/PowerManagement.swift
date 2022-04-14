@@ -19,3 +19,10 @@ class PowerManager {
         IOPMAssertionRelease(assertionID)
     }
 }
+
+func shell(_ launchPath: String) throws {
+    let task = Process()
+    task.executableURL = URL(fileURLWithPath: launchPath)
+
+    try task.run()
+}

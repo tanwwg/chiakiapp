@@ -251,6 +251,14 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
         
         powerManager.disableSleep(reason: "Chiaki streaming")
         
+        if let cmd = AppUiModel.global.startStreamCommand {
+            do {
+                try shell(cmd)
+            } catch {
+                NSAlert(error: error).runModal()                
+            }
+        }
+        
         self.inputState.steps = AppUiModel.global.keymap
         
         disposeOnClose(NSEvent.addLocalMonitorForEvents(matching: .leftMouseDown) { evt in
