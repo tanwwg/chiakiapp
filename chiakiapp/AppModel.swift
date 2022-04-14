@@ -21,12 +21,25 @@ struct HostRegistration: Codable {
     var rpKey: Data
 }
 
+enum DiscoverHostState: String {
+    case ready, standby, unknown
+}
+
+func toHostState(_ state: ChiakiDiscoveryHostState) -> DiscoverHostState {
+    switch (state) {
+    case CHIAKI_DISCOVERY_HOST_STATE_READY: return .ready
+    case CHIAKI_DISCOVERY_HOST_STATE_STANDBY: return .standby
+    default: return .unknown
+    }
+}
+
 struct DiscoverHost: Identifiable {
     var id: String
     var name: String
     var addr: String
     var port: UInt16
     var hostType: String
+    var state: DiscoverHostState
     var registration: HostRegistration?
 }
 
@@ -94,7 +107,9 @@ class ChiakiDiscover: ObservableObject {
                         name: cstring(h.host_name),
                         addr: cstring(h.host_addr),
                         port: h.host_request_port,
-                        hostType: cstring(h.host_type))
+                        hostType: cstring(h.host_type),
+                        state: toHostState(h.state)
+                    )
                 }
                 self.registerHosts()
             }

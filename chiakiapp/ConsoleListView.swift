@@ -37,6 +37,7 @@ struct ConsoleListView: View {
                         NavigationLink(destination: HostView(host: host)) {
                             Text(host.name)
                                 .fontWeight(host.registration == nil ? .regular : .bold)
+                                .foregroundColor(host.state == .ready ? Color.black : Color.gray)
                         }
                     }
                 }
@@ -157,7 +158,7 @@ struct HostView: View {
     var body: some View {
         VStack {
             if host.registration != nil {
-                Text("registered")
+                Text(host.state.rawValue)
                 Button(action: { wake() }) {
                     Text("Wake")
                 }
@@ -196,6 +197,8 @@ struct RegisterView: View {
         Form {
             Text(host.name)
             Text(host.addr)
+            Text(host.hostType)
+            Text(host.state.rawValue)
             
             TextField("PSN ID", text:$psnid)
             TextField("Pin", text:$pin)
