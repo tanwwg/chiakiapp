@@ -183,11 +183,14 @@ class AppUiModel: ObservableObject {
     
     @Published var keymap: [InputStep] = []
     @Published var keymapFile: String = ""
-    
+
+    static let isStartStreamCommandStorageKey = "isStartStreamCommand"
     static let startStreamCommandStorageKey = "startStreamCommand"
     var startStreamCommand: String? {
         get {
-            UserDefaults.standard.string(forKey: AppUiModel.startStreamCommandStorageKey)
+            let b = UserDefaults.standard.bool(forKey: AppUiModel.isStartStreamCommandStorageKey)
+            if !b { return nil }
+            return UserDefaults.standard.string(forKey: AppUiModel.startStreamCommandStorageKey)
         }
     }
     

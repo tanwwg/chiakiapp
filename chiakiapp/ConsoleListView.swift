@@ -55,7 +55,8 @@ struct ConsoleListView: View {
 }
 
 struct PreferencesView: View {
-    
+
+    @AppStorage(AppUiModel.isStartStreamCommandStorageKey) var isStartStreamCommand = false
     @AppStorage(AppUiModel.startStreamCommandStorageKey) var startStreamCommand = ""
     
     func test() {
@@ -68,7 +69,14 @@ struct PreferencesView: View {
     
     var body: some View {
         Form {
-            TextField("Start stream command", text: $startStreamCommand)
+            HStack {
+                Toggle(isOn: $isStartStreamCommand) {
+                    
+                }
+                TextField("Start stream command", text: $startStreamCommand)
+                    .disabled(!isStartStreamCommand)
+            }
+            Text("Ideally disable airdrop / bluetooth / location services when starting a stream")
 //            Button(action: test) {
 //                Text("Test")
 //            }
