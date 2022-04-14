@@ -77,10 +77,12 @@ protocol BinaryInputCheck {
 
 protocol FloatStep {
     func run(value: CGFloat, input: InputState) -> Void
+    func describe() -> String
 }
 
 protocol GetFloatStep {
     func run(input: InputState) -> CGFloat
+    func describe() -> String
 }
 
 enum ControllerStick {
@@ -124,6 +126,10 @@ class FloatToStickStep: FloatStep {
         case .rightX: input.controllerState.right_x = unnormInt16(value)
         case .rightY: input.controllerState.right_y = unnormInt16(value)
         }
+    }
+    
+    func describe() -> String {
+        return "\(stick)"
     }
 }
 
@@ -171,7 +177,7 @@ class KeyboardInputCheck: BinaryInputCheck {
     }
     
     func describe() -> String {
-        return desc
+        return "Key \(desc)"
     }
 }
 
@@ -204,6 +210,10 @@ class MouseInput: GetFloatStep {
         let f = max(-1.0, min(1.0, v))
         return f
     }
+    
+    func describe() -> String {
+        return "Mouse \(dir) sensitivity:\(sensitivity) min:\(minOut)"
+    }
 }
 
 class FloatInputStep: InputStep {
@@ -220,7 +230,7 @@ class FloatInputStep: InputStep {
     }
     
     override func describe() -> String {
-        return "\(inStep) -> \(outStep)"
+        return "\(inStep.describe()) -> \(outStep.describe())"
     }
 }
 
@@ -270,7 +280,45 @@ class KeyToStickInputStep: InputStep {
     }
     
     override func describe() -> String {
-        return "\(minus?.describe() ?? "") \(plus.describe()) -> \(output)"
+        return "\(minus?.describe() ?? "") \(plus.describe()) -> \(output.describe())"
+    }
+}
+
+func describeButton(_ button: chiaki_controller_button_t) -> String {
+    switch (button) {
+    case CHIAKI_CONTROLLER_BUTTON_CROSS: return "cross"
+        
+    case CHIAKI_CONTROLLER_BUTTON_BOX: return "square"
+        
+    case CHIAKI_CONTROLLER_BUTTON_PYRAMID: return "triangle"
+        
+    case CHIAKI_CONTROLLER_BUTTON_MOON: return "circle"
+        
+    case CHIAKI_CONTROLLER_BUTTON_R1: return "R1"
+
+    case CHIAKI_CONTROLLER_BUTTON_L1: return "L1"
+
+    case CHIAKI_CONTROLLER_BUTTON_R3: return "R3"
+
+    case CHIAKI_CONTROLLER_BUTTON_L3: return "L3"
+
+    case CHIAKI_CONTROLLER_BUTTON_PS: return "PS"
+
+    case CHIAKI_CONTROLLER_BUTTON_TOUCHPAD: return "Touchpad"
+        
+    case CHIAKI_CONTROLLER_BUTTON_DPAD_UP: return "Dpad Up"
+        
+    case CHIAKI_CONTROLLER_BUTTON_DPAD_LEFT: return "Dpad Left"
+
+    case CHIAKI_CONTROLLER_BUTTON_DPAD_RIGHT: return "Dpad Right"
+
+    case CHIAKI_CONTROLLER_BUTTON_DPAD_DOWN: return "Dpad Down"
+        
+    case CHIAKI_CONTROLLER_BUTTON_OPTIONS: return "Options"
+
+    case CHIAKI_CONTROLLER_BUTTON_SHARE: return "Share"
+        
+    default: return "\(button)"
     }
 }
 
@@ -290,7 +338,7 @@ class ButtonInputStep: InputStep {
     }
     
     override func describe() -> String {
-        return "Button \(check.describe()) -> \(button)"
+        return "\(check.describe()) -> \(describeButton(button))"
     }
 }
 
