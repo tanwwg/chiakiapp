@@ -206,6 +206,8 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
         }
         toDispose = []
         
+        powerManager.enableSleep()
+        
         self.onDone()
     }
     
@@ -242,8 +244,12 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
         }
     }
     
+    let powerManager = PowerManager()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        powerManager.disableSleep(reason: "Chiaki streaming")
         
         self.inputState.steps = AppUiModel.global.keymap
         

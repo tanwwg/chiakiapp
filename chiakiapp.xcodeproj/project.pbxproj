@@ -29,6 +29,7 @@
 		AE5A301027F534F300AFDC4D /* InputManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5A300F27F534F300AFDC4D /* InputManager.swift */; };
 		AE5A301427F55C7D00AFDC4D /* libopus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5A301327F55C7D00AFDC4D /* libopus.a */; };
 		AE624CA227F5C58300990FE5 /* AudioQueuePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE624CA127F5C58300990FE5 /* AudioQueuePlayer.swift */; };
+		AE65370E2807A0E00026C619 /* PowerManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE65370D2807A0E00026C619 /* PowerManagement.swift */; };
 		AE76B1022800E00700BA3B36 /* libchiaki.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE76B1012800E00700BA3B36 /* libchiaki.a */; };
 		AE76B1052800E0CA00BA3B36 /* libjerasure.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE76B1032800E0CA00BA3B36 /* libjerasure.a */; };
 		AE76B1062800E0CA00BA3B36 /* libgf_complete.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE76B1042800E0CA00BA3B36 /* libgf_complete.a */; };
@@ -68,6 +69,7 @@
 		AE5A300F27F534F300AFDC4D /* InputManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputManager.swift; sourceTree = "<group>"; };
 		AE5A301327F55C7D00AFDC4D /* libopus.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libopus.a; path = ../../../../../../opt/homebrew/lib/libopus.a; sourceTree = "<group>"; };
 		AE624CA127F5C58300990FE5 /* AudioQueuePlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioQueuePlayer.swift; sourceTree = "<group>"; };
+		AE65370D2807A0E00026C619 /* PowerManagement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerManagement.swift; sourceTree = "<group>"; };
 		AE76B1012800E00700BA3B36 /* libchiaki.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libchiaki.a; path = ../../chiaki/build/lib/libchiaki.a; sourceTree = "<group>"; };
 		AE76B1032800E0CA00BA3B36 /* libjerasure.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjerasure.a; path = "../../chiaki/build/third-party/libjerasure.a"; sourceTree = "<group>"; };
 		AE76B1042800E0CA00BA3B36 /* libgf_complete.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgf_complete.a; path = "../../chiaki/build/third-party/libgf_complete.a"; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 				AE76B1072800E0F600BA3B36 /* libprotobuf-nanopb.a */,
 				AE76B12C2803BD9A00BA3B36 /* CursorLogic.swift */,
 				AE808251280674E700D57CD9 /* default-map.json */,
+				AE65370D2807A0E00026C619 /* PowerManagement.swift */,
 			);
 			path = chiakiapp;
 			sourceTree = "<group>";
@@ -258,6 +261,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE65370E2807A0E00026C619 /* PowerManagement.swift in Sources */,
 				AE624CA227F5C58300990FE5 /* AudioQueuePlayer.swift in Sources */,
 				AE5A2FF027F4177300AFDC4D /* shaders.metal in Sources */,
 				AE808254280675EE00D57CD9 /* KeyMapFile.swift in Sources */,
