@@ -46,9 +46,14 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
         return nil
     }
     
-    func isFormatFrame(_ p: UnsafeRawBufferPointer) -> Bool {
+    func isValidFrame(_ p: UnsafeRawBufferPointer) -> Bool {
         guard p.count > 5 else { return false }
-        return p[0] == 0 && p[1] == 0 && p[2] == 0 && p[3] == 1 && p[4] == 103
+        return p[0] == 0 && p[1] == 0 && p[2] == 0 && p[3] == 1
+    }
+    
+    /// assumption that its already a valid frame
+    func isFormatFrame(_ p: UnsafeRawBufferPointer) -> Bool {
+        return p[4] == 103
     }
     
     var videoFormatDesc: CMVideoFormatDescription?
@@ -74,6 +79,7 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
     
     func frameCb(_ frame: UnsafeMutablePointer<UInt8>, size: Int) {
         let srcp = UnsafeRawBufferPointer(start: frame, count: size)
+        if (!isValidFrame(srcp)) { return }
         if isFormatFrame(srcp) {
             createFormatDesc(srcp)
             return
