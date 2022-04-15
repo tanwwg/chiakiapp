@@ -13,7 +13,6 @@
 
 #import "chiaki/discoveryservice.h"
 #import "chiaki/regist.h"
-#import "chiaki/ffmpegdecoder.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -39,7 +38,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (copy) void (^callback)(NSData *data);
 @property (copy) void (^rawVideoCallback)(uint8_t *buf, size_t buf_size);
-@property (copy) void (^videoCallback)(AVFrame *frame);
 @property (copy) void (^audioSettingsCallback)(uint32_t channels, uint32_t rate);
 @property (copy) void (^audioFrameCallback)(int16_t *buf, size_t samples_count);
 @property (copy) void (^onKeyboardOpen)(void);

@@ -12,7 +12,6 @@
 #import "chiaki/regist.h"
 #import "chiaki/session.h"
 #import "chiaki/log.h"
-#import "chiaki/ffmpegdecoder.h"
 #import "chiaki/opusdecoder.h"
 
 #import "ChiakiBridge.h"
@@ -125,7 +124,6 @@ static void RegisterCb(ChiakiRegistEvent *event, void *user) {
 @implementation ChiakiSessionBridge {
     ChiakiSession session;
     ChiakiLog chiakiLog;
-    ChiakiFfmpegDecoder decoder;
     ChiakiOpusDecoder opusDecoder;
 }
 
@@ -143,8 +141,6 @@ static bool VideoCb(uint8_t *buf, size_t buf_size, void *user) {
     
     if (bridge.rawVideoCallback != NULL) {
         bridge.rawVideoCallback(buf, buf_size);
-    } else {
-        chiaki_ffmpeg_decoder_video_sample_cb(buf, buf_size, &bridge->decoder);
     }
     
     
@@ -165,27 +161,6 @@ static void AudioFrameCb(int16_t *buf, size_t samples_count, void *user)
     bridge.audioFrameCallback(buf, samples_count);
 }
 
-
-static void FrameCb(ChiakiFfmpegDecoder *decoder, void *user) {
-    AVFrame *frame = chiaki_ffmpeg_decoder_pull_frame(decoder);
-    if (frame == NULL) {
-        NSLog(@"Error pulling frame");
-        return;
-    }
-    
-//    @autoreleasepool {
-//        NSData * data = [[NSData alloc] initWithBytesNoCopy:frame->data[0] length:1920*1080];
-//        [data writeToFile:@"/Users/tjtan/downloads/test.raw" atomically:true];
-//    }
-    
-    ChiakiSessionBridge *bridge = (__bridge ChiakiSessionBridge *)(user);
-    if (bridge.videoCallback != nil) {
-        bridge.videoCallback(frame);
-    }
-    
-    av_frame_free(&frame);
-}
-
 static void EventCb(ChiakiEvent *evt, void *user) {
     ChiakiSessionBridge *bridge = (__bridge ChiakiSessionBridge *)(user);
     if (evt->type == CHIAKI_EVENT_KEYBOARD_OPEN && bridge.onKeyboardOpen != NULL) {
@@ -198,9 +173,6 @@ static void EventCb(ChiakiEvent *evt, void *user) {
     
     ChiakiErrorCode err;
     
-    err = chiaki_ffmpeg_decoder_init(&decoder, &chiakiLog, CHIAKI_CODEC_H264, NULL, FrameCb, (__bridge void*)self);
-    NSLog(@"chiaki_ffmpeg_decoder_init err=%d", err);
-
     ChiakiConnectInfo info = {};
     info.ps5 = true;
     info.host = [self.host cStringUsingEncoding:NSUTF8StringEncoding];
@@ -247,7 +219,6 @@ static void EventCb(ChiakiEvent *evt, void *user) {
     chiaki_session_join(&session);
     chiaki_session_fini(&session);
     chiaki_opus_decoder_fini(&opusDecoder);
-    chiaki_ffmpeg_decoder_fini(&decoder);
 
 }
 
