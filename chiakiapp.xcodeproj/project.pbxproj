@@ -15,18 +15,16 @@
 		AE5A2F7427F2E4D100AFDC4D /* ChiakiBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2F7327F2E4D100AFDC4D /* ChiakiBridge.m */; };
 		AE5A2FE527F307D400AFDC4D /* ConsoleListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2FE427F307D400AFDC4D /* ConsoleListView.swift */; };
 		AE5A2FE727F3E88E00AFDC4D /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2FE627F3E88E00AFDC4D /* AppModel.swift */; };
-		AE5A2FE927F416E500AFDC4D /* YuvRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2FE827F416E500AFDC4D /* YuvRenderer.swift */; };
 		AE5A2FEB27F416F900AFDC4D /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5A2FEA27F416F900AFDC4D /* MetalKit.framework */; };
 		AE5A2FED27F4170200AFDC4D /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5A2FEC27F4170200AFDC4D /* Metal.framework */; };
-		AE5A2FF027F4177300AFDC4D /* shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2FEF27F4177300AFDC4D /* shaders.metal */; };
 		AE5A2FF227F45CAA00AFDC4D /* KeyCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2FF127F45CAA00AFDC4D /* KeyCodes.swift */; };
 		AE5A301027F534F300AFDC4D /* InputManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5A300F27F534F300AFDC4D /* InputManager.swift */; };
 		AE624CA227F5C58300990FE5 /* AudioQueuePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE624CA127F5C58300990FE5 /* AudioQueuePlayer.swift */; };
 		AE65370E2807A0E00026C619 /* PowerManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE65370D2807A0E00026C619 /* PowerManagement.swift */; };
-		AE76B1022800E00700BA3B36 /* libchiaki.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE76B1012800E00700BA3B36 /* libchiaki.a */; };
-		AE76B1052800E0CA00BA3B36 /* libjerasure.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE76B1032800E0CA00BA3B36 /* libjerasure.a */; };
-		AE76B1062800E0CA00BA3B36 /* libgf_complete.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE76B1042800E0CA00BA3B36 /* libgf_complete.a */; };
-		AE76B1082800E0F600BA3B36 /* libprotobuf-nanopb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE76B1072800E0F600BA3B36 /* libprotobuf-nanopb.a */; };
+		AE6821832808F8F400E56FBF /* libchiaki.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE6821822808F8F400E56FBF /* libchiaki.a */; };
+		AE6821872808F92700E56FBF /* libjerasure.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE6821842808F92700E56FBF /* libjerasure.a */; };
+		AE6821882808F92700E56FBF /* libgf_complete.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE6821852808F92700E56FBF /* libgf_complete.a */; };
+		AE6821892808F92700E56FBF /* libprotobuf-nanopb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE6821862808F92700E56FBF /* libprotobuf-nanopb.a */; };
 		AE76B12B2801BFF900BA3B36 /* FastStreamWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE76B12A2801BFF900BA3B36 /* FastStreamWindow.swift */; };
 		AE76B12D2803BD9A00BA3B36 /* CursorLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE76B12C2803BD9A00BA3B36 /* CursorLogic.swift */; };
 		AE808252280674E700D57CD9 /* default-map.json in Resources */ = {isa = PBXBuildFile; fileRef = AE808251280674E700D57CD9 /* default-map.json */; };
@@ -44,29 +42,20 @@
 		AE5A2F1827F2D6F600AFDC4D /* chiakiapp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = chiakiapp.entitlements; sourceTree = "<group>"; };
 		AE5A2F7227F2E4D000AFDC4D /* chiakiapp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "chiakiapp-Bridging-Header.h"; sourceTree = "<group>"; };
 		AE5A2F7327F2E4D100AFDC4D /* ChiakiBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChiakiBridge.m; sourceTree = "<group>"; };
-		AE5A2F7627F2EA8F00AFDC4D /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "../../../../opt/homebrew/Cellar/openssl@3/3.0.2/lib/libssl.a"; sourceTree = "<group>"; };
-		AE5A2F7C27F2EB5500AFDC4D /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "../../../../../opt/homebrew/Cellar/openssl@3/3.0.2/lib/libssl.a"; sourceTree = "<group>"; };
-		AE5A2F7E27F2EB5B00AFDC4D /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "../../../../../opt/homebrew/Cellar/openssl@3/3.0.2/lib/libcrypto.a"; sourceTree = "<group>"; };
 		AE5A2F8027F2EBCA00AFDC4D /* ChiakiBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChiakiBridge.h; sourceTree = "<group>"; };
-		AE5A2FCE27F2F16C00AFDC4D /* libprotobuf-c.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libprotobuf-c.a"; path = "../../../../../opt/homebrew/Cellar/protobuf-c/1.4.0_1/lib/libprotobuf-c.a"; sourceTree = "<group>"; };
-		AE5A2FE027F2FDE700AFDC4D /* libavcodec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavcodec.a; path = ../../../../../opt/homebrew/Cellar/ffmpeg/5.0/lib/libavcodec.a; sourceTree = "<group>"; };
-		AE5A2FE227F2FDEE00AFDC4D /* libavutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavutil.a; path = ../../../../../opt/homebrew/Cellar/ffmpeg/5.0/lib/libavutil.a; sourceTree = "<group>"; };
 		AE5A2FE427F307D400AFDC4D /* ConsoleListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsoleListView.swift; sourceTree = "<group>"; };
 		AE5A2FE627F3E88E00AFDC4D /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
-		AE5A2FE827F416E500AFDC4D /* YuvRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YuvRenderer.swift; sourceTree = "<group>"; };
 		AE5A2FEA27F416F900AFDC4D /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
 		AE5A2FEC27F4170200AFDC4D /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
-		AE5A2FEE27F4173600AFDC4D /* MetalHeaders.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MetalHeaders.h; sourceTree = "<group>"; };
-		AE5A2FEF27F4177300AFDC4D /* shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = shaders.metal; sourceTree = "<group>"; };
 		AE5A2FF127F45CAA00AFDC4D /* KeyCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyCodes.swift; sourceTree = "<group>"; };
 		AE5A300F27F534F300AFDC4D /* InputManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputManager.swift; sourceTree = "<group>"; };
 		AE5A301327F55C7D00AFDC4D /* libopus.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libopus.a; path = ../../../../../../opt/homebrew/lib/libopus.a; sourceTree = "<group>"; };
 		AE624CA127F5C58300990FE5 /* AudioQueuePlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioQueuePlayer.swift; sourceTree = "<group>"; };
 		AE65370D2807A0E00026C619 /* PowerManagement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerManagement.swift; sourceTree = "<group>"; };
-		AE76B1012800E00700BA3B36 /* libchiaki.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libchiaki.a; path = ../../chiaki/build/lib/libchiaki.a; sourceTree = "<group>"; };
-		AE76B1032800E0CA00BA3B36 /* libjerasure.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjerasure.a; path = "../../chiaki/build/third-party/libjerasure.a"; sourceTree = "<group>"; };
-		AE76B1042800E0CA00BA3B36 /* libgf_complete.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgf_complete.a; path = "../../chiaki/build/third-party/libgf_complete.a"; sourceTree = "<group>"; };
-		AE76B1072800E0F600BA3B36 /* libprotobuf-nanopb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libprotobuf-nanopb.a"; path = "../../chiaki/build/third-party/nanopb/libprotobuf-nanopb.a"; sourceTree = "<group>"; };
+		AE6821822808F8F400E56FBF /* libchiaki.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libchiaki.a; path = ../chiaki/build/lib/libchiaki.a; sourceTree = "<group>"; };
+		AE6821842808F92700E56FBF /* libjerasure.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjerasure.a; path = "../chiaki/build/third-party/libjerasure.a"; sourceTree = "<group>"; };
+		AE6821852808F92700E56FBF /* libgf_complete.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgf_complete.a; path = "../chiaki/build/third-party/libgf_complete.a"; sourceTree = "<group>"; };
+		AE6821862808F92700E56FBF /* libprotobuf-nanopb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libprotobuf-nanopb.a"; path = "../chiaki/build/third-party/nanopb/libprotobuf-nanopb.a"; sourceTree = "<group>"; };
 		AE76B12A2801BFF900BA3B36 /* FastStreamWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FastStreamWindow.swift; sourceTree = "<group>"; };
 		AE76B12C2803BD9A00BA3B36 /* CursorLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CursorLogic.swift; sourceTree = "<group>"; };
 		AE808251280674E700D57CD9 /* default-map.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "default-map.json"; sourceTree = "<group>"; };
@@ -79,12 +68,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AE76B1022800E00700BA3B36 /* libchiaki.a in Frameworks */,
+				AE6821872808F92700E56FBF /* libjerasure.a in Frameworks */,
+				AE6821882808F92700E56FBF /* libgf_complete.a in Frameworks */,
+				AE6821892808F92700E56FBF /* libprotobuf-nanopb.a in Frameworks */,
+				AE6821832808F8F400E56FBF /* libchiaki.a in Frameworks */,
 				AE5A2FED27F4170200AFDC4D /* Metal.framework in Frameworks */,
 				AE5A2FEB27F416F900AFDC4D /* MetalKit.framework in Frameworks */,
-				AE76B1062800E0CA00BA3B36 /* libgf_complete.a in Frameworks */,
-				AE76B1052800E0CA00BA3B36 /* libjerasure.a in Frameworks */,
-				AE76B1082800E0F600BA3B36 /* libprotobuf-nanopb.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -126,19 +115,7 @@
 				AE5A2F7227F2E4D000AFDC4D /* chiakiapp-Bridging-Header.h */,
 				AE5A2F7327F2E4D100AFDC4D /* ChiakiBridge.m */,
 				AE5A2F8027F2EBCA00AFDC4D /* ChiakiBridge.h */,
-				AE5A2FE027F2FDE700AFDC4D /* libavcodec.a */,
-				AE5A2FE227F2FDEE00AFDC4D /* libavutil.a */,
-				AE5A2FCE27F2F16C00AFDC4D /* libprotobuf-c.a */,
-				AE5A2F7E27F2EB5B00AFDC4D /* libcrypto.a */,
-				AE5A2F7C27F2EB5500AFDC4D /* libssl.a */,
-				AE5A2FE827F416E500AFDC4D /* YuvRenderer.swift */,
-				AE5A2FEE27F4173600AFDC4D /* MetalHeaders.h */,
-				AE5A2FEF27F4177300AFDC4D /* shaders.metal */,
 				AE5A2FF127F45CAA00AFDC4D /* KeyCodes.swift */,
-				AE76B1012800E00700BA3B36 /* libchiaki.a */,
-				AE76B1042800E0CA00BA3B36 /* libgf_complete.a */,
-				AE76B1032800E0CA00BA3B36 /* libjerasure.a */,
-				AE76B1072800E0F600BA3B36 /* libprotobuf-nanopb.a */,
 				AE76B12C2803BD9A00BA3B36 /* CursorLogic.swift */,
 				AE808251280674E700D57CD9 /* default-map.json */,
 				AE65370D2807A0E00026C619 /* PowerManagement.swift */,
@@ -149,9 +126,12 @@
 		AE5A2F7527F2EA8F00AFDC4D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AE6821852808F92700E56FBF /* libgf_complete.a */,
+				AE6821842808F92700E56FBF /* libjerasure.a */,
+				AE6821862808F92700E56FBF /* libprotobuf-nanopb.a */,
+				AE6821822808F8F400E56FBF /* libchiaki.a */,
 				AE5A2FEC27F4170200AFDC4D /* Metal.framework */,
 				AE5A2FEA27F416F900AFDC4D /* MetalKit.framework */,
-				AE5A2F7627F2EA8F00AFDC4D /* libssl.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -249,10 +229,8 @@
 			files = (
 				AE65370E2807A0E00026C619 /* PowerManagement.swift in Sources */,
 				AE624CA227F5C58300990FE5 /* AudioQueuePlayer.swift in Sources */,
-				AE5A2FF027F4177300AFDC4D /* shaders.metal in Sources */,
 				AE808254280675EE00D57CD9 /* KeyMapFile.swift in Sources */,
 				AE8082562806846900D57CD9 /* KeyCodeMap.swift in Sources */,
-				AE5A2FE927F416E500AFDC4D /* YuvRenderer.swift in Sources */,
 				AE5A301027F534F300AFDC4D /* InputManager.swift in Sources */,
 				AE76B12D2803BD9A00BA3B36 /* CursorLogic.swift in Sources */,
 				AE5A2F1227F2D6F500AFDC4D /* ViewController.swift in Sources */,
@@ -426,7 +404,6 @@
 					"@executable_path/../Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = (
-					"/Users/tjtan/work/chiaki/third-party/nanopb",
 					/Users/tjtan/work/chiaki/build/lib,
 					"/Users/tjtan/work/chiaki/build/third-party",
 					"/Users/tjtan/work/chiaki/build/third-party/nanopb",
@@ -480,7 +457,6 @@
 					"@executable_path/../Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = (
-					"/Users/tjtan/work/chiaki/third-party/nanopb",
 					/Users/tjtan/work/chiaki/build/lib,
 					"/Users/tjtan/work/chiaki/build/third-party",
 					"/Users/tjtan/work/chiaki/build/third-party/nanopb",
