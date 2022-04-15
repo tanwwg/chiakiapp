@@ -257,7 +257,7 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
         
         powerManager.disableSleep(reason: "Chiaki streaming")
         
-        if let cmd = AppUiModel.global.startStreamCommand {
+        if let cmd = AppUiModel.global.startStreamCommandProp {
             do {
                 try shell(cmd)
             } catch {

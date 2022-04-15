@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct HostRegistration: Codable {
     var hostId: String
@@ -197,57 +198,50 @@ class AppUiModel: ObservableObject {
     var discover = ChiakiDiscover()
     
     @Published var keymap: [InputStep] = []
-    @Published var keymapFile: String = ""
+    
+    @AppStorage("keymapFile") var keymapFile: String = ""
+    @AppStorage("keymap") var keymapStore: String?
 
-    static let isStartStreamCommandStorageKey = "isStartStreamCommand"
-    static let startStreamCommandStorageKey = "startStreamCommand"
-    var startStreamCommand: String? {
+    @AppStorage("isStartStreamCommand") var isStartStreamCommand = false
+    @AppStorage("startStreamCommand") var startStreamCommand = ""
+
+    var startStreamCommandProp: String? {
         get {
-            let b = UserDefaults.standard.bool(forKey: AppUiModel.isStartStreamCommandStorageKey)
-            if !b { return nil }
-            return UserDefaults.standard.string(forKey: AppUiModel.startStreamCommandStorageKey)
+            if !isStartStreamCommand { return nil }
+            return startStreamCommand
         }
     }
     
-    func loadDefaultKeymap() -> String {
-        guard let res = Bundle.main.url(forResource: "default-map", withExtension: "json"),
+    func loadBundleAsString(bundle: String, ext:String) -> String {
+        guard let res = Bundle.main.url(forResource: bundle, withExtension: ext),
               let jd = try? Data(contentsOf: res),
               let s = String(data: jd, encoding: .utf8) else { return "" }
         return s
     }
     
-    func saveDefaultKeymap() {
-        if UserDefaults.standard.string(forKey: "keymap") == nil {
-            UserDefaults.standard.set(loadDefaultKeymap(), forKey: "keymap")
-            UserDefaults.standard.set("default-map", forKey: "keymapFile")
-            UserDefaults.standard.synchronize()
-        }
-    }
-    
     func loadStartupKeymap() {
-        guard let km = UserDefaults.standard.string(forKey: "keymap"),
-              let data = km.data(using: .utf8),
-              let inp = try? loadKeymapFile(data: data) else { return }
-        self.keymap = inp
-        self.keymapFile = UserDefaults.standard.string(forKey: "keymapFile") ?? ""
+        if let kms = self.keymapStore, let km = try? loadKeymapFile(string: kms) {
+            self.keymap = km
+        } else {
+            let bundle = loadBundleAsString(bundle: "default-map", ext: "json")
+            self.keymapStore = bundle
+            self.keymapFile = "default-map"
+            self.keymap = try! loadKeymapFile(string: bundle)
+        }
     }
     
     func loadKeymap(url: URL) throws -> [InputStep] {
         let data = try Data(contentsOf: url)
         let inp = try loadKeymapFile(data: data)
         
-        UserDefaults.standard.set(String(data: data, encoding: .utf8), forKey: "keymap")
-        UserDefaults.standard.set(url.lastPathComponent, forKey: "keymapFile")
-        UserDefaults.standard.synchronize()
-        
-        self.keymap = inp
+        self.keymapStore = String(data: data, encoding: .utf8)
         self.keymapFile = url.lastPathComponent
+        self.keymap = inp
         
         return inp
     }
     
     init() {
-        saveDefaultKeymap()
         loadStartupKeymap()
     }
     

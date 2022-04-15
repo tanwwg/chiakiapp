@@ -37,6 +37,7 @@ enum KMStep: Codable {
 
 enum KMError: Error {
     case InvalidKeyCode
+    case InvalidString
 }
 
 func generateBinaryInputCheck(input: KMButtonInput) throws -> BinaryInputCheck {
@@ -176,4 +177,11 @@ func loadKeymapFile(data: Data) throws -> [InputStep] {
     let inp = try JSONDecoder().decode([KMStep].self, from: data)     
     let steps = try generateInputSteps(steps: inp)
     return steps
+}
+
+func loadKeymapFile(string: String) throws -> [InputStep] {
+    guard let d = string.data(using: .utf8) else {
+        throw KMError.InvalidString
+    }
+    return try loadKeymapFile(data: d)
 }
