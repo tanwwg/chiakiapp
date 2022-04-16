@@ -214,12 +214,15 @@ static void EventCb(ChiakiEvent *evt, void *user) {
     chiaki_session_set_controller_state(&session, &state);
 }
 
+-(void)sleep {
+    chiaki_session_goto_bed(&session);
+}
+
 -(void)stop {
     chiaki_session_stop(&session);
     chiaki_session_join(&session);
     chiaki_session_fini(&session);
     chiaki_opus_decoder_fini(&opusDecoder);
-
 }
 
 +(void)nalReplace:(void*)inbytes length:(int)length {

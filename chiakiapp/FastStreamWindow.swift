@@ -21,14 +21,6 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
         super.init(coder: coder)
     }
     
-    func check(_ status: OSStatus, msg: String) -> Bool {
-        if status != 0 {
-            print("\(msg) err=\(status)")
-            return false
-        }
-        return true
-    }
-    
     func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
         if menuItem.identifier == NSUserInterfaceItemIdentifier(rawValue: "showCursor") {
             menuItem.title = cursorLogic.wantsShowCursor ? "Hide Cursor" : "Show Cursor"
@@ -36,84 +28,8 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
         }
         return true
     }
-    
-    func findNalStart(_ p: UnsafeRawBufferPointer, start: Int) -> Int? {
-        for i in start...p.count-4 {
-            if p[i] == 0 && p[i+1] == 0 && p[i+2] == 0 && p[i+3] == 1 {
-                return i
-            }
-        }
-        return nil
-    }
-    
-    func isValidFrame(_ p: UnsafeRawBufferPointer) -> Bool {
-        guard p.count > 5 else { return false }
-        return p[0] == 0 && p[1] == 0 && p[2] == 0 && p[3] == 1
-    }
-    
-    /// assumption that its already a valid frame
-    func isFormatFrame(_ p: UnsafeRawBufferPointer) -> Bool {
-        return p[4] == 103
-    }
-    
-    var videoFormatDesc: CMVideoFormatDescription?
-    
-    func createFormatDesc(_ frame: UnsafeRawBufferPointer) {
-        guard let start = findNalStart(frame, start: 0) else { return }
-        guard start == 0 else { return }
-        guard let next = findNalStart(frame, start: start+4) else { return }
         
-        let bytes = frame.bindMemory(to: UInt8.self).baseAddress!
-        
-        var ptrs: [UnsafePointer<UInt8>] = []
-        ptrs.append(bytes + 4)
-        ptrs.append(bytes + next + 4)
 
-        var sizes: [Int] = []
-        sizes.append(next-start)
-        sizes.append(frame.count-next)
-
-        guard check(CMVideoFormatDescriptionCreateFromH264ParameterSets(allocator: nil, parameterSetCount: 2, parameterSetPointers: &ptrs, parameterSetSizes: &sizes, nalUnitHeaderLength: 4, formatDescriptionOut: &videoFormatDesc), msg: "CMVideoFormatDescriptionCreateFromH264ParameterSets") else { return }
-    }
-    
-    
-    func frameCb(_ frame: UnsafeMutablePointer<UInt8>, size: Int) {
-        let srcp = UnsafeRawBufferPointer(start: frame, count: size)
-        if (!isValidFrame(srcp)) { return }
-        if isFormatFrame(srcp) {
-            createFormatDesc(srcp)
-            return
-        }
-        
-        guard let formatDesc = self.videoFormatDesc else { return }
-        
-        let ptr = UnsafeMutableRawBufferPointer.allocate(byteCount: size, alignment: MemoryLayout<Data>.alignment)
-        ptr.copyBytes(from: UnsafeRawBufferPointer(start: frame, count: size))
-        
-        guard let pp = ptr.baseAddress else { return }
-        
-        ChiakiSessionBridge.nalReplace(pp, length: Int32(size))
-
-        var blockBuffer: CMBlockBuffer? = nil
-       
-        guard check(CMBlockBufferCreateWithMemoryBlock(allocator: kCFAllocatorDefault, memoryBlock: ptr.baseAddress, blockLength: size, blockAllocator: nil, customBlockSource:nil, offsetToData: 0, dataLength: size, flags: 0, blockBufferOut: &blockBuffer), msg: "CMBlockBufferCreateWithMemoryBlock") else {
-            ptr.deallocate()
-            return
-        }
-        
-        var sampleBuffer: CMSampleBuffer? = nil
-        var sampleSize = size
-        guard check(CMSampleBufferCreate(allocator: kCFAllocatorDefault, dataBuffer: blockBuffer, dataReady: true, makeDataReadyCallback: nil, refcon: nil, formatDescription: formatDesc, sampleCount: 1, sampleTimingEntryCount: 0, sampleTimingArray: nil, sampleSizeEntryCount: 1, sampleSizeArray: &sampleSize, sampleBufferOut: &sampleBuffer), msg: "CMSampleBufferCreate") else {
-            return
-        }
-        
-        if let buf = sampleBuffer {
-            ChiakiSessionBridge.setDisplayImmediately(buf)
-            self.display?.enqueue(buf)
-        }
-
-    }
-    
     var display: AVSampleBufferDisplayLayer?
     @IBOutlet var statusText: NSTextField!
     
@@ -180,12 +96,14 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
     
     var cursorLogic = CursorLogic()
     
+    let videoController = VideoController()
+    
     var onDone: () -> Void = {}
     
     func setup(session: ChiakiSessionBridge) {
         print("Session started")
         self.session = session
-        session.rawVideoCallback = self.frameCb(_:size:)
+        session.rawVideoCallback = self.videoController.handleVideoFrame(_:size:)
         session.audioSettingsCallback = { (ch, sr) in
             self.audioPlayer.startup(channels: Int(ch), sampleRate: Double(sr))
         }
@@ -193,7 +111,7 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
             let data = Data(bytesNoCopy: buf, count: count * 4, deallocator: .none)
             self.audioPlayer.play(data: data)
         }
-        session.onKeyboardOpen = { self.setKeyboardInput(true) }
+        session.onKeyboardOpen = { DispatchQueue.main.async { self.setKeyboardInput(true) } }
         
         session.start()
     }
@@ -225,6 +143,14 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
         }
     }
     
+    @IBAction func saveDocument(_ s: Any?) {
+        session?.sleep()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.view.window?.close()
+        }
+        
+    }
+    
     @IBAction func openDocument(_ s: Any?) {
         let op = NSOpenPanel()
         op.allowedContentTypes = [UTType.json]
@@ -254,7 +180,7 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+                
         powerManager.disableSleep(reason: "Chiaki streaming")
         
         if let cmd = AppUiModel.global.startStreamCommandProp {
@@ -335,6 +261,8 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
             l.addSublayer(disp)
             self.display = disp
         }
+        
+        self.videoController.display = self.display
 
     }
 }

@@ -48,6 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(void)start;
 -(void)stop;
+-(void)sleep;
 -(void)setControllerState:(ChiakiControllerState)state;
 -(void)setKeyboardText:(NSString*)s;
 
