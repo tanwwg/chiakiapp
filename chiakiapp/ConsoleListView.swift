@@ -169,6 +169,8 @@ struct RegisterView: View {
     @State var pin: String = ""
     @State var err: String?
     
+    let pub = NotificationCenter.default.publisher(for: LoginWindow.PsnIdFetched)
+    
     func register() {
         guard let psndata = Data(base64Encoded: psnid) else {
             err = "Invalid psn id"
@@ -216,6 +218,11 @@ struct RegisterView: View {
 
         }
         .padding()
+        .onReceive(pub) { o in
+            if let s = o.object as? String {
+                psnid = s
+            }
+        }
     }
 }
 

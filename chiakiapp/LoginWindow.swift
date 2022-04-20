@@ -31,6 +31,8 @@ class LoginWindow: NSViewController, WKNavigationDelegate {
     let CLIENT_ID = "ba495a24-818c-472b-b12d-ff231c1b5745"
     let CLIENT_SECRET = "mvaiZkRsAsI1IBkY"
     
+    static let PsnIdFetched = Notification.Name.init("PsnIdFetched")
+    
     @IBOutlet var webView: WKWebView!
     @IBOutlet var urlField: NSTextField!
     @IBOutlet var progressView: NSProgressIndicator!
@@ -70,6 +72,8 @@ class LoginWindow: NSViewController, WKNavigationDelegate {
         }
         let s = withUnsafeBytes(of: i) { Data($0).base64EncodedString() }
         print(s)
+        
+        NotificationCenter.default.post(name: LoginWindow.PsnIdFetched, object: s)
         
         self.view.window?.close()
     }
