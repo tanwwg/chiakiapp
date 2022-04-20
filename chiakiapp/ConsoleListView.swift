@@ -181,6 +181,11 @@ struct RegisterView: View {
         ui.register = ChiakiRegister(discover: ui.discover, host: host, psn: psndata, pin: pinInt)
     }
     
+    func fetchPsn() {
+        guard let sb = NSStoryboard.main?.instantiateController(withIdentifier: "loginWindow") as? NSWindowController else { return }
+        sb.showWindow(self)
+    }
+    
     var body: some View {
         Form {
             Text(host.name)
@@ -188,7 +193,12 @@ struct RegisterView: View {
             Text(host.hostType)
             Text(host.state.rawValue)
             
-            TextField("PSN ID", text:$psnid)
+            HStack {
+                TextField("PSN ID", text:$psnid)
+                Button(action: fetchPsn) {
+                    Text("Fetch")
+                }
+            }
             TextField("Pin", text:$pin)
             Text(err ?? " ")
             

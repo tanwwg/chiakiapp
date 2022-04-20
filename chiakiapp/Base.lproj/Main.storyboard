@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="19529"/>
+        <plugIn identifier="com.apple.WebKit2IBPlugin" version="19529"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -708,10 +709,10 @@
             </objects>
             <point key="canvasLocation" x="56" y="699.5"/>
         </scene>
-        <!--Window Controller-->
+        <!--Streaming Window-->
         <scene sceneID="Fn8-mH-rNu">
             <objects>
-                <windowController storyboardIdentifier="fastStream" id="K4D-iY-q4W" sceneMemberID="viewController">
+                <windowController storyboardIdentifier="fastStream" id="K4D-iY-q4W" userLabel="Streaming Window" sceneMemberID="viewController">
                     <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="fastStreamWindow" animationBehavior="default" id="Ir0-G4-j9h">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
@@ -779,6 +780,85 @@
                 <customObject id="gNc-Di-GpP" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1107.5" y="1138"/>
+        </scene>
+        <!--Login-->
+        <scene sceneID="nNl-JZ-6cG">
+            <objects>
+                <windowController storyboardIdentifier="loginWindow" id="ojP-EL-UO9" userLabel="Login" sceneMemberID="viewController">
+                    <window key="window" title="Login" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" tabbingIdentifier="loginWindow" id="xR4-hq-EMC">
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+                        <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+                        <rect key="contentRect" x="255" y="323" width="480" height="270"/>
+                        <rect key="screenRect" x="0.0" y="0.0" width="1728" height="1079"/>
+                        <view key="contentView" id="eEX-6M-Om4">
+                            <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </view>
+                        <connections>
+                            <outlet property="delegate" destination="ojP-EL-UO9" id="gv5-3H-9xM"/>
+                        </connections>
+                    </window>
+                    <connections>
+                        <segue destination="hkz-rF-5OB" kind="relationship" relationship="window.shadowedContentViewController" id="BB1-MO-z1O"/>
+                    </connections>
+                </windowController>
+                <customObject id="bxC-bp-XYB" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-545" y="-181"/>
+        </scene>
+        <!--Login Window-->
+        <scene sceneID="OPu-04-bSC">
+            <objects>
+                <viewController id="hkz-rF-5OB" customClass="LoginWindow" customModule="chiakiapp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="uUz-re-nWo">
+                        <rect key="frame" x="0.0" y="0.0" width="800" height="621"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <wkWebView wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pPR-VK-hpS">
+                                <rect key="frame" x="0.0" y="0.0" width="800" height="600"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="600" id="1Aq-oL-KyC"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="800" id="ScM-Qu-InG"/>
+                                </constraints>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
+                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Mrv-f6-Tv7">
+                                <rect key="frame" x="0.0" y="600" width="800" height="21"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" id="Jy2-u4-1sr">
+                                    <font key="font" usesAppearanceFont="YES"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <progressIndicator hidden="YES" maxValue="100" displayedWhenStopped="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="6Fg-qo-8Vu">
+                                <rect key="frame" x="392" y="303" width="16" height="16"/>
+                            </progressIndicator>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="6Fg-qo-8Vu" firstAttribute="centerY" secondItem="uUz-re-nWo" secondAttribute="centerY" id="EXy-Bd-YNV"/>
+                            <constraint firstAttribute="bottom" secondItem="pPR-VK-hpS" secondAttribute="bottom" id="EmC-JH-Udf"/>
+                            <constraint firstItem="6Fg-qo-8Vu" firstAttribute="centerX" secondItem="uUz-re-nWo" secondAttribute="centerX" id="GRV-Ia-N79"/>
+                            <constraint firstItem="pPR-VK-hpS" firstAttribute="top" secondItem="Mrv-f6-Tv7" secondAttribute="bottom" id="JAg-12-PrB"/>
+                            <constraint firstItem="pPR-VK-hpS" firstAttribute="leading" secondItem="uUz-re-nWo" secondAttribute="leading" id="JqJ-oJ-1bP"/>
+                            <constraint firstItem="pPR-VK-hpS" firstAttribute="top" secondItem="Mrv-f6-Tv7" secondAttribute="bottom" id="N8b-XC-0G1"/>
+                            <constraint firstItem="Mrv-f6-Tv7" firstAttribute="leading" secondItem="uUz-re-nWo" secondAttribute="leading" id="Wrp-Nn-xbi"/>
+                            <constraint firstAttribute="trailing" secondItem="pPR-VK-hpS" secondAttribute="trailing" id="iBF-vv-Wss"/>
+                            <constraint firstAttribute="trailing" secondItem="Mrv-f6-Tv7" secondAttribute="trailing" id="sth-OG-6Aa"/>
+                            <constraint firstItem="Mrv-f6-Tv7" firstAttribute="top" secondItem="uUz-re-nWo" secondAttribute="top" id="wIH-Lh-eWz"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="progressView" destination="6Fg-qo-8Vu" id="n8R-IS-91B"/>
+                        <outlet property="urlField" destination="Mrv-f6-Tv7" id="ZhZ-vO-Pqs"/>
+                        <outlet property="webView" destination="pPR-VK-hpS" id="beh-mn-0IP"/>
+                    </connections>
+                </viewController>
+                <customObject id="7mP-iG-Awf" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-545" y="470"/>
         </scene>
     </scenes>
 </document>

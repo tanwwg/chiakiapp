@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		AE546F92280A231B00DDC445 /* VideoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE546F91280A231B00DDC445 /* VideoController.swift */; };
+		AE59D9FA280F7F7900BEA772 /* LoginWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE59D9F9280F7F7900BEA772 /* LoginWindow.swift */; };
 		AE5A2F1027F2D6F500AFDC4D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2F0F27F2D6F500AFDC4D /* AppDelegate.swift */; };
 		AE5A2F1227F2D6F500AFDC4D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2F1127F2D6F500AFDC4D /* ViewController.swift */; };
 		AE5A2F1427F2D6F600AFDC4D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE5A2F1327F2D6F600AFDC4D /* Assets.xcassets */; };
@@ -30,6 +31,7 @@
 
 /* Begin PBXFileReference section */
 		AE546F91280A231B00DDC445 /* VideoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoController.swift; sourceTree = "<group>"; };
+		AE59D9F9280F7F7900BEA772 /* LoginWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginWindow.swift; sourceTree = "<group>"; };
 		AE5A2F0C27F2D6F500AFDC4D /* chiakiapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = chiakiapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE5A2F0F27F2D6F500AFDC4D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AE5A2F1127F2D6F500AFDC4D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -111,6 +113,7 @@
 				AE808251280674E700D57CD9 /* default-map.json */,
 				AE65370D2807A0E00026C619 /* PowerManagement.swift */,
 				AE546F91280A231B00DDC445 /* VideoController.swift */,
+				AE59D9F9280F7F7900BEA772 /* LoginWindow.swift */,
 			);
 			path = chiakiapp;
 			sourceTree = "<group>";
@@ -223,6 +226,7 @@
 				AE808254280675EE00D57CD9 /* KeyMapFile.swift in Sources */,
 				AE8082562806846900D57CD9 /* KeyCodeMap.swift in Sources */,
 				AE5A301027F534F300AFDC4D /* InputManager.swift in Sources */,
+				AE59D9FA280F7F7900BEA772 /* LoginWindow.swift in Sources */,
 				AE76B12D2803BD9A00BA3B36 /* CursorLogic.swift in Sources */,
 				AE5A2F1227F2D6F500AFDC4D /* ViewController.swift in Sources */,
 				AE76B12B2801BFF900BA3B36 /* FastStreamWindow.swift in Sources */,
