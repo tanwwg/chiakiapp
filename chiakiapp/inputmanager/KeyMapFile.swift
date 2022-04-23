@@ -14,6 +14,7 @@ enum KMMouseDir: String, Codable {
 enum KMButtonInput: Codable {
     case key(code: String)
     case mouse(button: MouseButton)
+    case controller(button: KMButtonOutput)
 }
 
 enum KMButtonOutput: String, Codable {
@@ -27,6 +28,7 @@ enum KMStickOutput: String, Codable {
 
 enum KMStickInput: Codable {
     case mouse(sensitivity: CGFloat, dir: KMMouseDir, min: CGFloat?)
+    case controller(dir: KMStickOutput, reverse: Bool?)
 }
 
 enum KMStep: Codable {
@@ -53,6 +55,9 @@ func generateBinaryInputCheck(input: KMButtonInput) throws -> BinaryInputCheck {
         
     case .mouse(button: let button):
         return MouseInputCheck(button: button)
+        
+    case .controller(button: let button):
+        return GameControllerInputCheck(button: button)
     }
 }
 
@@ -143,6 +148,8 @@ func toFloatInputStep(input: KMStickInput) -> GetFloatStep {
             m.minOut = minn
         }
         return m
+    case .controller(dir: let dir, reverse: let reverse):
+        return GameControllerFloatInput(dir: dir, reverse: reverse ?? false)
     }
 }
 

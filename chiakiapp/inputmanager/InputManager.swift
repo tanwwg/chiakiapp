@@ -7,6 +7,7 @@
 
 import Foundation
 import AppKit
+import GameController
 
 
 
@@ -14,6 +15,7 @@ import AppKit
 class InputState {
     var keyboard = KeyboardManager()
     var mouse = MouseManager()
+    var controller: GCExtendedGamepad? = nil
     
     var controllerState = ChiakiControllerState()
     var steps: [InputStep] = []
@@ -22,7 +24,10 @@ class InputState {
     
     func run(_ inDeltaTime: CGFloat) -> ChiakiControllerState {
         controllerState = ChiakiControllerState()
+        
         self.deltaTime = inDeltaTime
+        self.controller = GCController.current?.extendedGamepad?.capture()
+        
         for step in steps {
             step.run(input: self)
         }
@@ -163,6 +168,47 @@ class MouseInputCheck: BinaryInputCheck {
     }
 }
 
+class GameControllerInputCheck: BinaryInputCheck {
+    
+    let button: KMButtonOutput
+    internal init(button: KMButtonOutput) {
+        self.button = button
+    }
+    
+    func getInput(gc: GCExtendedGamepad) -> GCControllerButtonInput? {
+        switch (button) {
+        case .circle: return gc.buttonB
+        case .cross: return gc.buttonA
+        case .square: return gc.buttonX
+        case .triangle: return gc.buttonY
+        case .dpad_up: return gc.dpad.up
+        case .dpad_down: return gc.dpad.down
+        case .dpad_right: return gc.dpad.right
+        case .dpad_left: return gc.dpad.left
+        case .l1: return gc.leftShoulder
+        case .r1: return gc.rightShoulder
+        case .l3: return gc.leftThumbstickButton
+        case .r3: return gc.leftThumbstickButton
+        case .option: return gc.buttonMenu
+        case .share: return gc.buttonOptions
+        case .ps: return gc.buttonHome
+        case .touchpad: return gc.allTouchpads.first?.button
+        }
+    }
+        
+    func IsToggled(input: InputState) -> Bool {
+        guard let gc = input.controller else { return false }
+        
+        guard let inp = getInput(gc: gc) else { return false }
+        
+        return inp.isPressed
+    }
+    
+    func describe() -> String {
+        return "Controller \(button)"
+    }
+}
+
 class KeyboardInputCheck: BinaryInputCheck {
     init(desc: String, key: UInt16) {
         self.desc = desc
@@ -180,6 +226,44 @@ class KeyboardInputCheck: BinaryInputCheck {
         return "Key \(desc)"
     }
 }
+
+enum GameControllerDir: String, Codable {
+    case leftx, lefty, rightx, righty
+}
+
+class GameControllerFloatInput: GetFloatStep {
+    internal init(dir: KMStickOutput, reverse: Bool) {
+        self.dir = dir
+        self.isReverse = reverse
+    }
+        
+    let dir: KMStickOutput
+    let isReverse: Bool
+    
+    func getInput(gc: GCExtendedGamepad) -> Float {
+        switch (dir) {
+        case .leftx: return gc.leftThumbstick.xAxis.value
+        case .rightx: return gc.rightThumbstick.xAxis.value
+        case .lefty: return gc.leftThumbstick.yAxis.value
+        case .righty: return gc.rightThumbstick.yAxis.value
+        case .l2: return gc.leftTrigger.value
+        case .r2: return gc.rightTrigger.value
+        }
+    }
+    
+    func run(input: InputState) -> CGFloat {
+        guard let gc = input.controller else { return 0.0 }
+        
+        let v = CGFloat(getInput(gc: gc))
+        
+        return isReverse ? -v : v
+    }
+    
+    func describe() -> String {
+        return "Controller \(dir)"
+    }
+}
+
 
 enum MouseDir {
     case x, y
