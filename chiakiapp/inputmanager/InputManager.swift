@@ -188,7 +188,7 @@ class GameControllerInputCheck: BinaryInputCheck {
         case .l1: return gc.leftShoulder
         case .r1: return gc.rightShoulder
         case .l3: return gc.leftThumbstickButton
-        case .r3: return gc.leftThumbstickButton
+        case .r3: return gc.rightThumbstickButton
         case .option: return gc.buttonMenu
         case .share: return gc.buttonOptions
         case .ps: return gc.buttonHome
