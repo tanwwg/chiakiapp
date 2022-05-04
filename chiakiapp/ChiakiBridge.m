@@ -206,9 +206,20 @@ static void EventCb(ChiakiEvent *evt, void *user) {
 }
 
 -(void)setKeyboardText:(NSString*)s {
-    chiaki_session_keyboard_set_text(&session, [s cStringUsingEncoding:NSUTF8StringEncoding]);
-    chiaki_session_keyboard_accept(&session);
+    const char *str = [s cStringUsingEncoding:NSUTF8StringEncoding];
+    ChiakiErrorCode err = chiaki_session_keyboard_set_text(&session, str);
+    NSLog(@"chiaki_session_keyboard_set_text %d", err);
+    
+//    ChiakiErrorCode err2 = chiaki_session_keyboard_accept(&session);
+//    NSLog(@"chiaki_session_keyboard_accept %d", err2);
+
 }
+
+-(void)acceptKeyboard {
+    ChiakiErrorCode err2 = chiaki_session_keyboard_accept(&session);
+    NSLog(@"chiaki_session_keyboard_accept %d", err2);
+}
+
 
 -(void)setControllerState:(ChiakiControllerState)state {
     chiaki_session_set_controller_state(&session, &state);

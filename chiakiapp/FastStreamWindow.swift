@@ -88,10 +88,18 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
     }
     
     @IBAction func keyboardEnter(_ sender: Any?) {
+        let s = keyboardInput.stringValue
+        if s.isEmpty { return }
+        
+        print("keyboardEnter \(keyboardInput.stringValue)")
         session?.setKeyboardText(keyboardInput.stringValue)
         keyboardInput.stringValue = ""
         keyboardView.isHidden = true
         isKeyboardInput = false
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.session?.acceptKeyboard()
+        }
     }
     
     var cursorLogic = CursorLogic()
