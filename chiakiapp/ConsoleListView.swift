@@ -146,6 +146,8 @@ struct HostView: View {
     var body: some View {
         VStack {
             if host.registration != nil {
+                Text(host.name)
+                Text(host.addr)
                 Text(host.state.rawValue)
                 Button(action: { wake() }) {
                     Text("Wake")
