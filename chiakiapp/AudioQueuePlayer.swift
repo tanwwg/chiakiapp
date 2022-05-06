@@ -16,12 +16,11 @@ class AudioQueuePlayer {
     
     var bufferList: [AudioQueueBufferRef] = []
     
-    var preallocateSize = 5
-    
     var isStarted = false
     
+    var preallocateSize = 30
     static let minBuffer = 2
-    static let maxBuffer = 4
+    static let maxBuffer = 20
     
     var enqueued = 0
     

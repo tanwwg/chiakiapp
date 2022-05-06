@@ -27,6 +27,7 @@
 		AE808252280674E700D57CD9 /* default-map.json in Resources */ = {isa = PBXBuildFile; fileRef = AE808251280674E700D57CD9 /* default-map.json */; };
 		AE808254280675EE00D57CD9 /* KeyMapFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE808253280675EE00D57CD9 /* KeyMapFile.swift */; };
 		AE8082562806846900D57CD9 /* KeyCodeMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE8082552806846900D57CD9 /* KeyCodeMap.swift */; };
+		AEACAA6F282495940000D389 /* PsUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEACAA6E282495940000D389 /* PsUtils.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,6 +60,7 @@
 		AE808251280674E700D57CD9 /* default-map.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "default-map.json"; sourceTree = "<group>"; };
 		AE808253280675EE00D57CD9 /* KeyMapFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyMapFile.swift; sourceTree = "<group>"; };
 		AE8082552806846900D57CD9 /* KeyCodeMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyCodeMap.swift; sourceTree = "<group>"; };
+		AEACAA6E282495940000D389 /* PsUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PsUtils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +116,7 @@
 				AE65370D2807A0E00026C619 /* PowerManagement.swift */,
 				AE546F91280A231B00DDC445 /* VideoController.swift */,
 				AE59D9F9280F7F7900BEA772 /* LoginWindow.swift */,
+				AEACAA6E282495940000D389 /* PsUtils.swift */,
 			);
 			path = chiakiapp;
 			sourceTree = "<group>";
@@ -233,6 +236,7 @@
 				AE5A2FF227F45CAA00AFDC4D /* KeyCodes.swift in Sources */,
 				AE5A2FE527F307D400AFDC4D /* ConsoleListView.swift in Sources */,
 				AE5A2F1027F2D6F500AFDC4D /* AppDelegate.swift in Sources */,
+				AEACAA6F282495940000D389 /* PsUtils.swift in Sources */,
 				AE5A2F7427F2E4D100AFDC4D /* ChiakiBridge.m in Sources */,
 				AE5A2FE727F3E88E00AFDC4D /* AppModel.swift in Sources */,
 				AE546F92280A231B00DDC445 /* VideoController.swift in Sources */,

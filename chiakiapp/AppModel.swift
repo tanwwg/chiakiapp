@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Network
 
 struct HostRegistration: Codable {
     var hostId: String
@@ -42,6 +43,15 @@ struct DiscoverHost: Identifiable {
     var hostType: String
     var state: DiscoverHostState
     var registration: HostRegistration?
+    
+    var credentials: UInt64? {
+        guard let reg = registration else { return nil }
+        let arr = [UInt8](reg.rpRegistKey)
+        guard let ix = arr.firstIndex(of: 0) else { return nil }
+        let sub = arr[0...ix-1]
+        guard let str = String(bytes: sub, encoding: .utf8), let num = UInt64(str, radix: 16) else { return nil }
+        return num
+    }
 }
 
 func cstring(_ s: UnsafePointer<CChar>!) -> String  {
@@ -93,6 +103,9 @@ class ChiakiDiscover: ObservableObject {
         guard let ix = arr.firstIndex(of: 0) else { return }
         let sub = arr[0...ix-1]
         guard let str = String(bytes: sub, encoding: .utf8), let num = UInt64(str, radix: 16) else { return }
+        
+        print(str)
+        print(num)
         discover.wakeup(host.addr, key: num)
     }
     
@@ -196,6 +209,7 @@ class AppUiModel: ObservableObject {
     @Published var session: ChiakiSessionBridge?
     
     var discover = ChiakiDiscover()
+    let psDiscover = PsDiscover()
     
     @Published var keymap: [InputStep] = []
     
@@ -239,6 +253,13 @@ class AppUiModel: ObservableObject {
         self.keymap = inp
         
         return inp
+    }
+    
+    func wake(host: DiscoverHost) {
+        guard let ip = IPv4Address(host.addr) else { return }
+        guard let creds = host.credentials else { return }
+        
+        psDiscover.sendWakeup(host: ip, credentials: "\(creds)")
     }
     
     init() {

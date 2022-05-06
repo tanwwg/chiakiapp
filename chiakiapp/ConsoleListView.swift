@@ -122,7 +122,7 @@ struct HostView: View {
     let host: DiscoverHost
     
     func wake() {
-        ui.discover.wake(host: host)
+        ui.wake(host: host)
     }
     
     func startSession() {
