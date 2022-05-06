@@ -35,24 +35,58 @@ static void LogCb(ChiakiLogLevel level, const char *msg, void *user) {
     NSLog(@"log %s", msg);
 }
 
+-(void) sendBroadcast:(NSData*)packet {
+
+    int fd = socket(AF_INET, SOCK_DGRAM, 0);
+
+    struct sockaddr_in addr;
+    memset(&addr, 0, sizeof(struct sockaddr_in));
+    addr.sin_len = sizeof(struct sockaddr_in);
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(9302);
+    addr.sin_addr.s_addr = INADDR_BROADCAST;
+    
+    int enable = 1;
+    setsockopt(fd, SOL_SOCKET, SO_BROADCAST, &enable, sizeof(enable));
+    
+    size_t ret = sendto(fd, packet.bytes, packet.length, 0, (const struct sockaddr*)&addr, sizeof(struct sockaddr_in));
+    
+    char buf[2048];
+    socklen_t addrlen = sizeof(struct sockaddr_in);
+    size_t recvBytes = recvfrom(fd, buf, sizeof(buf), 0, (struct sockaddr*)&addr, &addrlen);
+    
+    if (recvBytes > 0) {
+//        NSLog(@"recvfrom %d %s", recvBytes, inet_ntoa(addr.sin_addr));
+    }
+    
+    recvBytes = recvfrom(fd, buf, sizeof(buf), 0, (struct sockaddr*)&addr, &addrlen);
+    if (recvBytes > 0) {
+//        NSLog(@"recvfrom %d %s", recvBytes, inet_ntoa(addr.sin_addr));
+    }
+
+
+    close(fd);
+}
+
 -(void) discover {
+
     ChiakiDiscoveryServiceOptions options;
     options.ping_ms = 500;
     options.hosts_max = 16;
     options.host_drop_pings = 3;
     options.cb = DiscoveryServiceHostsCallback;
     options.cb_user = (__bridge void *)(self);
-    
+
     struct sockaddr_in addr = {};
     addr.sin_family = AF_INET;
     addr.sin_addr.s_addr = 0xffffffff; // 255.255.255.255
     options.send_addr = (struct sockaddr *)(&addr);
     options.send_addr_size = sizeof(addr);
-        
+
     chiaki_log_init(&chiakiLog, CHIAKI_LOG_ALL, NoLogCb, NULL);
 
-    ChiakiErrorCode err = chiaki_discovery_service_init(&discoveryService, &options, &chiakiLog);
-    NSLog(@"discover err=%d", err);
+//    ChiakiErrorCode err = chiaki_discovery_service_init(&discoveryService, &options, &chiakiLog);
+//    NSLog(@"discover err=%d", err);
     
 }
 

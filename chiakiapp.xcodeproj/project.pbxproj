@@ -28,6 +28,7 @@
 		AE808254280675EE00D57CD9 /* KeyMapFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE808253280675EE00D57CD9 /* KeyMapFile.swift */; };
 		AE8082562806846900D57CD9 /* KeyCodeMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE8082552806846900D57CD9 /* KeyCodeMap.swift */; };
 		AEACAA6F282495940000D389 /* PsUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEACAA6E282495940000D389 /* PsUtils.swift */; };
+		AEACAA7128255B3D0000D389 /* Sockets.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEACAA7028255B3D0000D389 /* Sockets.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -61,6 +62,7 @@
 		AE808253280675EE00D57CD9 /* KeyMapFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyMapFile.swift; sourceTree = "<group>"; };
 		AE8082552806846900D57CD9 /* KeyCodeMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyCodeMap.swift; sourceTree = "<group>"; };
 		AEACAA6E282495940000D389 /* PsUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PsUtils.swift; sourceTree = "<group>"; };
+		AEACAA7028255B3D0000D389 /* Sockets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sockets.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +119,7 @@
 				AE546F91280A231B00DDC445 /* VideoController.swift */,
 				AE59D9F9280F7F7900BEA772 /* LoginWindow.swift */,
 				AEACAA6E282495940000D389 /* PsUtils.swift */,
+				AEACAA7028255B3D0000D389 /* Sockets.swift */,
 			);
 			path = chiakiapp;
 			sourceTree = "<group>";
@@ -225,6 +228,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AE65370E2807A0E00026C619 /* PowerManagement.swift in Sources */,
+				AEACAA7128255B3D0000D389 /* Sockets.swift in Sources */,
 				AE624CA227F5C58300990FE5 /* AudioQueuePlayer.swift in Sources */,
 				AE808254280675EE00D57CD9 /* KeyMapFile.swift in Sources */,
 				AE8082562806846900D57CD9 /* KeyCodeMap.swift in Sources */,

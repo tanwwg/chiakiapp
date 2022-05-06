@@ -30,6 +30,8 @@ NS_ASSUME_NONNULL_BEGIN
 -(void)discover;
 -(void)wakeup:(NSString*)host key:(uint64_t)key;
 
+-(void) sendBroadcast:(NSData*)packet;
+
 @property (copy) void (^callback)(size_t hosts_count, ChiakiDiscoveryHost* hosts);
 
 @end

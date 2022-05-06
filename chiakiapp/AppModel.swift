@@ -82,7 +82,7 @@ extension UserDefaults {
 }
 
 class ChiakiDiscover: ObservableObject {
-    let discover = ChiakiDiscoverBridge()
+    let discover = PsDiscover()
     
     @Published var hosts: [DiscoverHost] = []
     var registrations: [HostRegistration]
@@ -106,29 +106,26 @@ class ChiakiDiscover: ObservableObject {
         
         print(str)
         print(num)
-        discover.wakeup(host.addr, key: num)
+//        discover.wakeup(host.addr, key: num)
+    }
+    
+    func addHost(host: DiscoverHost) {
+        if let found = hosts.firstIndex(where: { h in h.id == host.id }) {
+            hosts[found] = host
+        } else {
+            hosts.append(host)
+        }
+        self.registerHosts()
     }
     
     init() {
         self.registrations = UserDefaults.standard.getObject(forKey: ChiakiDiscover.REGISTRATIONS_KEY, castTo: [HostRegistration].self) ?? []
-        
-        discover.callback = { (count, hosts) in
+        discover.callback = { host in
             DispatchQueue.main.async {
-                self.hosts = (0...count-1).map { i in
-                    let h = hosts[i]
-                    return DiscoverHost(
-                        id: cstring(h.host_id),
-                        name: cstring(h.host_name),
-                        addr: cstring(h.host_addr),
-                        port: h.host_request_port,
-                        hostType: cstring(h.host_type),
-                        state: toHostState(h.state)
-                    )
-                }
-                self.registerHosts()
+                self.addHost(host: host)
             }
         }
-        discover.discover()
+        discover.start()
     }
     
     func save(_ reg: HostRegistration) {
@@ -209,7 +206,6 @@ class AppUiModel: ObservableObject {
     @Published var session: ChiakiSessionBridge?
     
     var discover = ChiakiDiscover()
-    let psDiscover = PsDiscover()
     
     @Published var keymap: [InputStep] = []
     
@@ -256,10 +252,8 @@ class AppUiModel: ObservableObject {
     }
     
     func wake(host: DiscoverHost) {
-        guard let ip = IPv4Address(host.addr) else { return }
         guard let creds = host.credentials else { return }
-        
-        psDiscover.sendWakeup(host: ip, credentials: "\(creds)")
+        discover.discover.sendWakeup(host: host.addr, credentials: "\(creds)")
     }
     
     init() {
