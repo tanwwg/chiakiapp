@@ -56,7 +56,12 @@ class ViewController: NSViewController {
         
         self.view.window?.setIsVisible(false)
         vc.onDone = {
-            self.view.window?.setIsVisible(true)
+            if let w = self.view.window {
+                w.setIsVisible(true)
+                if w.styleMask.contains(.fullScreen) {
+                    w.toggleFullScreen(self)
+                }
+            }
         }
     }
     
