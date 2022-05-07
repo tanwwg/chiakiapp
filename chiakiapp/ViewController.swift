@@ -60,6 +60,7 @@ class ViewController: NSViewController {
             if let w = self.view.window {
                 w.setIsVisible(true)
             }
+            self.ui.discover.discover.startDiscover(seconds: 10.0)
         }
     }
     

@@ -23,26 +23,36 @@ struct ConsoleListView: View {
     
     var body: some View {
         NavigationView {
-            List {
-                Section(header: Text("Setup")) {
-                    NavigationLink(destination: DescribeKeymapView(steps: ui.keymap)) {
-                        Text("\(ui.keymapFile)")
+            VStack {
+                List {
+                    Section(header: Text("Setup")) {
+                        NavigationLink(destination: DescribeKeymapView(steps: ui.keymap)) {
+                            Text("\(ui.keymapFile)")
+                        }
+                        NavigationLink(destination: PreferencesView()) {
+                            Text("Preferences")
+                        }
                     }
-                    NavigationLink(destination: PreferencesView()) {
-                        Text("Preferences")
-                    }
-                }
-                Section(header: Text("Consoles")) {
-                    ForEach(discover.hosts) { host in
-                        NavigationLink(destination: HostView(host: host)) {
-                            Text(host.name)
-                                .fontWeight(host.registration == nil ? .regular : .bold)
-                                .foregroundColor(host.state == .ready ? Color.black : Color.gray)
+                    Section(header: Text("Consoles")) {
+                        ForEach(discover.hosts) { host in
+                            NavigationLink(destination: HostView(host: host)) {
+                                Text(host.name)
+                                    .fontWeight(host.registration == nil ? .regular : .bold)
+                                    .foregroundColor(host.state == .ready ? Color.black : Color.gray)
+                            }
                         }
                     }
                 }
+                .listStyle(SidebarListStyle())
+                HStack {
+                    Spacer()
+                    Button(action: { ui.discover.discover.sendDiscover() }) {
+                        Image(systemName: "arrow.clockwise")
+                    }
+                    .buttonStyle(BorderlessButtonStyle())
+                }
+                .padding(5.0)
             }
-            .listStyle(SidebarListStyle())
         }
         .sheet(item: $ui.register, onDismiss: {
             
@@ -84,8 +94,8 @@ struct DescribeKeymapView: View {
     var body: some View {
         VStack {
             Text("\(keymap.count) items")
-            List(0..<keymap.count) { i in
-                Text(keymap[i])
+            List(keymap, id: \.self) { s in
+                Text(s)
             }
         }
     }
