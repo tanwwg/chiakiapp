@@ -175,7 +175,18 @@ class GameControllerInputCheck: BinaryInputCheck {
         self.button = button
     }
     
+    func isTouchpad(gc: GCExtendedGamepad) -> GCControllerButtonInput? {
+        if let ds = gc as? GCDualShockGamepad {
+            return ds.touchpadButton
+        }
+        if let dss = gc as? GCDualSenseGamepad {
+            return dss.touchpadButton
+        }
+        return gc.allTouchpads.first?.button
+    }
+    
     func getInput(gc: GCExtendedGamepad) -> GCControllerButtonInput? {
+        
         switch (button) {
         case .circle: return gc.buttonB
         case .cross: return gc.buttonA
@@ -192,7 +203,7 @@ class GameControllerInputCheck: BinaryInputCheck {
         case .option: return gc.buttonMenu
         case .share: return gc.buttonOptions
         case .ps: return gc.buttonHome
-        case .touchpad: return gc.allTouchpads.first?.button
+        case .touchpad: return isTouchpad(gc: gc)
         }
     }
         
