@@ -97,17 +97,18 @@ class ChiakiDiscover: ObservableObject {
         }
     }
     
-    func wake(host: DiscoverHost) {
-        guard let reg = host.registration else { return }
-        let arr = [UInt8](reg.rpRegistKey)
-        guard let ix = arr.firstIndex(of: 0) else { return }
-        let sub = arr[0...ix-1]
-        guard let str = String(bytes: sub, encoding: .utf8), let num = UInt64(str, radix: 16) else { return }
-        
-        print(str)
-        print(num)
-//        discover.wakeup(host.addr, key: num)
-    }
+//    func wake(host: DiscoverHost) {
+//        guard let reg = host.registration else { return }
+//        let arr = [UInt8](reg.rpRegistKey)
+//        guard let ix = arr.firstIndex(of: 0) else { return }
+//        let sub = arr[0...ix-1]
+//        guard let str = String(bytes: sub, encoding: .utf8), let num = UInt64(str, radix: 16) else { return }
+//
+//        print(str)
+//        print(num)
+//
+//        discover.startDiscover(seconds: 20.0)
+//    }
     
     func addHost(host: DiscoverHost) {
         if let found = hosts.firstIndex(where: { h in h.id == host.id }) {
@@ -125,7 +126,7 @@ class ChiakiDiscover: ObservableObject {
                 self.addHost(host: host)
             }
         }
-        discover.start()
+        discover.startDiscover(seconds: 3.0)
     }
     
     func save(_ reg: HostRegistration) {
@@ -254,6 +255,7 @@ class AppUiModel: ObservableObject {
     func wake(host: DiscoverHost) {
         guard let creds = host.credentials else { return }
         discover.discover.sendWakeup(host: host.addr, credentials: "\(creds)")
+        discover.discover.startDiscover(seconds: 20.0)
     }
     
     init() {

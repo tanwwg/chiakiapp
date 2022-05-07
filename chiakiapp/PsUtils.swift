@@ -63,28 +63,33 @@ class PsDiscover {
             listener = try? UdpListen(address: addr) { host, s in
                 self.parseReply(host: host, reply: s)
             }
+            listener?.start()
         }
 
     }
     
-    func start() {
-        listener?.start()
-        sendDiscover()
+    var endDiscover: Double?
+    
+    func startDiscover(seconds: Double) {
+        endDiscover = Date.timeIntervalSinceReferenceDate + seconds
         queueDiscover()
     }
     
     func queueDiscover() {
-        DispatchQueue.global().asyncAfter(deadline: .now() + 60) {
+        DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
             self.sendDiscover()
-            self.queueDiscover()
+            
+            let now = Date.timeIntervalSinceReferenceDate
+            if let endd = self.endDiscover, now < endd {
+                self.queueDiscover()
+            }
         }
     }
     
     func parseReply(host: String, reply: String) {
-        print("Received \(reply) from \(host)")
+//        print("Received \(reply) from \(host)")
         
         var arr = reply.split(separator: "\n")
-//        guard arr.first == "HTTP/1.1 200 Ok" else { return }
         var state = DiscoverHostState.unknown
         if let firstLine = arr.first {
             if firstLine == "HTTP/1.1 200 Ok" {
@@ -112,7 +117,7 @@ class PsDiscover {
         
         
         let discoverHost = DiscoverHost(id: hostid, name: name, addr: host, port: hostPort, hostType: hostType, state: state)
-        print(discoverHost)
+//        print(discoverHost)
         callback?(discoverHost)
     }
         
