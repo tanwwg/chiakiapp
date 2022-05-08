@@ -202,8 +202,12 @@ static void EventCb(ChiakiEvent *evt, void *user) {
     }
 }
 
+static void sessionLogCb(ChiakiLogLevel level, const char *msg, void *user) {
+    NSLog(@"log %s", msg);
+}
+
 -(void)start {
-    chiaki_log_init(&chiakiLog, 3, NoLogCb, NULL);
+    chiaki_log_init(&chiakiLog, self.isLoggingEnabled ? CHIAKI_LOG_ALL : 0, sessionLogCb, NULL);
     
     ChiakiErrorCode err;
     

@@ -121,6 +121,7 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
         }
         session.onKeyboardOpen = { DispatchQueue.main.async { self.setKeyboardInput(true) } }
         
+        session.isLoggingEnabled = false
         session.start()
     }
     

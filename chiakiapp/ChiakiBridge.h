@@ -48,6 +48,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (copy) NSData *morning;
 @property (copy) NSData *registKey;
 
+@property bool isLoggingEnabled;
+
 -(void)start;
 -(void)stop;
 -(void)sleep;
