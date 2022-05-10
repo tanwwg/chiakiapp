@@ -21,7 +21,7 @@ class CursorLogic {
     }
     
     func setup(window: NSWindow) {
-        print("CursorLogic setupe")
+        print("CursorLogic setup")
         observers.append(NotificationCenter.default.addObserver(forName: NSWindow.didBecomeKeyNotification, object: window, queue: nil) { [weak self] (n: Notification) in
             print("didBecomeKeyNotification")
             self?.synchronizeCursor()
@@ -30,6 +30,7 @@ class CursorLogic {
         observers.append(NotificationCenter.default.addObserver(forName: NSWindow.didResignKeyNotification, object: window, queue: nil) { [weak self] _ in
             self?.showCursor()
         })
+        self.synchronizeCursor()
     }
     
     func teardown() {
