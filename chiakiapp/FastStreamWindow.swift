@@ -39,10 +39,19 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
         
     var session: ChiakiSessionBridge?
     
-    var timer: Timer?
     var lastTimerRun: UInt64?
+    var timerQueue = DispatchQueue(label: "timer")
+    var timer: DispatchSourceTimer?
+    
+    func initTimer() {
+        let t = DispatchSource.makeTimerSource(flags: [.strict], queue: timerQueue)
+        t.schedule(deadline: .now(), repeating: .milliseconds(8), leeway: .milliseconds(4))
+        t.setEventHandler(handler: timerCb)
+        t.activate()
+        self.timer = t
+    }
 
-    @objc func timerCb() {
+    func timerCb() {
         let now = clock_gettime_nsec_np(CLOCK_UPTIME_RAW);
         guard let last = lastTimerRun else {
             lastTimerRun = now
@@ -54,10 +63,6 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
         session?.setControllerState(inputState.run(delta))
         
         lastTimerRun = now
-        
-//        if !self.statusText.isHidden {
-//            self.statusText.stringValue = "Audio enq:\(audioPlayer.enqueued) started:\(audioPlayer.isStarted)"
-//        }
     }
     
     @IBAction func toggleShowCursor(_ sender: Any?) {
@@ -140,6 +145,8 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
         toDispose = []
         
         powerManager.enableSleep()
+        
+        self.timer?.cancel()
         
         self.onDone()
     }
@@ -254,10 +261,7 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
             return self.inputState.mouse.onMouseMoved(evt: evt)
         })
 
-        
-        let tim = Timer(timeInterval: 1.0 / 120, target: self, selector: #selector(timerCb), userInfo: nil, repeats: true)
-        RunLoop.current.add(tim, forMode: .common)
-        self.timer = tim
+        self.initTimer()
                 
         self.view.wantsLayer = true
         
