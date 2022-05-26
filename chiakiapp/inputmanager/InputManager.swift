@@ -16,6 +16,7 @@ class InputState {
     var keyboard = KeyboardManager()
     var mouse = MouseManager()
     var controller: GCExtendedGamepad? = nil
+    var keyDowns = Set<UInt16>()
     
     var controllerState = ChiakiControllerState()
     var steps: [InputStep] = []
@@ -27,6 +28,7 @@ class InputState {
         
         self.deltaTime = inDeltaTime
         self.controller = GCController.current?.extendedGamepad?.capture()
+        keyDowns = self.keyboard.getKeyDowns()
         
         for step in steps {
             step.run(input: self)
@@ -40,6 +42,7 @@ class InputState {
     }
 }
 
+/// Theoretically need to make this threadsafe, but its all primitives
 class MouseManager {
     
     var mouseDeltaX: CGFloat = 0.0
@@ -230,7 +233,7 @@ class KeyboardInputCheck: BinaryInputCheck {
     let desc: String
     
     func IsToggled(input: InputState) -> Bool {
-        return input.keyboard.isKeyDown(key: key)
+        return input.keyDowns.contains(key)
     }
     
     func describe() -> String {
@@ -439,33 +442,53 @@ class ButtonInputStep: InputStep {
 
 class KeyboardManager {
     
-    var keyDowns = Set<UInt16>()
+    var lock = os_unfair_lock_s()
+    private var keyDowns = Set<UInt16>()
     
-    func isKeyDown(key: UInt16) -> Bool {
-        return keyDowns.contains(key)
+//    func isKeyDown(key: UInt16) -> Bool {
+//        return keyDowns.contains(key)
+//    }
+    
+    
+    func withLock(_ action: () -> (Void)) {
+        os_unfair_lock_lock(&lock)
+        action()
+        os_unfair_lock_unlock(&lock)
     }
     
-    func onKeyDown(evt: NSEvent) -> NSEvent? {
-        keyDowns.insert(evt.keyCode)
-        
-        return evt
-    }
-    
-    func onFlagsChanged(evt: NSEvent) -> NSEvent? {
-        if evt.modifierFlags.contains(.shift) {
-            keyDowns.insert(KeyCode.shift)
-        } else {
-            keyDowns.remove(KeyCode.shift)
+    func getKeyDowns() -> Set<UInt16> {
+        var kd: Set<UInt16>? = nil
+        withLock {
+            kd = self.keyDowns
         }
         
-        return evt
+        guard let kdd = kd else { return Set<UInt16>() }
+        return kdd
+    }
+    
+    func onKeyDown(evt: NSEvent) {
+        withLock {
+            keyDowns.insert(evt.keyCode)
+        }
+    }
+    
+    func onFlagsChanged(evt: NSEvent) {
+        if evt.modifierFlags.contains(.shift) {
+            withLock {
+                keyDowns.insert(KeyCode.shift)
+            }
+        } else {
+            withLock {
+                keyDowns.remove(KeyCode.shift)
+            }
+        }
     }
     
     
-    func onKeyUp(evt: NSEvent) -> NSEvent? {
-        keyDowns.remove(evt.keyCode)
-        
-        return evt
+    func onKeyUp(evt: NSEvent) {
+        withLock {
+            keyDowns.remove(evt.keyCode)
+        }
     }
 
 }

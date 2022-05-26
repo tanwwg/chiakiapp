@@ -228,7 +228,7 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
 
         disposeOnClose(NSEvent.addLocalMonitorForEvents(matching: .flagsChanged) { evt in
             let evt: NSEvent = evt
-            _ = self.inputState.keyboard.onFlagsChanged(evt: evt)
+            self.inputState.keyboard.onFlagsChanged(evt: evt)
             return evt
         })
         
@@ -243,12 +243,14 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
                 return evt
             }
             
-            _ = self.inputState.keyboard.onKeyDown(evt: evt)
+            self.inputState.keyboard.onKeyDown(evt: evt)
+            
             return nil
         })
         
         disposeOnClose(NSEvent.addLocalMonitorForEvents(matching: .keyUp) { evt in
-            return self.inputState.keyboard.onKeyUp(evt: evt)
+            self.inputState.keyboard.onKeyUp(evt: evt)
+            return evt
         })
         
         disposeOnClose(NSEvent.addLocalMonitorForEvents(matching: .mouseMoved) { evt in
