@@ -42,7 +42,7 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
     var lastTimerRun: UInt64?
     var timerQueue = DispatchQueue(label: "timer")
     var timer: DispatchSourceTimer?
-    
+        
     func initTimer() {
         let t = DispatchSource.makeTimerSource(flags: [.strict], queue: timerQueue)
         t.schedule(deadline: .now(), repeating: .milliseconds(8), leeway: .milliseconds(4))
@@ -50,6 +50,9 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
         t.activate()
         self.timer = t
     }
+    
+    var statsTimeStart: UInt64 = 0
+    var statsCounter = 0
 
     func timerCb() {
         let now = clock_gettime_nsec_np(CLOCK_UPTIME_RAW);
@@ -58,7 +61,21 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
             return
         }
         
+        /// print timer cb stats
+//        if statsCounter == 0 {
+//            statsTimeStart = now
+//        }
+//        statsCounter += 1
+//        if statsCounter == 100 {
+//            statsCounter = 0
+//            let deltaMs: Int = Int((now - statsTimeStart) / 100_000_000)
+//            self.statusText.stringValue = "\(deltaMs)"
+//
+//        }
+
+        
         let delta = Double(now - last) / Double(1_000_000_000)
+        
         
         session?.setControllerState(inputState.run(delta))
         

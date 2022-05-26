@@ -743,6 +743,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="649" height="404"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
+                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="gvP-gx-ZtP">
+                                <rect key="frame" x="18" y="368" width="4" height="16"/>
+                                <textFieldCell key="cell" selectable="YES" id="gre-2a-2Pn">
+                                    <font key="font" usesAppearanceFont="YES"/>
+                                    <color key="textColor" red="1" green="1" blue="1" alpha="0.84999999999999998" colorSpace="custom" customColorSpace="displayP3"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                             <customView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9DA-0b-CwJ" userLabel="Keyboard View">
                                 <rect key="frame" x="25" y="162" width="600" height="80"/>
                                 <subviews>
@@ -769,13 +777,16 @@
                             </customView>
                         </subviews>
                         <constraints>
+                            <constraint firstItem="gvP-gx-ZtP" firstAttribute="leading" secondItem="chC-ao-nhZ" secondAttribute="leading" constant="20" symbolic="YES" id="L2u-mB-fSR"/>
                             <constraint firstItem="9DA-0b-CwJ" firstAttribute="centerX" secondItem="chC-ao-nhZ" secondAttribute="centerX" id="mJf-7l-4bo"/>
                             <constraint firstItem="9DA-0b-CwJ" firstAttribute="centerY" secondItem="chC-ao-nhZ" secondAttribute="centerY" id="pZc-VU-4fe"/>
+                            <constraint firstItem="gvP-gx-ZtP" firstAttribute="top" secondItem="chC-ao-nhZ" secondAttribute="top" constant="20" symbolic="YES" id="uVj-Bn-Se8"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="keyboardInput" destination="bMF-Ix-1ym" id="1QC-oe-PxA"/>
                         <outlet property="keyboardView" destination="9DA-0b-CwJ" id="dk0-ln-DCd"/>
+                        <outlet property="statusText" destination="gvP-gx-ZtP" id="gQb-Yo-4If"/>
                     </connections>
                 </viewController>
                 <customObject id="gNc-Di-GpP" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
