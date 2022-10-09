@@ -9,6 +9,7 @@ Install required libraries via homebrew in their default locations. The xcode pr
     brew install openssl
     brew install opus
     brew install protobuf-c    
+    brew install cmake
 
 ## Building
 

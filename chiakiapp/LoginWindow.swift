@@ -73,9 +73,11 @@ class LoginWindow: NSViewController, WKNavigationDelegate {
         let s = withUnsafeBytes(of: i) { Data($0).base64EncodedString() }
         print(s)
         
-        NotificationCenter.default.post(name: LoginWindow.PsnIdFetched, object: s)
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: LoginWindow.PsnIdFetched, object: s)            
+            self.view.window?.close()
+        }
         
-        self.view.window?.close()
     }
     
     func receivedAccessToken(_ access_token: String) {
