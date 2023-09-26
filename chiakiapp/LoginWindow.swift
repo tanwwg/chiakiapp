@@ -58,16 +58,20 @@ class LoginWindow: NSViewController, WKNavigationDelegate {
               let q = urlcomp.queryItems,
               let codeq = q.first(where: {it in it.name == "code"}),
               let code = codeq.value
-              else { return }
+              else {
+            
+            print("!!!Unable to handle server redirect \(webView.url?.absoluteString)")
+            return
+        }
         
         self.receivedCode(code: code)
     }
     
     func receivedUserId(_ user_id: String) {
-        print(user_id)
+        print("user_id=\(user_id)")
         
         guard let i = Int(user_id) else {
-            print("cannot convert")
+            print("!!!cannot convert \(user_id)")
             return
         }
         let s = withUnsafeBytes(of: i) { Data($0).base64EncodedString() }
@@ -89,9 +93,15 @@ class LoginWindow: NSViewController, WKNavigationDelegate {
         
         let dataTask = URLSession.shared.dataTask(with: req) { data, resp, err in
 //            print("\(String(data: data!, encoding: .utf8)) \(resp)")
-            guard (resp as? HTTPURLResponse)?.statusCode == 200 else { return }
+            guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
+                print("receivedAccessToken bad status code")
+                return
+            }
             guard let d = data,
-                  let json = try? JSONDecoder().decode(UserIdJson.self, from: d) else { return }
+                  let json = try? JSONDecoder().decode(UserIdJson.self, from: d) else {
+                print("receivedAccessToken unable to convert json")
+                return
+            }
             self.receivedUserId(json.user_id)
         }
         dataTask.resume()
@@ -117,10 +127,15 @@ class LoginWindow: NSViewController, WKNavigationDelegate {
         req.setValue("Basic \(authData)", forHTTPHeaderField: "Authorization")
         
         let dataTask = URLSession.shared.dataTask(with: req) { data, resp, err in
-            guard (resp as? HTTPURLResponse)?.statusCode == 200 else { return }
-            guard let d = data,
-                  let json = try? JSONDecoder().decode(AccessTokenJson.self, from: d) else {
-                      print("unable to parse data")
+            let rr = resp as! HTTPURLResponse
+            let d = data ?? Data()
+            let str = String(decoding: d, as: UTF8.self)
+            guard rr.statusCode == 200 else {
+                print("!!!receivedCode base status code \(rr) resp:\(str)")
+                return
+            }
+            guard let json = try? JSONDecoder().decode(AccessTokenJson.self, from: d) else {
+                      print("!!!receivedCode unable to parse data")
                       return
                   }
             self.receivedAccessToken(json.access_token)

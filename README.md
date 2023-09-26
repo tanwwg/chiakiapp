@@ -11,6 +11,10 @@ Install required libraries via homebrew in their default locations. The xcode pr
     brew install protobuf-c    
     brew install cmake
 
+Install python dependencies (python3)
+
+    pip3 install protobuf
+
 ## Building
 
 First, build the chiaki library submodule:
