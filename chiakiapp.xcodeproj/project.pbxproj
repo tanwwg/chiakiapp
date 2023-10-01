@@ -10,7 +10,6 @@
 		AE546F92280A231B00DDC445 /* VideoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE546F91280A231B00DDC445 /* VideoController.swift */; };
 		AE59D9FA280F7F7900BEA772 /* LoginWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE59D9F9280F7F7900BEA772 /* LoginWindow.swift */; };
 		AE5A2F1027F2D6F500AFDC4D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2F0F27F2D6F500AFDC4D /* AppDelegate.swift */; };
-		AE5A2F1227F2D6F500AFDC4D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2F1127F2D6F500AFDC4D /* ViewController.swift */; };
 		AE5A2F1427F2D6F600AFDC4D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE5A2F1327F2D6F600AFDC4D /* Assets.xcassets */; };
 		AE5A2F1727F2D6F600AFDC4D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE5A2F1527F2D6F600AFDC4D /* Main.storyboard */; };
 		AE5A2F7427F2E4D100AFDC4D /* ChiakiBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5A2F7327F2E4D100AFDC4D /* ChiakiBridge.m */; };
@@ -36,7 +35,6 @@
 		AE59D9F9280F7F7900BEA772 /* LoginWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginWindow.swift; sourceTree = "<group>"; };
 		AE5A2F0C27F2D6F500AFDC4D /* chiakiapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = chiakiapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE5A2F0F27F2D6F500AFDC4D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		AE5A2F1127F2D6F500AFDC4D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		AE5A2F1327F2D6F600AFDC4D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AE5A2F1627F2D6F600AFDC4D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		AE5A2F1827F2D6F600AFDC4D /* chiakiapp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = chiakiapp.entitlements; sourceTree = "<group>"; };
@@ -98,28 +96,18 @@
 		AE5A2F0E27F2D6F500AFDC4D /* chiakiapp */ = {
 			isa = PBXGroup;
 			children = (
+				AEE795E02AC9908000592DED /* streaming */,
+				AEE795DF2AC9904B00592DED /* discover */,
 				AE5A300E27F534E800AFDC4D /* inputmanager */,
 				AE5A2FDC27F2FDA900AFDC4D /* libs */,
 				AE5A2F0F27F2D6F500AFDC4D /* AppDelegate.swift */,
-				AE624CA127F5C58300990FE5 /* AudioQueuePlayer.swift */,
-				AE5A2F1127F2D6F500AFDC4D /* ViewController.swift */,
-				AE76B12A2801BFF900BA3B36 /* FastStreamWindow.swift */,
-				AE5A2FE627F3E88E00AFDC4D /* AppModel.swift */,
-				AE5A2FE427F307D400AFDC4D /* ConsoleListView.swift */,
 				AE5A2F1327F2D6F600AFDC4D /* Assets.xcassets */,
 				AE5A2F1527F2D6F600AFDC4D /* Main.storyboard */,
 				AE5A2F1827F2D6F600AFDC4D /* chiakiapp.entitlements */,
 				AE5A2F7227F2E4D000AFDC4D /* chiakiapp-Bridging-Header.h */,
 				AE5A2F7327F2E4D100AFDC4D /* ChiakiBridge.m */,
 				AE5A2F8027F2EBCA00AFDC4D /* ChiakiBridge.h */,
-				AE5A2FF127F45CAA00AFDC4D /* KeyCodes.swift */,
-				AE76B12C2803BD9A00BA3B36 /* CursorLogic.swift */,
 				AE808251280674E700D57CD9 /* default-map.json */,
-				AE65370D2807A0E00026C619 /* PowerManagement.swift */,
-				AE546F91280A231B00DDC445 /* VideoController.swift */,
-				AE59D9F9280F7F7900BEA772 /* LoginWindow.swift */,
-				AEACAA6E282495940000D389 /* PsUtils.swift */,
-				AEACAA7028255B3D0000D389 /* Sockets.swift */,
 			);
 			path = chiakiapp;
 			sourceTree = "<group>";
@@ -148,11 +136,36 @@
 		AE5A300E27F534E800AFDC4D /* inputmanager */ = {
 			isa = PBXGroup;
 			children = (
+				AE5A2FF127F45CAA00AFDC4D /* KeyCodes.swift */,
 				AE5A300F27F534F300AFDC4D /* InputManager.swift */,
 				AE808253280675EE00D57CD9 /* KeyMapFile.swift */,
 				AE8082552806846900D57CD9 /* KeyCodeMap.swift */,
 			);
 			path = inputmanager;
+			sourceTree = "<group>";
+		};
+		AEE795DF2AC9904B00592DED /* discover */ = {
+			isa = PBXGroup;
+			children = (
+				AE5A2FE627F3E88E00AFDC4D /* AppModel.swift */,
+				AE5A2FE427F307D400AFDC4D /* ConsoleListView.swift */,
+				AEACAA6E282495940000D389 /* PsUtils.swift */,
+				AEACAA7028255B3D0000D389 /* Sockets.swift */,
+				AE59D9F9280F7F7900BEA772 /* LoginWindow.swift */,
+			);
+			path = discover;
+			sourceTree = "<group>";
+		};
+		AEE795E02AC9908000592DED /* streaming */ = {
+			isa = PBXGroup;
+			children = (
+				AE624CA127F5C58300990FE5 /* AudioQueuePlayer.swift */,
+				AE65370D2807A0E00026C619 /* PowerManagement.swift */,
+				AE546F91280A231B00DDC445 /* VideoController.swift */,
+				AE76B12C2803BD9A00BA3B36 /* CursorLogic.swift */,
+				AE76B12A2801BFF900BA3B36 /* FastStreamWindow.swift */,
+			);
+			path = streaming;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -235,7 +248,6 @@
 				AE5A301027F534F300AFDC4D /* InputManager.swift in Sources */,
 				AE59D9FA280F7F7900BEA772 /* LoginWindow.swift in Sources */,
 				AE76B12D2803BD9A00BA3B36 /* CursorLogic.swift in Sources */,
-				AE5A2F1227F2D6F500AFDC4D /* ViewController.swift in Sources */,
 				AE76B12B2801BFF900BA3B36 /* FastStreamWindow.swift in Sources */,
 				AE5A2FF227F45CAA00AFDC4D /* KeyCodes.swift in Sources */,
 				AE5A2FE527F307D400AFDC4D /* ConsoleListView.swift in Sources */,
