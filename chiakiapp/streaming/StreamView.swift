@@ -8,18 +8,100 @@
 import SwiftUI
 import AVFoundation
 
+class InputTimer {
+    var lastTimerRun: UInt64?
+    
+    var timerQueue = DispatchQueue(label: "timer")
+    var timer: DispatchSourceTimer
+    
+    var callback: ((Double) -> ())?
+    
+    init() {
+        self.timer = DispatchSource.makeTimerSource(flags: [.strict], queue: timerQueue)
+        self.timer.schedule(deadline: .now(), repeating: .milliseconds(8), leeway: .milliseconds(4))
+        self.timer.setEventHandler(handler: timerCb)
+        self.timer.activate()
+    }
+    
+    deinit {
+        timer.cancel()
+    }
+        
+    var statsTimeStart: UInt64 = 0
+    var statsCounter = 0
+
+    func timerCb() {
+        let now = clock_gettime_nsec_np(CLOCK_UPTIME_RAW);
+        guard let last = lastTimerRun else {
+            lastTimerRun = now
+            return
+        }
+        
+        /// print timer cb stats
+//        if statsCounter == 0 {
+//            statsTimeStart = now
+//        }
+//        statsCounter += 1
+//        if statsCounter == 100 {
+//            statsCounter = 0
+//            let deltaMs: Int = Int((now - statsTimeStart) / 100_000_000)
+//            self.statusText.stringValue = "\(deltaMs)"
+//
+//        }
+
+        
+        let delta = Double(now - last) / Double(1_000_000_000)
+        
+        
+        callback?(delta)
+//        session?.setControllerState(inputState.run(delta))
+        
+        lastTimerRun = now
+    }
+}
+
+class EventsManager {
+    var events: [Any] = []
+    
+    func monitor(matching: NSEvent.EventTypeMask, handler block: @escaping (NSEvent) -> NSEvent?) {
+        if let o = NSEvent.addLocalMonitorForEvents(matching: matching, handler: block) {
+            events.append(o)
+        }
+    }
+    
+    deinit {
+        for e in events {
+            NSEvent.removeMonitor(e)
+        }
+    }
+}
+
 @Observable class StreamController {
     
     var audioPlayer = AudioQueuePlayer()
     
-    var inputState = InputState()
+    var inputState: InputState
         
-    var session: ChiakiSessionBridge!
+    var session: ChiakiSessionBridge
     
     let videoController = VideoController()
     
-    func setup(session: ChiakiSessionBridge) {
+    let timer: InputTimer
+    
+    let powerManager = PowerManager()
+    
+    init(steps: [InputStep], session: ChiakiSessionBridge) {
         self.session = session
+        
+        self.timer = InputTimer()
+        
+        self.inputState = InputState()
+        
+        timer.callback = { [weak self] delta in
+            guard let ss = self else { return }
+            ss.session.setControllerState(ss.inputState.run(delta))
+        }
+        
         session.rawVideoCallback = self.videoController.handleVideoFrame(_:size:)
         session.audioSettingsCallback = { (ch, sr) in
             self.audioPlayer.startup(channels: Int(ch), sampleRate: Double(sr))
@@ -31,9 +113,15 @@ import AVFoundation
 //        session.onKeyboardOpen = { DispatchQueue.main.async { self.setKeyboardInput(true) } }
         
         session.isLoggingEnabled = false
-        
         print("Session started")
         session.start()
+        powerManager.disableSleep(reason: "Chiaki streaming")
+    }
+    
+    deinit {
+        print("Stopping session")
+        session.stop()
+        powerManager.enableSleep()
     }
 }
 
@@ -50,14 +138,11 @@ class NSAVSampleBufferView: NSView {
         
         self.wantsLayer = true
         let disp = AVSampleBufferDisplayLayer()
-//        disp.bounds = self.view.bounds
         disp.autoresizingMask = [.layerWidthSizable, .layerHeightSizable]
         disp.backgroundColor = CGColor.black
-//        disp.position = CGPoint(x: self.view.bounds.midX, y: self.view.bounds.midY)
         self.layer!.addSublayer(disp)
         
         displayLayer = disp
-//        self.display = disp
     }
 }
 
@@ -79,12 +164,34 @@ struct AVSampleBufferView: NSViewRepresentable {
 struct StreamView: View {
     
     @EnvironmentObject var app: AppUiModel
-    @State var controller = StreamController()
+    
+    @State var stream: SetupValue<StreamController> = .uninitialized
+    
+    func setup() {
+        if let session = app.session, case .uninitialized = stream {
+            stream = .value(StreamController(steps: app.keymap, session: session))
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                if let window = NSApplication.shared.windows.last {
+                    window.toggleFullScreen(nil)
+                }
+            }
+        }
+    }
     
     var body: some View {
-        AVSampleBufferView(videoController: controller.videoController)
-            .onAppear {
-                controller.setup(session: app.session!)
+        Group {
+            switch(stream) {
+            case .value(let c):
+                AVSampleBufferView(videoController: c.videoController)
+            default:
+                EmptyView()
             }
+        }
+        .onAppear {
+            setup()
+        }
+        .onDisappear {
+            stream = .uninitialized
+        }
     }
 }

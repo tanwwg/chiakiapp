@@ -254,15 +254,13 @@ class AppUiModel: ObservableObject {
         }
     }
     
-    func loadKeymap(url: URL) throws -> [InputStep] {
+    func loadKeymap(url: URL) throws {
         let data = try Data(contentsOf: url)
         let inp = try loadKeymapFile(data: data)
         
         self.keymapStore = String(data: data, encoding: .utf8)
         self.keymapFile = url.lastPathComponent
         self.keymap = inp
-        
-        return inp
     }
     
 //    func wake(host: DiscoverHost) {

@@ -78,16 +78,26 @@ struct PreferencesView: View {
 struct DescribeKeymapView: View {
     let keymap: [String]
     
+    @State var openKeymap = false
+    @EnvironmentObject var ui: AppUiModel
+    
     init(steps: [InputStep]) {
         self.keymap = steps.map { s in s.describe() }
     }
     
     var body: some View {
         VStack {
+            Button(action: { openKeymap = true }) {
+                Text("Open")
+            }
             Text("\(keymap.count) items")
             List(keymap, id: \.self) { s in
                 Text(s)
             }
+        }
+        .fileImporter(isPresented: $openKeymap, allowedContentTypes: [.json]) { result in
+            guard let url = try? result.get() else { return }
+            try? ui.loadKeymap(url: url)
         }
     }
 }

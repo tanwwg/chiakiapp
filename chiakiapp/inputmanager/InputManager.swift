@@ -23,6 +23,64 @@ class InputState {
     
     var deltaTime: CGFloat = 0.0
     
+    var events = EventsManager()
+    
+    init() {
+        setupKeyboard()
+        setupMouse()
+    }
+    
+    func setupMouse() {
+        events.monitor(matching: .leftMouseDown) { evt in
+            self.mouse.onMouseEvent(button: .left, isDown: true)
+            return evt
+        }
+        events.monitor(matching: .leftMouseUp) { evt in
+            self.mouse.onMouseEvent(button: .left, isDown: false)
+            return evt
+        }
+        events.monitor(matching: .rightMouseDown) { evt in
+            self.mouse.onMouseEvent(button: .right, isDown: true)
+            return evt
+        }
+        events.monitor(matching: .rightMouseUp) { evt in
+            self.mouse.onMouseEvent(button: .right, isDown: false)
+            return evt
+        }
+        events.monitor(matching: .mouseMoved) { evt in
+            return self.mouse.onMouseMoved(evt: evt)
+        }
+        events.monitor(matching: .leftMouseDragged) { evt in
+            return self.mouse.onMouseMoved(evt: evt)
+        }
+        events.monitor(matching: .rightMouseDragged) { evt in
+            return self.mouse.onMouseMoved(evt: evt)
+        }
+    }
+    
+    func setupKeyboard() {
+        events.monitor(matching: .flagsChanged) { evt in
+            let evt: NSEvent = evt
+            self.keyboard.onFlagsChanged(evt: evt)
+            return evt
+        }
+        
+        events.monitor(matching: .keyDown) { evt in
+            let nsevt: NSEvent = evt
+            if nsevt.modifierFlags.contains(.command) {
+                return evt
+            }
+            self.keyboard.onKeyDown(evt: evt)
+            return nil
+        }
+        
+        events.monitor(matching: .keyUp) { evt in
+            self.keyboard.onKeyUp(evt: evt)
+            return evt
+        }
+
+    }
+    
     func run(_ inDeltaTime: CGFloat) -> ChiakiControllerState {
         controllerState = ChiakiControllerState()
         

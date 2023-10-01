@@ -183,24 +183,7 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
         }
         
     }
-    
-    @IBAction func openDocument(_ s: Any?) {
-        let op = NSOpenPanel()
-        op.allowedContentTypes = [UTType.json]
-
-        cursorLogic.showCursor()
-        let run = op.runModal()
-        cursorLogic.synchronizeCursor()
         
-        if run == .OK, let url = op.urls.first {
-            do {
-                self.inputState.steps = try AppUiModel.global.loadKeymap(url: url)
-            } catch {
-                NSAlert(error: error).runModal()
-            }
-        }
-    }
-    
     override func viewWillAppear() {
         super.viewWillAppear()
         
