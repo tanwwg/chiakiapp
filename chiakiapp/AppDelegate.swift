@@ -70,6 +70,9 @@ struct InitDiscoverView: View {
                 }
                 .onReceive(NotificationCenter.default.publisher(for: .streamDisconnect)) { _ in
                     app.stream = nil
+                    if let window = NSApp.mainWindow, window.styleMask.contains(.fullScreen) {
+                        window.toggleFullScreen(self)
+                    }
                 }
             }
         }

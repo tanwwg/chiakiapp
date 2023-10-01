@@ -96,13 +96,18 @@ class EventsManager {
     
     var isKeyboardOpen = false
     
-    init(steps: [InputStep], session: ChiakiSessionBridge) {
+    init(app: AppUiModel, session: ChiakiSessionBridge) {
         self.session = session
         
         self.timer = InputTimer()
         
         self.inputState = InputState()
-        self.inputState.steps = steps
+        self.inputState.steps = app.keymap
+        
+        withObservationTracking({ _ = app.keymap }) {
+            print("keymap changed!")
+            self.inputState.steps = app.keymap
+        }
         
         timer.callback = { [weak self] delta in
             guard let ss = self else { return }
@@ -293,6 +298,13 @@ struct StreamView: View {
             .sheet(isPresented: $stream.isKeyboardOpen) {
                 StreamKeyboardView(stream: stream)
                     .frame(width: 400, height: 300)
+            }
+            .onAppear {
+                DispatchQueue.main.async {
+                    if let window = NSApp.mainWindow, !window.styleMask.contains(.fullScreen) {
+                        window.toggleFullScreen(self)
+                    }
+                }
             }
     }
 }

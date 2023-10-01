@@ -130,7 +130,7 @@ struct HostView: View {
             print(data)
         }
         
-        ui.stream = StreamController(steps: ui.keymap, session: session)
+        ui.stream = StreamController(app: ui, session: session)
 //        ui.session = session
         
 //        openWindow(id: "stream")
