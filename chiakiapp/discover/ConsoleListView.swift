@@ -123,6 +123,8 @@ struct HostView: View {
     @EnvironmentObject var discover: ChiakiDiscover
     let host: DiscoverHost
     
+    @Environment(\.openWindow) private var openWindow
+    
 //    func wake() {
 //        discover.discover.sendWakeup(host: <#T##String#>, credentials: <#T##String#>)
 //        ui.wake(host: host)
@@ -130,7 +132,7 @@ struct HostView: View {
     
     func startSession() {
         guard let reg = host.registration else { return }
-        
+                
         let session = ChiakiSessionBridge()
         session.host = host.addr;
         session.registKey = reg.rpRegistKey;
@@ -143,7 +145,7 @@ struct HostView: View {
         }
         
         ui.session = session
-        
+        openWindow(id: "stream")
     }
     
     var body: some View {

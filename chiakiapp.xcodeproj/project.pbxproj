@@ -28,6 +28,7 @@
 		AE8082562806846900D57CD9 /* KeyCodeMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE8082552806846900D57CD9 /* KeyCodeMap.swift */; };
 		AEACAA6F282495940000D389 /* PsUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEACAA6E282495940000D389 /* PsUtils.swift */; };
 		AEACAA7128255B3D0000D389 /* Sockets.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEACAA7028255B3D0000D389 /* Sockets.swift */; };
+		AEE795E22AC9996D00592DED /* StreamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE795E12AC9996D00592DED /* StreamView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -61,6 +62,7 @@
 		AE8082552806846900D57CD9 /* KeyCodeMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyCodeMap.swift; sourceTree = "<group>"; };
 		AEACAA6E282495940000D389 /* PsUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PsUtils.swift; sourceTree = "<group>"; };
 		AEACAA7028255B3D0000D389 /* Sockets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sockets.swift; sourceTree = "<group>"; };
+		AEE795E12AC9996D00592DED /* StreamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -164,6 +166,7 @@
 				AE546F91280A231B00DDC445 /* VideoController.swift */,
 				AE76B12C2803BD9A00BA3B36 /* CursorLogic.swift */,
 				AE76B12A2801BFF900BA3B36 /* FastStreamWindow.swift */,
+				AEE795E12AC9996D00592DED /* StreamView.swift */,
 			);
 			path = streaming;
 			sourceTree = "<group>";
@@ -250,6 +253,7 @@
 				AE76B12D2803BD9A00BA3B36 /* CursorLogic.swift in Sources */,
 				AE76B12B2801BFF900BA3B36 /* FastStreamWindow.swift in Sources */,
 				AE5A2FF227F45CAA00AFDC4D /* KeyCodes.swift in Sources */,
+				AEE795E22AC9996D00592DED /* StreamView.swift in Sources */,
 				AE5A2FE527F307D400AFDC4D /* ConsoleListView.swift in Sources */,
 				AE5A2F1027F2D6F500AFDC4D /* AppDelegate.swift in Sources */,
 				AEACAA6F282495940000D389 /* PsUtils.swift in Sources */,

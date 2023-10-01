@@ -17,6 +17,10 @@ struct ChiakiApp: App {
             InitDiscoverView()
                 .environmentObject(model)
         }
+        Window("Stream", id: "stream") {
+            StreamView()
+                .environmentObject(model)
+        }
     }
 }
 
@@ -39,7 +43,9 @@ struct InitDiscoverView: View {
             switch(discover) {
             case .uninitialized: EmptyView()
             case .error(let e): Text(e.localizedDescription)
-            case .value(let d): ConsoleListView(discover: d)
+            case .value(let d): 
+                ConsoleListView(discover: d)
+                    .environmentObject(d)
             }
         }
         .onAppear {

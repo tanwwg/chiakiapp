@@ -130,6 +130,7 @@ class PsDiscover {
         guard let addr = Sockets.createSocketAddr(host: host, port: 9302) else { return }
         guard let data = str.data(using: .utf8) else { return }
         listener.send(address: addr, data: data)
+        print("wakeup sent")
     }
 
     func sendDiscover() {

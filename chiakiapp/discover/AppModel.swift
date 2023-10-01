@@ -104,8 +104,9 @@ class ChiakiDiscover: ObservableObject {
     }
     
     func wake(host: DiscoverHost) {
-        discover.sendWakeup(host: host.addr, credentials: "\(host.credentials)")
-//        discover.startDiscover(seconds: 10.0)
+        guard let creds = host.credentials else { return }
+        discover.sendWakeup(host: host.addr, credentials: "\(creds)")
+        discover.startDiscover(seconds: 10.0)
     }
     
 //    func wake(host: DiscoverHost) {
