@@ -12,11 +12,9 @@ class UdpListen {
     
     let fd: Int32
     let queue = DispatchQueue(label: "UdpListen")
-    let receiveCallback: (String, String) -> (Void)
+    var receiveCallback: (String, String) -> (Void) = { _,_ in }
     
-    init(address: sockaddr_in, callback: @escaping (String, String) -> Void) throws {
-        
-        self.receiveCallback = callback
+    init(address: sockaddr_in) throws {
         
         fd = socket(AF_INET, SOCK_DGRAM, 0)
         if fd < 0 { throw getErrNo(label: "socket()") }
@@ -54,18 +52,18 @@ class PsDiscover {
     
     let queue = DispatchQueue(label: "PsDiscover")
         
-    var listener: UdpListen?
+    var listener: UdpListen
     
     var callback: ((DiscoverHost) -> Void)?
     
-    init() {
-        if let addr = Sockets.createSocketAddr(host: "255.255.255.255", port: 9302) {
-            listener = try? UdpListen(address: addr) { host, s in
-                self.parseReply(host: host, reply: s)
-            }
-            listener?.start()
+    init() throws {
+        let addr = Sockets.createSocketAddr(host: "255.255.255.255", port: 9302)!
+        
+        self.listener = try UdpListen(address: addr)
+        listener.receiveCallback = { [weak self] host, s in
+            self?.parseReply(host: host, reply: s)
         }
-
+        listener.start()
     }
     
     var endDiscover: Double?
@@ -131,7 +129,7 @@ class PsDiscover {
                          "device-discovery-protocol-version:%@\n", credentials, "00030010")
         guard let addr = Sockets.createSocketAddr(host: host, port: 9302) else { return }
         guard let data = str.data(using: .utf8) else { return }
-        listener?.send(address: addr, data: data)
+        listener.send(address: addr, data: data)
     }
 
     func sendDiscover() {
@@ -139,7 +137,7 @@ class PsDiscover {
 
         guard let data = str.data(using: .utf8) else { return }
         guard let addr = Sockets.createSocketAddr(host: "255.255.255.255", port: 9302) else { return }
-        listener?.send(address: addr, data: data)
+        listener.send(address: addr, data: data)
         
     }
     

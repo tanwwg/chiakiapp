@@ -5,30 +5,45 @@
 //  Created by Tan Thor Jen on 29/3/22.
 //
 
-import Cocoa
+import SwiftUI
 
 @main
-class AppDelegate: NSObject, NSApplicationDelegate {
-
+struct ChiakiApp: App {
     
-
-
-    func applicationDidFinishLaunching(_ aNotification: Notification) {
-        // Insert code here to initialize your application
-    }
-
-    func applicationWillTerminate(_ aNotification: Notification) {
-        // Insert code here to tear down your application
-    }
-
-    func applicationSupportsSecureRestorableState(_ app: NSApplication) -> Bool {
-        return true
-    }
+    @StateObject var model = AppUiModel()
     
-    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
-        return true
+    var body: some Scene {
+        Window("Chiaki App", id: "main") {
+            InitDiscoverView()
+                .environmentObject(model)
+        }
     }
-
-
 }
 
+struct InitDiscoverView: View {
+    
+    @State var discover: SetupValue<ChiakiDiscover> = .uninitialized
+    
+    func setup() {
+        if case .uninitialized = discover {
+            do {
+                discover = .value(ChiakiDiscover(try PsDiscover()))
+            } catch {
+                discover = .error(error)
+            }
+        }
+    }
+    
+    var body: some View {
+        Group {
+            switch(discover) {
+            case .uninitialized: EmptyView()
+            case .error(let e): Text(e.localizedDescription)
+            case .value(let d): ConsoleListView(discover: d)
+            }
+        }
+        .onAppear {
+            setup()
+        }
+    }
+}

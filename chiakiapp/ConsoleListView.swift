@@ -7,15 +7,6 @@
 
 import SwiftUI
 
-struct AppUiView: View {
-    @StateObject var ui = AppUiModel()
-    
-    var body: some View {
-        ConsoleListView(discover: ui.discover)
-            .environmentObject(ui)
-    }
-}
-
 struct ConsoleListView: View {
     @EnvironmentObject var ui: AppUiModel
     
@@ -46,7 +37,7 @@ struct ConsoleListView: View {
                 .listStyle(SidebarListStyle())
                 HStack {
                     Spacer()
-                    Button(action: { ui.discover.discover.sendDiscover() }) {
+                    Button(action: { discover.discover.sendDiscover() }) {
                         Image(systemName: "arrow.clockwise")
                     }
                     .buttonStyle(BorderlessButtonStyle())
@@ -129,11 +120,13 @@ struct RegisterProcessView: View {
 
 struct HostView: View {
     @EnvironmentObject var ui: AppUiModel
+    @EnvironmentObject var discover: ChiakiDiscover
     let host: DiscoverHost
     
-    func wake() {
-        ui.wake(host: host)
-    }
+//    func wake() {
+//        discover.discover.sendWakeup(host: <#T##String#>, credentials: <#T##String#>)
+//        ui.wake(host: host)
+//    }
     
     func startSession() {
         guard let reg = host.registration else { return }
@@ -159,7 +152,7 @@ struct HostView: View {
                 Text(host.name)
                 Text(host.addr)
                 Text(host.state.rawValue)
-                Button(action: { wake() }) {
+                Button(action: { discover.wake(host: host) }) {
                     Text("Wake")
                 }
                 
@@ -175,6 +168,7 @@ struct HostView: View {
 
 struct RegisterView: View {
     @EnvironmentObject var ui: AppUiModel
+    @EnvironmentObject var discover: ChiakiDiscover
     
     let host: DiscoverHost
     @State var psnid: String = ""
@@ -192,7 +186,7 @@ struct RegisterView: View {
             err = "Pin must be numeric"
             return
         }
-        ui.register = ChiakiRegister(discover: ui.discover, host: host, psn: psndata, pin: pinInt)
+        ui.register = ChiakiRegister(discover: discover, host: host, psn: psndata, pin: pinInt)
     }
     
     func fetchPsn() {

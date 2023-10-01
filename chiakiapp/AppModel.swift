@@ -81,8 +81,14 @@ extension UserDefaults {
     }
 }
 
+enum SetupValue<T> {
+    case uninitialized
+    case value(T)
+    case error(Error)
+}
+
 class ChiakiDiscover: ObservableObject {
-    let discover = PsDiscover()
+    var discover: PsDiscover
     
     @Published var hosts: [DiscoverHost] = []
     var registrations: [HostRegistration]
@@ -95,6 +101,11 @@ class ChiakiDiscover: ObservableObject {
                 hosts[i].registration = reg
             }
         }
+    }
+    
+    func wake(host: DiscoverHost) {
+        discover.sendWakeup(host: host.addr, credentials: "\(host.credentials)")
+//        discover.startDiscover(seconds: 10.0)
     }
     
 //    func wake(host: DiscoverHost) {
@@ -119,7 +130,8 @@ class ChiakiDiscover: ObservableObject {
         self.registerHosts()
     }
     
-    init() {
+    init(_ d: PsDiscover) {
+        self.discover = d
         self.registrations = UserDefaults.standard.getObject(forKey: ChiakiDiscover.REGISTRATIONS_KEY, castTo: [HostRegistration].self) ?? []
         discover.callback = { host in
             DispatchQueue.main.async {
@@ -206,7 +218,7 @@ class AppUiModel: ObservableObject {
     @Published var register: ChiakiRegister?
     @Published var session: ChiakiSessionBridge?
     
-    var discover = ChiakiDiscover()
+//    var discover = ChiakiDiscover()
     
     @Published var keymap: [InputStep] = []
     
@@ -252,11 +264,11 @@ class AppUiModel: ObservableObject {
         return inp
     }
     
-    func wake(host: DiscoverHost) {
-        guard let creds = host.credentials else { return }
-        discover.discover.sendWakeup(host: host.addr, credentials: "\(creds)")
-        discover.discover.startDiscover(seconds: 20.0)
-    }
+//    func wake(host: DiscoverHost) {
+//        guard let creds = host.credentials else { return }
+////        discover.discover.sendWakeup(host: host.addr, credentials: "\(creds)")
+////        discover.discover.startDiscover(seconds: 20.0)
+//    }
     
     init() {
         loadStartupKeymap()
