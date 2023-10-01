@@ -27,7 +27,7 @@ class InputState {
     
     init() {
 //        setupKeyboard()
-        setupMouse()
+//        setupMouse()
     }
     
     func setupMouse() {
@@ -48,13 +48,16 @@ class InputState {
             return evt
         }
         events.monitor(matching: .mouseMoved) { evt in
-            return self.mouse.onMouseMoved(evt: evt)
+            self.mouse.onMouseMoved(evt: evt)
+            return evt
         }
         events.monitor(matching: .leftMouseDragged) { evt in
-            return self.mouse.onMouseMoved(evt: evt)
+            self.mouse.onMouseMoved(evt: evt)
+            return evt
         }
         events.monitor(matching: .rightMouseDragged) { evt in
-            return self.mouse.onMouseMoved(evt: evt)
+            self.mouse.onMouseMoved(evt: evt)
+            return evt
         }
     }
     
@@ -109,11 +112,9 @@ class MouseManager {
     var isLeftDown = false
     var isRightDown = false
     
-    func onMouseMoved(evt: NSEvent) -> NSEvent {
+    func onMouseMoved(evt: NSEvent) {
         mouseDeltaX = evt.deltaX
         mouseDeltaY = evt.deltaY
-
-        return evt
     }
     
     func clear() {

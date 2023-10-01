@@ -94,6 +94,8 @@ class EventsManager {
     
     let powerManager = PowerManager()
     
+    var isKeyboardOpen = false
+    
     init(steps: [InputStep], session: ChiakiSessionBridge) {
         self.session = session
         
@@ -117,12 +119,25 @@ class EventsManager {
             let data = Data(bytesNoCopy: buf, count: count * 4, deallocator: .none)
             self?.audioPlayer.play(data: data)
         }
-//        session.onKeyboardOpen = { DispatchQueue.main.async { self.setKeyboardInput(true) } }
+        session.onKeyboardOpen = { [weak self] in
+            print("ON KEYBOARD OPEN")
+            guard let ss = self else { return }
+            ss.isKeyboardOpen = true
+        }
         
         session.isLoggingEnabled = false
         print("Session started")
         session.start()
         powerManager.disableSleep(reason: "Chiaki streaming")
+    }
+    
+    func sendKeys(_ s: String) {
+        session.setKeyboardText(s)
+    }
+    
+    func closeKeyboard() {
+        session.acceptKeyboard()
+        isKeyboardOpen = false
     }
     
     deinit {
@@ -133,10 +148,13 @@ class EventsManager {
     }
 }
 
-class NSAVSampleBufferView: NSView {
+class AppKitStreamView: NSView {
     
-    var displayLayer: AVSampleBufferDisplayLayer!
+    var displayLayer: AVSampleBufferDisplayLayer?
+    
+    var stream: StreamController?
     var keyboard: KeyboardManager?
+    var mouse: MouseManager?
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
@@ -152,6 +170,16 @@ class NSAVSampleBufferView: NSView {
         self.layer!.addSublayer(disp)
         
         displayLayer = disp
+                
+        let track = NSTrackingArea(rect: .zero, options: [.activeWhenFirstResponder, .mouseMoved, .enabledDuringMouseDrag, .mouseEnteredAndExited, .inVisibleRect] ,owner: self)
+        self.addTrackingArea(track)
+    }
+    
+    func setup(controller: StreamController) {
+        self.stream = controller
+        self.keyboard = controller.inputState.keyboard
+        self.mouse = controller.inputState.mouse
+        controller.videoController.display = self.displayLayer
     }
     
     override func keyDown(with event: NSEvent) {
@@ -166,6 +194,42 @@ class NSAVSampleBufferView: NSView {
     
     override func flagsChanged(with event: NSEvent) {
         keyboard?.onFlagsChanged(evt: event)
+    }
+    
+    // ========== mouse tracking =================================
+    
+    override func mouseEntered(with event: NSEvent) {
+        NSCursor.hide()
+//        CGAssociateMouseAndMouseCursorPosition(0)
+    }
+    
+    override func mouseExited(with event: NSEvent) {
+        NSCursor.unhide()
+//        CGAssociateMouseAndMouseCursorPosition(1)
+    }
+    
+    override func mouseMoved(with event: NSEvent) {
+        mouse?.onMouseMoved(evt: event)
+    }
+    
+    override func mouseDragged(with event: NSEvent) {
+        mouse?.onMouseMoved(evt: event)
+    }
+    
+    override func mouseDown(with event: NSEvent) {
+        mouse?.onMouseEvent(button: .left, isDown: true)
+    }
+    
+    override func rightMouseDown(with event: NSEvent) {
+        mouse?.onMouseEvent(button: .right, isDown: true)
+    }
+    
+    override func mouseUp(with event: NSEvent) {
+        mouse?.onMouseEvent(button: .left, isDown: false)
+    }
+
+    override func rightMouseUp(with event: NSEvent) {
+        mouse?.onMouseEvent(button: .right, isDown: false)
     }
 
     // ========= needs to become first responder to handle keyboard events =============
@@ -186,25 +250,49 @@ struct NsStreamView: NSViewRepresentable {
     
     var streamController: StreamController
     
-    func makeNSView(context: Context) -> NSAVSampleBufferView {
-        let view = NSAVSampleBufferView(frame: NSRect.zero)
+    func makeNSView(context: Context) -> AppKitStreamView {
+        let view = AppKitStreamView(frame: NSRect.zero)
         return view
     }
     
-    func updateNSView(_ nsView: NSAVSampleBufferView, context: Context) {
-        nsView.keyboard = streamController.inputState.keyboard
-        streamController.videoController.display = nsView.displayLayer
+    func updateNSView(_ nsView: AppKitStreamView, context: Context) {
+        nsView.setup(controller: streamController)
+//        nsView.keyboard = streamController.inputState.keyboard
+//        streamController.videoController.display = nsView.displayLayer
     }
+}
+
+struct StreamKeyboardView: View {
     
+    @Bindable var stream: StreamController
+    
+    @State var text = ""
+    
+    var body: some View {
+        Form {
+            TextField("Keyboard", text: $text)
+            Button(action: { stream.closeKeyboard() }) {
+                Text("OK")
+            }
+            .keyboardShortcut(.defaultAction)
+        }
+        .onChange(of: text, initial: false) {
+            stream.sendKeys(text)
+        }
+        .padding()
+    }
 }
 
 struct StreamView: View {
     
     @Environment(AppUiModel.self) var app
+    @Bindable var stream: StreamController
         
     var body: some View {
-        if let c = app.stream {
-            NsStreamView(streamController: c)                
-        }
+        NsStreamView(streamController: stream)
+            .sheet(isPresented: $stream.isKeyboardOpen) {
+                StreamKeyboardView(stream: stream)
+                    .frame(width: 400, height: 300)
+            }
     }
 }

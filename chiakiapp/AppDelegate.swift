@@ -62,7 +62,7 @@ struct InitDiscoverView: View {
             case .value(let d):
                 Group {
                     if let stream = app.stream {
-                        NsStreamView(streamController: stream)
+                        StreamView(stream: stream)
                     } else {
                         ConsoleListView(discover: d)
                             .environmentObject(d)

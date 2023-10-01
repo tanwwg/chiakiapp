@@ -253,15 +253,15 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
             return evt
         })
         
-        disposeOnClose(NSEvent.addLocalMonitorForEvents(matching: .mouseMoved) { evt in
-            return self.inputState.mouse.onMouseMoved(evt: evt)
-        })
-        disposeOnClose(NSEvent.addLocalMonitorForEvents(matching: .leftMouseDragged) { evt in
-            return self.inputState.mouse.onMouseMoved(evt: evt)
-        })
-        disposeOnClose(NSEvent.addLocalMonitorForEvents(matching: .rightMouseDragged) { evt in
-            return self.inputState.mouse.onMouseMoved(evt: evt)
-        })
+//        disposeOnClose(NSEvent.addLocalMonitorForEvents(matching: .mouseMoved) { evt in
+//            return self.inputState.mouse.onMouseMoved(evt: evt)
+//        })
+//        disposeOnClose(NSEvent.addLocalMonitorForEvents(matching: .leftMouseDragged) { evt in
+//            return self.inputState.mouse.onMouseMoved(evt: evt)
+//        })
+//        disposeOnClose(NSEvent.addLocalMonitorForEvents(matching: .rightMouseDragged) { evt in
+//            return self.inputState.mouse.onMouseMoved(evt: evt)
+//        })
 
         self.initTimer()
                 
