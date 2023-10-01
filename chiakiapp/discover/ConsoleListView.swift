@@ -20,9 +20,9 @@ struct ConsoleListView: View {
                         NavigationLink(destination: DescribeKeymapView(steps: ui.keymap)) {
                             Text("\(ui.keymapFile)")
                         }
-                        NavigationLink(destination: PreferencesView()) {
-                            Text("Preferences")
-                        }
+//                        NavigationLink(destination: PreferencesView()) {
+//                            Text("Preferences")
+//                        }
                     }
                     Section(header: Text("Consoles")) {
                         ForEach(discover.hosts) { host in
@@ -45,7 +45,7 @@ struct ConsoleListView: View {
                 .padding(5.0)
             }
         }
-//        .sheet(item: $ui.register, onDismiss: {
+//        .sheet(item: ui.register, onDismiss: {
 //            
 //        }, content: { item in
 //            RegisterProcessView(register: item, onDone: { ui.register = nil })
@@ -103,31 +103,6 @@ struct DescribeKeymapView: View {
     }
 }
 
-struct RegisterProcessView: View {
-    @ObservedObject var register: ChiakiRegister
-    let onDone: () -> Void
-    
-    var body: some View {
-        VStack {
-            Spacer()
-            Text("Registering \(register.host.name)")
-            Text(register.errorStr ?? "")
-            
-            if register.isFinished {
-                Button(action: onDone) {
-                    Text("Done")
-                }
-            } else {
-                ProgressView()
-                Button(action: onDone) {
-                    Text("Cancel")
-                }
-            }
-            Spacer()
-        }
-        .padding()
-    }
-}
 
 struct HostView: View {
     @Environment(AppUiModel.self) var ui
@@ -181,71 +156,7 @@ struct HostView: View {
     }
 }
 
-struct RegisterView: View {
-    @Environment(AppUiModel.self) var ui
-    @EnvironmentObject var discover: ChiakiDiscover
-    
-    let host: DiscoverHost
-    @State var psnid: String = ""
-    @State var pin: String = ""
-    @State var err: String?
-    
-    let pub = NotificationCenter.default.publisher(for: LoginWindow.PsnIdFetched)
-    
-    func register() {
-        guard let psndata = Data(base64Encoded: psnid) else {
-            err = "Invalid psn id"
-            return
-        }
-        guard let pinInt = Int(pin) else {
-            err = "Pin must be numeric"
-            return
-        }
-        ui.register = ChiakiRegister(discover: discover, host: host, psn: psndata, pin: pinInt)
-    }
-    
-    func fetchPsn() {
-        guard let sb = NSStoryboard.main?.instantiateController(withIdentifier: "loginWindow") as? NSWindowController else { return }
-        sb.showWindow(self)
-    }
-    
-    var body: some View {
-        Form {
-            Text(host.name)
-            Text(host.addr)
-            Text(host.hostType)
-            Text(host.state.rawValue)
-            
-            HStack {
-                TextField("PSN ID", text:$psnid)
-                Button(action: fetchPsn) {
-                    Text("Fetch")
-                }
-            }
-            TextField("Pin", text:$pin)
-            Text(err ?? " ")
-            
-            HStack {
-                Spacer()
-                                
-                Button(action: register) {
-                    Text("Register")
-                }
 
-            }
-            
-            Spacer()
-
-
-        }
-        .padding()
-        .onReceive(pub) { o in
-            if let s = o.object as? String {
-                psnid = s
-            }
-        }
-    }
-}
 
 //struct RegisterView_Previews: PreviewProvider {
 //    static var previews: some View {

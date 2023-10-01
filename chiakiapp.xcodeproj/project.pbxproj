@@ -29,6 +29,7 @@
 		AEACAA6F282495940000D389 /* PsUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEACAA6E282495940000D389 /* PsUtils.swift */; };
 		AEACAA7128255B3D0000D389 /* Sockets.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEACAA7028255B3D0000D389 /* Sockets.swift */; };
 		AEE795E22AC9996D00592DED /* StreamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE795E12AC9996D00592DED /* StreamView.swift */; };
+		AEE795E42ACA29FC00592DED /* Register.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE795E32ACA29FC00592DED /* Register.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -63,6 +64,7 @@
 		AEACAA6E282495940000D389 /* PsUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PsUtils.swift; sourceTree = "<group>"; };
 		AEACAA7028255B3D0000D389 /* Sockets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sockets.swift; sourceTree = "<group>"; };
 		AEE795E12AC9996D00592DED /* StreamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamView.swift; sourceTree = "<group>"; };
+		AEE795E32ACA29FC00592DED /* Register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Register.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,6 +156,7 @@
 				AEACAA6E282495940000D389 /* PsUtils.swift */,
 				AEACAA7028255B3D0000D389 /* Sockets.swift */,
 				AE59D9F9280F7F7900BEA772 /* LoginWindow.swift */,
+				AEE795E32ACA29FC00592DED /* Register.swift */,
 			);
 			path = discover;
 			sourceTree = "<group>";
@@ -255,6 +258,7 @@
 				AE5A2FF227F45CAA00AFDC4D /* KeyCodes.swift in Sources */,
 				AEE795E22AC9996D00592DED /* StreamView.swift in Sources */,
 				AE5A2FE527F307D400AFDC4D /* ConsoleListView.swift in Sources */,
+				AEE795E42ACA29FC00592DED /* Register.swift in Sources */,
 				AE5A2F1027F2D6F500AFDC4D /* AppDelegate.swift in Sources */,
 				AEACAA6F282495940000D389 /* PsUtils.swift in Sources */,
 				AE5A2F7427F2E4D100AFDC4D /* ChiakiBridge.m in Sources */,

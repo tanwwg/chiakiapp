@@ -159,64 +159,8 @@ class ChiakiDiscover: ObservableObject {
 
 
 
-enum ChiakiRegisterError: Error {
-    case invalidPsn
-    case invalidPin
-}
-
-class ChiakiRegister: ObservableObject, Identifiable {
-    let discover: ChiakiDiscover
-    let register = ChiakiRegisterBridge()
-    let host: DiscoverHost
-    
-    var id: String { host.id }
-    
-    @Published var isFinished = false
-    @Published var errorStr: String?
-    
-    init(discover: ChiakiDiscover, host: DiscoverHost, psn: Data, pin: Int) {
-        self.discover = discover
-        self.host = host
-        
-        register.callback = { (evt) in
-            let evtType = evt.pointee.type
-            if evtType == CHIAKI_REGIST_EVENT_TYPE_FINISHED_SUCCESS {
-                var r = evt.pointee.registered_host.unsafelyUnwrapped.pointee
-                let reg = HostRegistration(
-                    hostId: host.id,
-                    hostName: host.name,
-                    apKey: cstring(&r.ap_key.0),
-                    apSsid: cstring(&r.ap_ssid.0),
-                    apSsid2: cstring(&r.ap_bssid.0),
-                    apName: cstring(&r.ap_name.0),
-                    serverMac: cdata(&r.server_mac.0, length: 6),
-                    serverName: cstring(&r.server_nickname.0),
-                    rpRegistKey: cdata(&r.rp_regist_key.0, length: 16),
-                    rpKeyType: r.rp_key_type,
-                    rpKey: cdata(&r.rp_key.0, length: 16))
-
-                DispatchQueue.main.async { self.discover.save(reg) }
-            }
-
-            DispatchQueue.main.async {
-                if evtType != CHIAKI_REGIST_EVENT_TYPE_FINISHED_SUCCESS {
-                    self.errorStr = "err"
-                }
-                self.isFinished = true
-                print("register callback finished!")
-            }
-        }
-        
-        register.regist(withPsn: psn, host: host.addr, pin: pin)
-    }
-    
-    deinit {
-        register.cancel()
-    }
-}
 
 @Observable class AppUiModel {
-    var register: ChiakiRegister?
     var keymap: [InputStep] = []
 
     
