@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ConsoleListView: View {
-    @EnvironmentObject var ui: AppUiModel
+    @Environment(AppUiModel.self) var ui
     
     @ObservedObject var discover: ChiakiDiscover
     
@@ -45,33 +45,34 @@ struct ConsoleListView: View {
                 .padding(5.0)
             }
         }
-        .sheet(item: $ui.register, onDismiss: {
-            
-        }, content: { item in
-            RegisterProcessView(register: item, onDone: { ui.register = nil })
-                .frame(width: 300, height: 150)
-        })
-        .environmentObject(ui)
+//        .sheet(item: $ui.register, onDismiss: {
+//            
+//        }, content: { item in
+//            RegisterProcessView(register: item, onDone: { ui.register = nil })
+//                .frame(width: 300, height: 150)
+//        })
+//        .environment(ui)
 
     }
 }
 
 struct PreferencesView: View {
     
-    @EnvironmentObject var ui: AppUiModel
+    @Environment(AppUiModel.self) var ui
 
     var body: some View {
-        Form {
-            HStack {
-                Toggle(isOn: ui.$isStartStreamCommand) {
-                    
-                }
-                TextField("Start stream command", text: ui.$startStreamCommand)
-                    .disabled(!ui.isStartStreamCommand)
-            }
-            Text("Ideally disable airdrop / bluetooth / location services when starting a stream")
-        }
-        .padding()
+        EmptyView()
+//        Form {
+//            HStack {
+//                Toggle(isOn: ui.$isStartStreamCommand) {
+//                    
+//                }
+//                TextField("Start stream command", text: ui.$startStreamCommand)
+//                    .disabled(!ui.isStartStreamCommand)
+//            }
+//            Text("Ideally disable airdrop / bluetooth / location services when starting a stream")
+//        }
+//        .padding()
     }
 }
 
@@ -79,7 +80,7 @@ struct DescribeKeymapView: View {
     let keymap: [String]
     
     @State var openKeymap = false
-    @EnvironmentObject var ui: AppUiModel
+    @Environment(AppUiModel.self) var ui
     
     init(steps: [InputStep]) {
         self.keymap = steps.map { s in s.describe() }
@@ -129,7 +130,7 @@ struct RegisterProcessView: View {
 }
 
 struct HostView: View {
-    @EnvironmentObject var ui: AppUiModel
+    @Environment(AppUiModel.self) var ui
     @EnvironmentObject var discover: ChiakiDiscover
     let host: DiscoverHost
     
@@ -154,8 +155,10 @@ struct HostView: View {
             print(data)
         }
         
-        ui.session = session
-        openWindow(id: "stream")
+        ui.stream = StreamController(steps: ui.keymap, session: session)
+//        ui.session = session
+        
+//        openWindow(id: "stream")
     }
     
     var body: some View {
@@ -179,7 +182,7 @@ struct HostView: View {
 }
 
 struct RegisterView: View {
-    @EnvironmentObject var ui: AppUiModel
+    @Environment(AppUiModel.self) var ui
     @EnvironmentObject var discover: ChiakiDiscover
     
     let host: DiscoverHost

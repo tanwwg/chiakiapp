@@ -215,27 +215,17 @@ class ChiakiRegister: ObservableObject, Identifiable {
     }
 }
 
-class AppUiModel: ObservableObject {
-    @Published var register: ChiakiRegister?
-    @Published var session: ChiakiSessionBridge?
-    
-//    var discover = ChiakiDiscover()
-    
-    @Published var keymap: [InputStep] = []
-    
-    @AppStorage("keymapFile") var keymapFile: String = ""
-    @AppStorage("keymap") var keymapStore: String?
+@Observable class AppUiModel {
+    var register: ChiakiRegister?
+    var keymap: [InputStep] = []
 
-    @AppStorage("isStartStreamCommand") var isStartStreamCommand = false
-    @AppStorage("startStreamCommand") var startStreamCommand = ""
-
-    var startStreamCommandProp: String? {
-        get {
-            if !isStartStreamCommand { return nil }
-            return startStreamCommand
-        }
-    }
     
+//    var session: ChiakiSessionBridge?
+    var stream: StreamController?
+
+    @ObservationIgnored @AppStorage("keymapFile") var keymapFile: String = ""
+    @ObservationIgnored @AppStorage("keymap") var keymapStore: String?
+
     func loadBundleAsString(bundle: String, ext:String) -> String {
         guard let res = Bundle.main.url(forResource: bundle, withExtension: ext),
               let jd = try? Data(contentsOf: res),

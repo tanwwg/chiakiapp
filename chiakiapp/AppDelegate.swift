@@ -7,25 +7,41 @@
 
 import SwiftUI
 
+extension Notification.Name {
+    static let streamDisconnect = Notification.Name("Stream_Disconnect")
+}
+
 @main
 struct ChiakiApp: App {
     
-    @StateObject var model = AppUiModel()
+    @State var model = AppUiModel()
     
     var body: some Scene {
         Window("Chiaki App", id: "main") {
             InitDiscoverView()
-                .environmentObject(model)
+                .environment(model)
         }
-        Window("Stream", id: "stream") {
-            StreamView()
-                .environmentObject(model)
+        .commands {
+            CommandMenu("Stream") {
+                Button(action: { 
+                    NotificationCenter.default.post(name: .streamDisconnect, object: nil)
+                }) {
+                    Text("Disconnect")
+                }
+                .keyboardShortcut("d")
+                .disabled(model.stream == nil)
+            }
         }
+//        Window("Stream", id: "stream") {
+//            StreamView()
+//                .environment(model)
+//        }
     }
 }
 
 struct InitDiscoverView: View {
     
+    @Environment(AppUiModel.self) private var app
     @State var discover: SetupValue<ChiakiDiscover> = .uninitialized
     
     func setup() {
@@ -43,9 +59,18 @@ struct InitDiscoverView: View {
             switch(discover) {
             case .uninitialized: EmptyView()
             case .error(let e): Text(e.localizedDescription)
-            case .value(let d): 
-                ConsoleListView(discover: d)
-                    .environmentObject(d)
+            case .value(let d):
+                Group {
+                    if let stream = app.stream {
+                        NsStreamView(streamController: stream)
+                    } else {
+                        ConsoleListView(discover: d)
+                            .environmentObject(d)
+                    }
+                }
+                .onReceive(NotificationCenter.default.publisher(for: .streamDisconnect)) { _ in
+                    app.stream = nil
+                }
             }
         }
         .onAppear {

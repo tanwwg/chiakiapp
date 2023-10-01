@@ -26,7 +26,7 @@ class InputState {
     var events = EventsManager()
     
     init() {
-        setupKeyboard()
+//        setupKeyboard()
         setupMouse()
     }
     

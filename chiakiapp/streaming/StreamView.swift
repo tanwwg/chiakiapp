@@ -23,6 +23,10 @@ class InputTimer {
         self.timer.activate()
     }
     
+    func cancel() {
+        timer.cancel()
+    }
+    
     deinit {
         timer.cancel()
     }
@@ -103,13 +107,15 @@ class EventsManager {
             ss.session.setControllerState(ss.inputState.run(delta))
         }
         
-        session.rawVideoCallback = self.videoController.handleVideoFrame(_:size:)
-        session.audioSettingsCallback = { (ch, sr) in
-            self.audioPlayer.startup(channels: Int(ch), sampleRate: Double(sr))
+        session.rawVideoCallback = { [weak self] (buf, bufsize) in
+            self?.videoController.handleVideoFrame(buf, size: bufsize)
         }
-        session.audioFrameCallback = { (buf, count) in
+        session.audioSettingsCallback = { [weak self] (ch, sr) in
+            self?.audioPlayer.startup(channels: Int(ch), sampleRate: Double(sr))
+        }
+        session.audioFrameCallback = { [weak self] (buf, count) in
             let data = Data(bytesNoCopy: buf, count: count * 4, deallocator: .none)
-            self.audioPlayer.play(data: data)
+            self?.audioPlayer.play(data: data)
         }
 //        session.onKeyboardOpen = { DispatchQueue.main.async { self.setKeyboardInput(true) } }
         
@@ -121,6 +127,7 @@ class EventsManager {
     
     deinit {
         print("Stopping session")
+        timer.cancel()
         session.stop()
         powerManager.enableSleep()
     }
@@ -129,6 +136,7 @@ class EventsManager {
 class NSAVSampleBufferView: NSView {
     
     var displayLayer: AVSampleBufferDisplayLayer!
+    var keyboard: KeyboardManager?
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
@@ -145,11 +153,38 @@ class NSAVSampleBufferView: NSView {
         
         displayLayer = disp
     }
+    
+    override func keyDown(with event: NSEvent) {
+//        print("keydown=\(event.keyCode)")
+        if event.modifierFlags.contains(.command) { return }
+        keyboard?.onKeyDown(evt: event)
+    }
+    
+    override func keyUp(with event: NSEvent) {
+        keyboard?.onKeyUp(evt: event)
+    }
+    
+    override func flagsChanged(with event: NSEvent) {
+        keyboard?.onFlagsChanged(evt: event)
+    }
+
+    // ========= needs to become first responder to handle keyboard events =============
+    
+    override var acceptsFirstResponder: Bool {
+        return true
+    }
+    override func viewDidMoveToSuperview() {
+        print("viewDidMoveToSuperview")
+        DispatchQueue.main.async {
+            self.window?.makeFirstResponder(self)
+        }
+    }
+
 }
 
-struct AVSampleBufferView: NSViewRepresentable {
+struct NsStreamView: NSViewRepresentable {
     
-    var videoController: VideoController
+    var streamController: StreamController
     
     func makeNSView(context: Context) -> NSAVSampleBufferView {
         let view = NSAVSampleBufferView(frame: NSRect.zero)
@@ -157,42 +192,19 @@ struct AVSampleBufferView: NSViewRepresentable {
     }
     
     func updateNSView(_ nsView: NSAVSampleBufferView, context: Context) {
-        videoController.display = nsView.displayLayer
+        nsView.keyboard = streamController.inputState.keyboard
+        streamController.videoController.display = nsView.displayLayer
     }
     
 }
 
 struct StreamView: View {
     
-    @EnvironmentObject var app: AppUiModel
-    
-    @State var stream: SetupValue<StreamController> = .uninitialized
-    
-    func setup() {
-        if let session = app.session, case .uninitialized = stream {
-            stream = .value(StreamController(steps: app.keymap, session: session))
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                if let window = NSApplication.shared.windows.last {
-                    window.toggleFullScreen(nil)
-                }
-            }
-        }
-    }
-    
+    @Environment(AppUiModel.self) var app
+        
     var body: some View {
-        Group {
-            switch(stream) {
-            case .value(let c):
-                AVSampleBufferView(videoController: c.videoController)
-            default:
-                EmptyView()
-            }
-        }        
-        .onAppear {
-            setup()
-        }
-        .onDisappear {
-            stream = .uninitialized
+        if let c = app.stream {
+            NsStreamView(streamController: c)                
         }
     }
 }
