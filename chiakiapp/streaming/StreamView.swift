@@ -96,6 +96,7 @@ class EventsManager {
         self.timer = InputTimer()
         
         self.inputState = InputState()
+        self.inputState.steps = steps
         
         timer.callback = { [weak self] delta in
             guard let ss = self else { return }
@@ -186,7 +187,7 @@ struct StreamView: View {
             default:
                 EmptyView()
             }
-        }
+        }        
         .onAppear {
             setup()
         }
