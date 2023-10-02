@@ -96,6 +96,8 @@ class EventsManager {
     
     var isKeyboardOpen = false
     
+    var isWaitingToStart = true
+    
     init(app: AppUiModel, session: ChiakiSessionBridge) {
         self.session = session
         
@@ -104,9 +106,9 @@ class EventsManager {
         self.inputState = InputState()
         self.inputState.steps = app.keymap
         
-        withObservationTracking({ _ = app.keymap }) {
+        withObservationTracking({ _ = app.keymap }) { [weak self] in
             print("keymap changed!")
-            self.inputState.steps = app.keymap
+            self?.inputState.steps = app.keymap
         }
         
         timer.callback = { [weak self] delta in
@@ -157,9 +159,11 @@ class AppKitStreamView: NSView {
     
     var displayLayer: AVSampleBufferDisplayLayer?
     
-    var stream: StreamController?
+    weak var stream: StreamController?
     var keyboard: KeyboardManager?
     var mouse: MouseManager?
+    
+    var isReceived = false
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
@@ -184,7 +188,17 @@ class AppKitStreamView: NSView {
         self.stream = controller
         self.keyboard = controller.inputState.keyboard
         self.mouse = controller.inputState.mouse
-        controller.videoController.display = self.displayLayer
+        
+        controller.videoController.onBuffer = { [weak self] buf in
+            guard let ss = self else { return }
+            ss.displayLayer?.sampleBufferRenderer.enqueue(buf)
+            if !ss.isReceived {
+                ss.isReceived = true
+                DispatchQueue.main.async {
+                    ss.stream?.isWaitingToStart = false
+                }
+            }
+        }
     }
     
     override func keyDown(with event: NSEvent) {
@@ -243,7 +257,7 @@ class AppKitStreamView: NSView {
         return true
     }
     override func viewDidMoveToSuperview() {
-        print("viewDidMoveToSuperview")
+        print("viewDidMoveToSuperview \(self.superview)")
         DispatchQueue.main.async {
             self.window?.makeFirstResponder(self)
         }
@@ -295,6 +309,15 @@ struct StreamView: View {
         
     var body: some View {
         NsStreamView(streamController: stream)
+            .sheet(isPresented: $stream.isWaitingToStart) {
+                VStack {
+                    Spacer()
+                    ProgressView()
+                    Text("Connecting, Cmd+D to disconnect")
+                    Spacer()
+                }
+                .frame(width: 400, height: 300)
+            }
             .sheet(isPresented: $stream.isKeyboardOpen) {
                 StreamKeyboardView(stream: stream)
                     .frame(width: 400, height: 300)

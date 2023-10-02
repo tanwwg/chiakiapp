@@ -12,7 +12,7 @@ import AVKit
 class VideoController {
     
     var videoFormatDesc: CMVideoFormatDescription?
-    var display: AVSampleBufferDisplayLayer?
+    var onBuffer: ((CMSampleBuffer) -> ())?
     
     func check(_ status: OSStatus, msg: String) -> Bool {
         if status != 0 {
@@ -94,7 +94,8 @@ class VideoController {
         
         if let buf = sampleBuffer {
             ChiakiSessionBridge.setDisplayImmediately(buf)
-            self.display?.enqueue(buf)
+            onBuffer?(buf)
+//            self.display?.enqueue(buf)
         }
 
     }

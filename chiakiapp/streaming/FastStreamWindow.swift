@@ -277,7 +277,7 @@ class FastStreamWindow: NSViewController, NSMenuItemValidation {
             self.display = disp
         }
         
-        self.videoController.display = self.display
+//        self.videoController.display = self.display
 
     }
 }

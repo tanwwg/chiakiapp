@@ -142,12 +142,19 @@ struct HostView: View {
                 Text(host.name)
                 Text(host.addr)
                 Text(host.state.rawValue)
-                Button(action: { discover.wake(host: host) }) {
-                    Text("Wake")
+                if host.state == .standby || host.state == .unknown {
+                    Button(action: { discover.wake(host: host) }) {
+                        Text("Wake")
+                    }
                 }
-                
-                Button(action: { startSession() }) {
-                    Text("Stream")
+                if host.state == .ready {
+                    if ui.stream != nil {
+                        Text("Stream in progress")
+                    } else {
+                        Button(action: { startSession() }) {
+                            Text("Stream")
+                        }
+                    }
                 }
             } else {
                 RegisterView(host: host)
